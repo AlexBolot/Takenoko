@@ -9,7 +9,8 @@ public class Plot extends Cell {
     boolean isIrrigated;
     PlotState state;
     public Plot(Point coords) {
-
         super(coords);
+        state = new NeutralState();
     }
+
 }
