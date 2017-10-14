@@ -1,5 +1,6 @@
 package Oka.model;
 
+
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
 
@@ -14,6 +15,14 @@ public class Cell {
         this.coords = coords;
         this.gardenerIsHere = Gardener.getInstance().getCoords().equals(coords);
         this.pandaIsHere = Panda.getInstance().getCoords().equals(coords);
+    }
+
+    public Point getCoords () {
+        return coords;
+    }
+
+    public void setCoords (Point coords) {
+        this.coords = coords;
     }
 
     public boolean PandaIsHere() {
