@@ -6,8 +6,8 @@ import Oka.entities.Panda;
 import java.awt.*;
 
 public class Cell {
-    public boolean pandaIsHere;
-    public boolean gardenerIsHere;
+    private boolean pandaIsHere;
+    private boolean gardenerIsHere;
     private Point coords;
 
     public Cell(Point coords) {
@@ -16,4 +16,19 @@ public class Cell {
         this.pandaIsHere = Panda.getInstance().getCoords().equals(coords);
     }
 
+    public boolean PandaIsHere() {
+        return pandaIsHere;
+    }
+
+    public void setPandaIsHere(boolean pandaIsHere) {
+        this.pandaIsHere = pandaIsHere;
+    }
+
+    public boolean GardenerIsHere() {
+        return gardenerIsHere;
+    }
+
+    public void setGardenerIsHere(boolean gardenerIsHere) {
+        this.gardenerIsHere = gardenerIsHere;
+    }
 }
