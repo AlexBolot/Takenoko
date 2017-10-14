@@ -1,4 +1,4 @@
-package Oka.board;
+package Oka.model;
 
 import java.awt.*;
 

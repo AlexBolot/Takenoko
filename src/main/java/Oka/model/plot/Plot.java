@@ -1,6 +1,6 @@
-package Oka.board.plot;
+package Oka.model.plot;
 
-import Oka.board.Cell;
+import Oka.model.Cell;
 
 import java.awt.*;
 

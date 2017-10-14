@@ -1,4 +1,4 @@
-package Oka.board.plot;
+package Oka.model.plot;
 
 public abstract class PlotState {
 

@@ -1,4 +1,4 @@
-package Oka.board;
+package Oka.model;
 
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
