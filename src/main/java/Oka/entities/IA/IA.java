@@ -1,7 +1,7 @@
 package Oka.entities.IA;
 
 import Oka.model.Bamboo;
-import Oka.model.Objective;
+import Oka.model.Goal;
 
 import java.util.ArrayList;
 
@@ -9,8 +9,8 @@ public class IA {
 
     private int actionsLeft;
     private ArrayList<Bamboo> bamboos = new ArrayList<Bamboo>();
-    private ArrayList<Objective> objectivespending = new ArrayList<Objective>();
-    private ArrayList<Objective> objectivesdone = new ArrayList<Objective>();
+    private ArrayList<Goal> pendinggoal = new ArrayList<Goal>();
+    private ArrayList<Goal> donegoal = new ArrayList<Goal>();
 
     public int getActionsLeft () {
         return actionsLeft;
@@ -28,20 +28,20 @@ public class IA {
         this.bamboos = bamboos;
     }
 
-    public ArrayList<Objective> getObjectivespending () {
-        return objectivespending;
+    public ArrayList<Goal> getObjectivespending () {
+        return pendinggoal;
     }
 
-    public void setObjectivespending (ArrayList<Objective> objectivespending) {
-        this.objectivespending = objectivespending;
+    public void setObjectivespending (ArrayList<Goal> objectivespending) {
+        this.pendinggoal = objectivespending;
     }
 
-    public ArrayList<Objective> getObjectivesdone () {
-        return objectivesdone;
+    public ArrayList<Goal> getObjectivesdone () {
+        return donegoal;
     }
 
-    public void setObjectivesdone (ArrayList<Objective> objectivesdone) {
-        this.objectivesdone = objectivesdone;
+    public void setObjectivesdone (ArrayList<Goal> objectivesdone) {
+        this.donegoal = objectivesdone;
     }
 }
 

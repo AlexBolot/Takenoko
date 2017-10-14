@@ -1,9 +1,9 @@
 package Oka.model;
 
-public abstract class goal {
+public abstract class Goal {
     private final int value;
 
-    public goal(int value) {
+    public Goal(int value) {
         this.value = value;
     }
 
