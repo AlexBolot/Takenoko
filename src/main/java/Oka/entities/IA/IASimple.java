@@ -1,13 +1,12 @@
 package Oka.entities.IA;
 
-import Oka.model.Cell;
-import Oka.model.plot.Plot;
-import Oka.controllers.GameBoard;
 import Oka.entities.Gardener;
+import Oka.entities.Panda;
+import Oka.model.Cell;
 import Oka.model.Vector;
+import Oka.model.plot.Plot;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class IASimple extends IA {
 
@@ -26,10 +25,26 @@ public class IASimple extends IA {
 
         }
     }
-    public void growBamboo () {
-            //Todo
-    }
 
+    public void movePanda ()
+    {
+        Point coordsPanda = Panda.getInstance().getCoords();
+        GameBoard gameboard = GameBoard.getInstance();
+        for (Cell cell : gameboard.getGrid())
+        {
+            //Si la case est celle du Panda, on ne la considère pas.
+            if (cell.getCoords() == coordsPanda) continue;
+
+            Vector v = Vector.isOnVector(coordsPanda, cell.getCoords());
+
+            if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() > 0)
+            {
+                Point newCoords = v.applyVector(coordsPanda);
+                Panda.getInstance().setCoords(newCoords);
+                return;
+            }
+        }
+    }
 
     public void ValidateObjective () {
         //Todo
