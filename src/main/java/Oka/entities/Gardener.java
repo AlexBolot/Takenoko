@@ -1,5 +1,10 @@
 package Oka.entities;
 
+import Oka.controllers.GameBoard;
+import Oka.model.Bamboo;
+import Oka.model.Cell;
+import Oka.model.plot.Plot;
+
 import java.awt.*;
 
 public class Gardener
@@ -25,5 +30,19 @@ public class Gardener
     public void setCoords (Point coords)
     {
         this.coords = coords;
+    }
+
+    /**
+     * make bamboo grows, on the tile where the gardener is present for now, later implementation wil include
+     * the neighboor tile groing effect
+     */
+    public void growBamboo() {
+        GameBoard board = GameBoard.getInstance();
+        Cell cell = board.getCell(this.getCoords());
+        if (!cell.getCoords().equals(new Point(0, 0))) {
+            Plot plot = (Plot) cell;
+            plot.addBamboo(new Bamboo(plot.getColor()));
+        }
+
     }
 }
