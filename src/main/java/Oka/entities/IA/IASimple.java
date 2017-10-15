@@ -10,13 +10,18 @@ import java.awt.*;
 
 public class IASimple extends IA {
 
-    public void moveGardener () {
+    public void moveGardener ()
+    {
         Point coordsGardener = Gardener.getInstance().getCoords();
         GameBoard gameboard = GameBoard.getInstance();
-        for (Cell cell : gameboard.getGrid()) {
+        for (Cell cell : gameboard.getGrid())
+        {
+            //Si la case est celle du Gardener, on ne la considère pas.
+            if (cell.getCoords() == coordsGardener) continue;
+
             Vector v = Vector.isOnVector(coordsGardener, cell.getCoords());
 
-            if (v != null && cell instanceof Plot &&((Plot) cell).getBamboo().size() == 0)
+            if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() == 0)
             {
                 Point newCoords = v.applyVector(coordsGardener);
                 Gardener.getInstance().setCoords(newCoords);
@@ -46,7 +51,8 @@ public class IASimple extends IA {
         }
     }
 
-    public void ValidateObjective () {
+    public void ValidateObjective ()
+    {
         //Todo
     }
 }
