@@ -1,6 +1,6 @@
 package Oka.entities;
 
-import Oka.controllers.GameBoard;
+import Oka.controler.GameBoard;
 import Oka.model.Bamboo;
 import Oka.model.Cell;
 import Oka.model.plot.Plot;
@@ -46,3 +46,4 @@ public class Gardener
 
     }
 }
+

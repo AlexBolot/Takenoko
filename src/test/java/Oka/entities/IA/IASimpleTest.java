@@ -17,6 +17,7 @@ package Oka.entities.IA;
 import Oka.controler.GameBoard;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
+import Oka.model.Bamboo;
 import Oka.model.plot.Plot;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class IASimpleTest
     public void before ()
     {
         Plot plot1 = new Plot(p01);
-        plot1.addBamboo();
+        plot1.addBamboo(new Bamboo(Color.BLUE));
         GameBoard.getInstance().addCell(plot1);
 
         Plot plot2 = new Plot(p10);
