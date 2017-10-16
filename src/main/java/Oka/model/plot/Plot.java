@@ -1,6 +1,7 @@
 package Oka.model.plot;
-import Oka.model.Cell;
+
 import Oka.model.Bamboo;
+import Oka.model.Cell;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,6 +14,11 @@ public class Plot extends Cell {
 
     public void setBamboo (ArrayList<Bamboo> bamboo) {
         this.bamboo = bamboo;
+    }
+
+    public void addBamboo ()
+    {
+        bamboo.add(new Bamboo());
     }
     String color = "Blue";// Provisoirement fixer a une couleur pour la release 1
     boolean isIrrigated;
