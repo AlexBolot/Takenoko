@@ -1,33 +1,68 @@
 package Oka.controler;
 
 import Oka.model.Cell;
+import Oka.model.Pond;
+import Oka.model.goal.BambooGoal;
+import Oka.model.goal.Goal;
+import Oka.model.plot.Plot;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GameBoard {
+public class GameBoard
+{
     private static GameBoard ourInstance = new GameBoard();
+
     private ArrayList<Cell> grid = new ArrayList<Cell>();
 
-    public ArrayList<Cell> getGrid () {
+    private GameBoard ()
+    {
+        grid.add(new Pond(new Point(0, 0)));
+    }
+
+    public static GameBoard getInstance ()
+    {
+        return ourInstance;
+    }
+
+    public ArrayList<Cell> getGrid ()
+    {
         return grid;
     }
 
-    public void setGrid (ArrayList<Cell> grid) {
+    public void setGrid (ArrayList<Cell> grid)
+    {
         this.grid = grid;
     }
 
-    public static GameBoard getInstance () {
-        return ourInstance;
-    }
-    public Cell getCell(Point point){
-        for(Cell cell : grid){
-            if (cell.getCoords()==point){
+    public Cell getCell (Point point)
+    {
+        for (Cell cell : grid)
+        {
+            if (cell.getCoords() == point)
+            {
                 return cell;
             }
         }
         return null;
     }
-    private GameBoard () {
+
+    public void addCell (Plot plot)
+    {
+        grid.add(plot);
+    }
+
+    //TODO upgrade this on next release
+    public Goal giveGoal ()
+    {
+        //Very easy objective for now : get 1 bamboo to validate.
+        //Will be changed in another release.
+        return new BambooGoal(1, 1);
+    }
+
+    //TODO upgrade this on next release
+    public Plot givePlot (Point point)
+    {
+        return new Plot(point);
     }
 }
