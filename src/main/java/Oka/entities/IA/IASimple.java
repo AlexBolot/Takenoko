@@ -1,15 +1,16 @@
 package Oka.entities.IA;
 
+import Oka.controler.GameBoard;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Cell;
-import Oka.controler.GameBoard;
 import Oka.model.Vector;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
 
-public class IASimple extends IA {
+public class IASimple extends IA
+{
 
     public void moveGardener ()
     {
@@ -18,7 +19,7 @@ public class IASimple extends IA {
         for (Cell cell : gameboard.getGrid())
         {
             //Si la case est celle du Gardener, on ne la considère pas.
-            if (cell.getCoords() == coordsGardener) continue;
+            if (cell.getCoords().equals(coordsGardener)) continue;
 
             Vector v = Vector.isOnVector(coordsGardener, cell.getCoords());
 
@@ -39,7 +40,7 @@ public class IASimple extends IA {
         for (Cell cell : gameboard.getGrid())
         {
             //Si la case est celle du Panda, on ne la considère pas.
-            if (cell.getCoords() == coordsPanda) continue;
+            if (cell.getCoords().equals(coordsPanda)) continue;
 
             Vector v = Vector.isOnVector(coordsPanda, cell.getCoords());
 
