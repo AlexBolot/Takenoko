@@ -1,7 +1,7 @@
 package Oka.entities.IA;
 
 import Oka.model.Bamboo;
-import Oka.model.Goal;
+import Oka.model.goal.Goal;
 
 import java.util.ArrayList;
 
