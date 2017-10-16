@@ -3,6 +3,7 @@ package Oka.entities.IA;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Cell;
+import Oka.controler.GameBoard;
 import Oka.model.Vector;
 import Oka.model.plot.Plot;
 
