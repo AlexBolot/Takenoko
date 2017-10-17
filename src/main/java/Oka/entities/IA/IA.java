@@ -13,6 +13,11 @@ public class IA {
     private ArrayList<Goal> pendinggoal = new ArrayList<Goal>();
     private ArrayList<Goal> donegoal = new ArrayList<Goal>();
 
+    public IA(){};
+    public IA(ArrayList<Goal> pendinggoal,ArrayList<Bamboo> bamboos){
+        this.bamboos = bamboos;
+        this.pendinggoal = pendinggoal;
+    }
     public int getActionsLeft () {
         return actionsLeft;
     }
@@ -46,19 +51,28 @@ public class IA {
     }
 
     public void checkGoal(){
+        int tabIndex[] = new int[pendinggoal.size()],
+                comptBamboo=0,
+                comptGoal=0;
         for(int i=0; i<pendinggoal.size(); i++){
             Goal g = pendinggoal.get(i);
             if(g instanceof BambooGoal) {
                 BambooGoal g1 = (BambooGoal) g;
-                if(bamboos.size() >= g1.getBambooAmount()) {
-                    pendinggoal.remove(i);
-                    donegoal.add(g);
-                    for(int j=0; j<g1.getBambooAmount(); j++){
-                        bamboos.remove(bamboos.size()-1);
-
-                    }
+                if(bamboos.size()-comptBamboo >= g1.getBambooAmount()) {
+                    donegoal.add(g1);
+                    tabIndex[comptGoal] = i;
+                    comptGoal++;
+                    comptBamboo += g1.getBambooAmount();
                 }
             }
+        }
+        for(int z=tabIndex.length-1; z>0; z--){
+            BambooGoal g1 = (BambooGoal) pendinggoal.get(z);
+
+            for(int j=0; j<g1.getBambooAmount(); j++){
+                bamboos.remove(bamboos.size()-1);
+            }
+            pendinggoal.remove(z);
         }
     }
 }

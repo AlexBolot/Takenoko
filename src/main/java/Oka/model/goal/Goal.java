@@ -24,4 +24,5 @@ public abstract class Goal {
     public int getValue() {
         return value;
     }
+
 }
