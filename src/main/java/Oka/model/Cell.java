@@ -17,6 +17,7 @@ public class Cell {
         this.pandaIsHere = Panda.getInstance().getCoords().equals(coords);
     }
 
+
     public Point getCoords () {
         return coords;
     }
