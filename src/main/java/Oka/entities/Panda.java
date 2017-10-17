@@ -38,6 +38,15 @@ public class Panda
         if (tile.getCoords().equals(new Point())) return null;
         Plot currentPlot = (Plot) tile;
         return currentPlot.giveBamboo();
+    }
 
+    /**
+     * moves the panda and eat bamboo at ariving state
+     *
+     * @param newCoords
+     */
+    public Bamboo move(Point newCoords) {
+        this.setCoords(newCoords);
+        return this.gatherBamboo();
     }
 }

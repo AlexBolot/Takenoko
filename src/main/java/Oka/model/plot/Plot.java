@@ -42,4 +42,15 @@ public class Plot extends Cell {
     public Color getColor() {
         return color;
     }
+
+    /**
+     * return the top bamboo from the plot reserve and removes it
+     * todo: throw and empty exception if empty really check the code  !!!!!!
+     *
+     * @return Bamboo
+     */
+    public Bamboo giveBamboo() {
+
+        return bamboo.remove(bamboo.size() - 1);
+    }
 }
