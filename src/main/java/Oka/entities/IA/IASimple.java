@@ -37,6 +37,9 @@ public class IASimple extends IA
 
     public void movePanda ()
     {
+        //todo: move code to GAMEBOARD, for responsability coherence and panda move in Panda.move(Point point)
+
+
         Point coordsPanda = Panda.getInstance().getCoords();
         GameBoard gameboard = GameBoard.getInstance();
         for (Cell cell : gameboard.getGrid())
@@ -48,8 +51,10 @@ public class IASimple extends IA
 
             if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() > 0)
             {
+
                 Point newCoords = v.applyVector(coordsPanda);
-                Panda.getInstance().setCoords(newCoords);
+                //todo: get the returned bamboo and add it to reserve
+                Panda.getInstance().move(newCoords);
                 return;
             }
         }

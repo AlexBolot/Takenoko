@@ -39,7 +39,7 @@ public class GameBoard
     {
         for (Cell cell : grid)
         {
-            if (cell.getCoords() == point)
+            if (cell.getCoords().equals(point))
             {
                 return cell;
             }
