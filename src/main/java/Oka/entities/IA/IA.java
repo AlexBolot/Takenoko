@@ -1,6 +1,7 @@
 package Oka.entities.IA;
 
 import Oka.model.Bamboo;
+import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
 
 import java.util.ArrayList;
@@ -42,6 +43,23 @@ public class IA {
 
     public void setObjectivesdone (ArrayList<Goal> objectivesdone) {
         this.donegoal = objectivesdone;
+    }
+
+    public void checkGoal(){
+        for(int i=0; i<pendinggoal.size(); i++){
+            Goal g = pendinggoal.get(i);
+            if(g instanceof BambooGoal) {
+                BambooGoal g1 = (BambooGoal) g;
+                if(bamboos.size() >= g1.getBambooAmount()) {
+                    pendinggoal.remove(i);
+                    donegoal.add(g);
+                    for(int j=0; j<g1.getBambooAmount(); j++){
+                        bamboos.remove(bamboos.size()-1);
+
+                    }
+                }
+            }
+        }
     }
 }
 
