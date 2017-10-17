@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 public class Plot extends Cell {
     private ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
+
+    public Plot() {
+        super(null);
+    }
+
     public ArrayList<Bamboo> getBamboo () {
         return bamboo;
     }

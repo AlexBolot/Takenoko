@@ -17,7 +17,7 @@ public class GameBoard
 
     private GameBoard ()
     {
-        grid.add(new Pond(new Point(0, 0)));
+        grid.add(new Pond());
     }
 
     public static GameBoard getInstance ()
@@ -61,8 +61,19 @@ public class GameBoard
     }
 
     //TODO upgrade this on next release
-    public Plot givePlot (Point point)
+    public Plot givePlot()
     {
-        return new Plot(point);
+        return new Plot();
+    }
+
+    /**
+     * should return all the possible slots where a tile may be layed
+     * todo : implement
+     *
+     * @return ArrayList
+     */
+    public ArrayList<Point> getAvailableSlots() {
+
+        return null;
     }
 }
