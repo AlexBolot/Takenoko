@@ -50,9 +50,13 @@ public class IA {
             Goal g = pendinggoal.get(i);
             if(g instanceof BambooGoal) {
                 BambooGoal g1 = (BambooGoal) g;
-                if(bamboos.size() == g1.getBambooAmount()) {
+                if(bamboos.size() >= g1.getBambooAmount()) {
                     pendinggoal.remove(i);
                     donegoal.add(g);
+                    for(int j=0; j<g1.getBambooAmount(); j++){
+                        bamboos.remove(bamboos.size()-1);
+
+                    }
                 }
             }
         }
