@@ -64,6 +64,7 @@ public class IA {
                     comptGoal++;
                     comptBamboo += g1.getBambooAmount();
                 }
+
             }
         }
         for(int z=tabIndex.length-1; z>0; z--){
