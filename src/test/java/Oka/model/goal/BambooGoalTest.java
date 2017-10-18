@@ -1,6 +1,6 @@
 package Oka.model.goal;
 
-import Oka.entities.IA.IA;
+import Oka.ai.AI;
 import Oka.model.Bamboo;
 import org.junit.Test;
 
@@ -23,11 +23,11 @@ public class BambooGoalTest {
         bamboos.add(new Bamboo(Color.green));
         ArrayList<Goal> pendinggoal = new ArrayList<Goal>();
 
-        IA ia = new IA();
+        AI AI = new AI();
 
-        assertTrue(bg1.validate(ia));
-        assertTrue(bg2.validate(ia));
-        assertFalse(bg3.validate(ia));
+        assertTrue(bg1.validate(AI));
+        assertTrue(bg2.validate(AI));
+        assertFalse(bg3.validate(AI));
     }
 
 }

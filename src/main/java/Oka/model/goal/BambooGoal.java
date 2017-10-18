@@ -14,7 +14,7 @@ package Oka.model.goal;
  . Last Modified : 16/10/17 14:11
  .................................................................................................*/
 
-import Oka.entities.IA.IA;
+import Oka.ai.AI;
 
 public class BambooGoal extends Goal
 {
@@ -34,8 +34,9 @@ public class BambooGoal extends Goal
         return bambooAmount;
     }
 
-    public boolean validate(IA ia){
-        if(ia.getBamboos().size() >= bambooAmount)
+    public boolean validate (AI AI)
+    {
+        if (AI.getBamboos().size() >= bambooAmount)
             return true;
         else
             return false;

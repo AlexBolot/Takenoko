@@ -14,7 +14,7 @@ package Oka.model.goal;
  . Last Modified : 14/10/17 22:27
  .................................................................................................*/
 
-import Oka.entities.IA.IA;
+import Oka.ai.AI;
 
 public abstract class Goal {
     private final int     value;
@@ -39,7 +39,8 @@ public abstract class Goal {
         return value;
     }
 
-    public boolean validate(IA ia){
+    public boolean validate (AI AI)
+    {
         return false;
     }
 }

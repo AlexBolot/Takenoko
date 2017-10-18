@@ -1,19 +1,19 @@
 package Oka;
 
+import Oka.ai.AISimple;
 import Oka.controler.GameBoard;
 import Oka.entities.Gardener;
-import Oka.entities.IA.IASimple;
 import Oka.entities.Panda;
 
 public class App
 {
     public static void main (String[] args)
     {
-        IASimple ia1 = new IASimple();
+        AISimple ia1 = new AISimple();
         ia1.addGoal(GameBoard.getInstance().giveGoal());
         ia1.addGoal(GameBoard.getInstance().giveGoal());
 
-        IASimple ia2 = new IASimple();
+        AISimple ia2 = new AISimple();
         ia2.addGoal(GameBoard.getInstance().giveGoal());
         ia2.addGoal(GameBoard.getInstance().giveGoal());
 
@@ -44,7 +44,7 @@ public class App
 
             if (checkGoal > 0)
             {
-                System.out.println("IA 1 WINS !!!");
+                System.out.println("ai 1 WINS !!!");
                 break;
             }
 
@@ -71,7 +71,7 @@ public class App
 
             if (ia2.checkGoal() > 0)
             {
-                System.out.println("IA 2 WINS !!!");
+                System.out.println("ai 2 WINS !!!");
                 break;
             }
 
