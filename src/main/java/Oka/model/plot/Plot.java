@@ -23,7 +23,7 @@ public class Plot extends Cell {
 
     public Plot(Point coords) {
         super(coords);
-        //addBamboo(new Bamboo(Color.GREEN));
+        addBamboo(new Bamboo(Color.GREEN));
         state = new NeutralState();
     }
 
