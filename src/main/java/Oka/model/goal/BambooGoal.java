@@ -16,8 +16,6 @@ package Oka.model.goal;
 
 import Oka.entities.IA.IA;
 
-import java.util.ArrayList;
-
 public class BambooGoal extends Goal
 {
     private int bambooAmount;

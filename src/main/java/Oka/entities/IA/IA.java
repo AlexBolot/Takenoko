@@ -65,7 +65,6 @@ public class IA {
                     comptGoal++;
                     comptBamboo += g1.getBambooAmount();
                }
-
             }
         }
 
