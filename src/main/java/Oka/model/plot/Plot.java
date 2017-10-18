@@ -50,7 +50,7 @@ public class Plot extends Cell {
      * @return Bamboo
      */
     public Bamboo giveBamboo() {
-
+        if (bamboo.size() == 0) return null;
         return bamboo.remove(bamboo.size() - 1);
     }
 }
