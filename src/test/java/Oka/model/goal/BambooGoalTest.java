@@ -23,7 +23,7 @@ public class BambooGoalTest {
         bamboos.add(new Bamboo(Color.green));
         ArrayList<Goal> pendinggoal = new ArrayList<Goal>();
 
-        IA ia = new IA(pendinggoal,bamboos);
+        IA ia = new IA();
 
         assertTrue(bg1.validate(ia));
         assertTrue(bg2.validate(ia));
