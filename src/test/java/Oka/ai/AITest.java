@@ -1,4 +1,4 @@
-package Oka.entities.IA;
+package Oka.ai;
 
 import Oka.model.Bamboo;
 import Oka.model.goal.BambooGoal;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class IATest
+public class AITest
 {
     @Test
     public void checkGoal () throws Exception
@@ -30,22 +30,22 @@ public class IATest
         bamboos.add(new Bamboo(Color.green));
         bamboos.add(new Bamboo(Color.green));
 
-        IA ia = new IA();
+        AI AI = new AI();
 
         for (Goal goal : goals)
         {
-            ia.addGoal(goal);
+            AI.addGoal(goal);
         }
 
         for (Bamboo bamboo : bamboos)
         {
-            ia.addBamboo(bamboo);
+            AI.addBamboo(bamboo);
         }
 
-        ia.checkGoal();
+        AI.checkGoal();
 
-        assertEquals(5, ia.getGoals().size());
-        assertEquals(3, ia.getDoneGoals().size());
-        assertEquals(2, ia.getPendingGoals().size());
+        assertEquals(5, AI.getGoals().size());
+        assertEquals(3, AI.getDoneGoals().size());
+        assertEquals(2, AI.getPendingGoals().size());
     }
 }

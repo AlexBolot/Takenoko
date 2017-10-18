@@ -1,4 +1,4 @@
-package Oka.entities.IA;
+package Oka.ai;
 
 import Oka.controler.GameBoard;
 import Oka.entities.Gardener;
@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class IASimple extends IA
+public class AISimple extends AI
 {
 
     public void moveGardener ()
@@ -61,9 +61,10 @@ public class IASimple extends IA
     }
 
     /**
-     * place a plot tile
+     place a plot tile
      */
-    public void placePlot() {
+    public void placePlot ()
+    {
         GameBoard board = GameBoard.getInstance();
 
         //todo: make giveplot return an arraylist from a card stack

@@ -1,4 +1,4 @@
-package Oka.entities.IA;
+package Oka.ai;
 
 import Oka.model.Bamboo;
 import Oka.model.goal.BambooGoal;
@@ -6,7 +6,7 @@ import Oka.model.goal.Goal;
 
 import java.util.ArrayList;
 
-public class IA
+public class AI
 {
 
     private int actionsLeft;
