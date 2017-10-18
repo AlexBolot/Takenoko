@@ -36,15 +36,11 @@ public class BambooGoal extends Goal
         return bambooAmount;
     }
 
-    public IA validate(IA ia){
-        if(ia.getBamboos().size() >= bambooAmount) {
-            ia.getObjectivesdone().add(this);
-            ia.setObjectivesdone(ia.getObjectivesdone());
-            for(int i=0; i<bambooAmount; i++){
-                ia.getBamboos().remove(i);
-            }
+    public boolean validate(IA ia){
+        if(ia.getBamboos().size() >= bambooAmount)
+            return true;
+        else
+            return false;
 
-        }
-        return ia;
     }
 }

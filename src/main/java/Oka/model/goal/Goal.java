@@ -27,8 +27,7 @@ public abstract class Goal {
         return value;
     }
 
-    public IA validate(IA ia){
-
-        return ia;
+    public boolean validate(IA ia){
+        return false;
     }
 }
