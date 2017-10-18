@@ -7,7 +7,7 @@ import Oka.model.plot.Plot;
 
 import java.awt.*;
 
-public class Panda
+public class Panda extends Entity
 {
     private static Panda ourInstance = new Panda();
     private        Point coords      = new Point();

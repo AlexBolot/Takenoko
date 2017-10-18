@@ -7,7 +7,7 @@ import Oka.model.plot.Plot;
 
 import java.awt.*;
 
-public class Gardener
+public class Gardener extends Entity
 {
     private static Gardener ourInstance = new Gardener();
     private        Point    coords      = new Point();
