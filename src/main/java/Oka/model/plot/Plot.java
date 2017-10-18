@@ -1,7 +1,7 @@
 package Oka.model.plot;
-import Oka.model.Cell;
 
 import Oka.model.Bamboo;
+import Oka.model.Cell;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,6 +23,7 @@ public class Plot extends Cell {
 
     public Plot(Point coords) {
         super(coords);
+        //addBamboo(new Bamboo(Color.GREEN));
         state = new NeutralState();
     }
 

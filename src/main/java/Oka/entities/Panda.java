@@ -32,7 +32,8 @@ public class Panda
         this.coords = coords;
     }
 
-    public Bamboo gatherBamboo() {
+    public Bamboo gatherBamboo ()
+    {
         GameBoard board = GameBoard.getInstance();
         Cell tile = board.getCell(coords);
         if (tile.getCoords().equals(new Point())) return null;

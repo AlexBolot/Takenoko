@@ -17,10 +17,22 @@ package Oka.model.goal;
 import Oka.entities.IA.IA;
 
 public abstract class Goal {
-    private final int value;
+    private final int     value;
+    private       boolean validated;
 
-    public Goal(int value) {
+    public Goal (int value)
+    {
         this.value = value;
+    }
+
+    public boolean isValidated ()
+    {
+        return validated;
+    }
+
+    public void setValidated (boolean validated)
+    {
+        this.validated = validated;
     }
 
     public int getValue() {

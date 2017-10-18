@@ -9,7 +9,7 @@ import Oka.model.plot.Plot;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 public class IASimple extends IA
 {
@@ -28,7 +28,7 @@ public class IASimple extends IA
             if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() == 0)
             {
                 Point newCoords = v.applyVector(coordsGardener);
-                Gardener.getInstance().setCoords(newCoords);
+                Gardener.getInstance().move(cell.getCoords());
                 return;
             }
 
@@ -54,7 +54,7 @@ public class IASimple extends IA
 
                 Point newCoords = v.applyVector(coordsPanda);
                 //todo: get the returned bamboo and add it to reserve
-                Panda.getInstance().move(newCoords);
+                this.addBamboo(Panda.getInstance().move(cell.getCoords()));
                 return;
             }
         }
@@ -65,13 +65,16 @@ public class IASimple extends IA
      */
     public void placePlot() {
         GameBoard board = GameBoard.getInstance();
+
         //todo: make giveplot return an arraylist from a card stack
-        ArrayList<Plot> draw = new ArrayList<Plot>(Arrays.asList(board.givePlot()));
+        ArrayList<Plot> draw = new ArrayList<>(Collections.singletonList(board.givePlot()));
+
         //tant qu'on nous renvois les même trois case
         Plot plot = draw.get(0);
+
         //todo: add a available slot function
         ArrayList<Point> free = board.getAvailableSlots();
-        plot.setCoords(free.get(1));
+        plot.setCoords(free.get(0));
         board.addCell(plot);
 
     }

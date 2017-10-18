@@ -5,7 +5,9 @@ import java.awt.*;
 public class Vector {
     private int length;
     private Axis axis;
-    Vector(Axis axis, int length){
+
+    public Vector (Axis axis, int length)
+    {
         this.axis=axis;
         this.length=length;
     }
@@ -13,15 +15,20 @@ public class Vector {
         x,y,z;
     }
     public Point applyVector(Point point){
+        Point newPoint = (Point) point.clone();
+
         switch (axis){
-            case x : point.move(point.x+length,point.y);
+            case x:
+                newPoint.move(newPoint.x + length, newPoint.y);
                 break;
-            case y : point.move(point.x,point.y+length);
+            case y:
+                newPoint.move(newPoint.x, newPoint.y + length);
                 break;
-            case z : point.move(point.x+length,point.y-length);
+            case z:
+                newPoint.move(newPoint.x + length, newPoint.y - length);
                 break;
         }
-        return point;
+        return newPoint;
     }
     public static Vector isOnVector(Point point,Point point1){
         if (point.getX()!=point1.getX() && point.getY()==point1.getY()){
