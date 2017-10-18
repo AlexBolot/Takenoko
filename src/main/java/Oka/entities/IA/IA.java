@@ -54,19 +54,21 @@ public class IA {
         int tabIndex[] = new int[pendinggoal.size()],
                 comptBamboo=0,
                 comptGoal=0;
+        // on regarde si des objectif on était en remplie
         for(int i=0; i<pendinggoal.size(); i++){
             Goal g = pendinggoal.get(i);
             if(g instanceof BambooGoal) {
-                BambooGoal g1 = (BambooGoal) g;
-                if(bamboos.size()-comptBamboo >= g1.getBambooAmount()) {
+               BambooGoal g1 = (BambooGoal) g;
+               if(bamboos.size()-comptBamboo >= g1.getBambooAmount()) {
                     donegoal.add(g1);
                     tabIndex[comptGoal] = i;
                     comptGoal++;
                     comptBamboo += g1.getBambooAmount();
-                }
+               }
 
             }
         }
+
         for(int z=tabIndex.length-1; z>0; z--){
             BambooGoal g1 = (BambooGoal) pendinggoal.get(z);
 
