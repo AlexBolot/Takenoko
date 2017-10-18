@@ -37,6 +37,7 @@ public class Panda
         Cell tile = board.getCell(coords);
         if (tile.getCoords().equals(new Point())) return null;
         Plot currentPlot = (Plot) tile;
+
         return currentPlot.giveBamboo();
     }
 
