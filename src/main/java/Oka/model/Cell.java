@@ -6,39 +6,61 @@ import Oka.entities.Panda;
 
 import java.awt.*;
 
-public class Cell {
+public class Cell
+{
     private boolean pandaIsHere;
     private boolean gardenerIsHere;
-    private Point coords;
+    private Point   coords;
 
-    public Cell(Point coords) {
+    public Cell (Point coords)
+    {
         this.coords = coords;
         this.gardenerIsHere = Gardener.getInstance().getCoords().equals(coords);
         this.pandaIsHere = Panda.getInstance().getCoords().equals(coords);
     }
 
-
-    public Point getCoords () {
+    public Point getCoords ()
+    {
         return coords;
     }
 
-    public void setCoords (Point coords) {
+    public void setCoords (Point coords)
+    {
         this.coords = coords;
     }
 
-    public boolean PandaIsHere() {
+    public boolean PandaIsHere ()
+    {
         return pandaIsHere;
     }
 
-    public void setPandaIsHere(boolean pandaIsHere) {
+    public void setPandaIsHere (boolean pandaIsHere)
+    {
         this.pandaIsHere = pandaIsHere;
     }
 
-    public boolean GardenerIsHere() {
+    public boolean GardenerIsHere ()
+    {
         return gardenerIsHere;
     }
 
-    public void setGardenerIsHere(boolean gardenerIsHere) {
+    public void setGardenerIsHere (boolean gardenerIsHere)
+    {
         this.gardenerIsHere = gardenerIsHere;
+    }
+
+    public String toString ()
+    {
+        return getClass().getSimpleName() + "[x=" + getCoords().x + ",y=" + getCoords().y + "]";
+    }
+
+    @Override
+    public boolean equals (Object obj)
+    {
+        if (obj == null || !(obj instanceof Cell)) return false;
+
+        Cell c = (Cell) obj;
+
+        return this.getCoords().getX() == c.getCoords().getX() && this.getCoords().getY() == c.getCoords().getY();
     }
 }

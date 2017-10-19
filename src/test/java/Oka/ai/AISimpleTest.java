@@ -1,9 +1,9 @@
-package Oka.entities.IA;
+package Oka.ai;
 
 /*..................................................................................................
  . Copyright (c)
  .
- . The IASimpleTest	 Class was Coded by : Team_A
+ . The AISimpleTest	 Class was Coded by : Team_A
  .
  . Members :
  . -> Alexandre Bolot
@@ -25,7 +25,7 @@ import org.junit.Test;
 
 import java.awt.*;
 
-public class IASimpleTest
+public class AISimpleTest
 {
     private Point p01 = new Point(0, 1);
     private Point p10 = new Point(1, 0);
@@ -44,7 +44,7 @@ public class IASimpleTest
     @Test
     public void movePanda () throws Exception
     {
-        new IASimple().movePanda();
+        new AISimple().movePanda();
 
         Assert.assertEquals(p01, Panda.getInstance().getCoords());
     }
@@ -52,7 +52,7 @@ public class IASimpleTest
     @Test
     public void moveGardener () throws Exception
     {
-        new IASimple().moveGardener();
+        new AISimple().moveGardener();
 
         Assert.assertEquals(p10, Gardener.getInstance().getCoords());
     }

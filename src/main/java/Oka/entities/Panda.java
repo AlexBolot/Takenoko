@@ -7,7 +7,7 @@ import Oka.model.plot.Plot;
 
 import java.awt.*;
 
-public class Panda
+public class Panda extends Entity
 {
     private static Panda ourInstance = new Panda();
     private        Point coords      = new Point();
@@ -32,7 +32,8 @@ public class Panda
         this.coords = coords;
     }
 
-    public Bamboo gatherBamboo() {
+    public Bamboo gatherBamboo ()
+    {
         GameBoard board = GameBoard.getInstance();
         Cell tile = board.getCell(coords);
         if (tile.getCoords().equals(new Point())) return null;

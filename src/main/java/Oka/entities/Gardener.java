@@ -7,7 +7,7 @@ import Oka.model.plot.Plot;
 
 import java.awt.*;
 
-public class Gardener
+public class Gardener extends Entity
 {
     private static Gardener ourInstance = new Gardener();
     private        Point    coords      = new Point();
@@ -32,11 +32,18 @@ public class Gardener
         this.coords = coords;
     }
 
+    public void move (Point newCoords)
+    {
+        this.setCoords(newCoords);
+        this.growBamboo();
+    }
+
     /**
      * make bamboo grows, on the tile where the gardener is present for now, later implementation wil include
      * the neighboor tile groing effect
      */
-    public void growBamboo() {
+    private void growBamboo ()
+    {
         GameBoard board = GameBoard.getInstance();
         Cell cell = board.getCell(this.getCoords());
         if (!cell.getCoords().equals(new Point(0, 0))) {

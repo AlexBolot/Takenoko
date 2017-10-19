@@ -2,22 +2,45 @@ package Oka.controler;
 
 import Oka.model.Cell;
 import Oka.model.Pond;
+import Oka.model.Vector;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import static Oka.model.Vector.Axis.*;
 
 public class GameBoard
 {
     private static GameBoard ourInstance = new GameBoard();
 
-    private ArrayList<Cell> grid = new ArrayList<Cell>();
+    private ArrayList<Cell> grid           = new ArrayList<Cell>();
+    private ArrayList<Cell> availableSlots = new ArrayList<>();
 
     private GameBoard ()
     {
-        grid.add(new Pond());
+        Pond pond = new Pond();
+
+        grid.add(pond);
+
+        Point point1 = new Vector(x, 1).applyVector(pond.getCoords());
+        Point point2 = new Vector(x, -1).applyVector(pond.getCoords());
+        Point point3 = new Vector(y, 1).applyVector(pond.getCoords());
+        Point point4 = new Vector(y, -1).applyVector(pond.getCoords());
+        Point point5 = new Vector(z, 1).applyVector(pond.getCoords());
+        Point point6 = new Vector(z, -1).applyVector(pond.getCoords());
+
+        availableSlots.addAll(Arrays.asList(new Plot(point1),
+                                            new Plot(point2),
+                                            new Plot(point3),
+                                            new Plot(point4),
+                                            new Plot(point5),
+                                            new Plot(point6)));
+
+
     }
 
     public static GameBoard getInstance ()
@@ -61,19 +84,35 @@ public class GameBoard
     }
 
     //TODO upgrade this on next release
-    public Plot givePlot()
+    public Plot givePlot ()
     {
         return new Plot();
     }
 
     /**
-     * should return all the possible slots where a tile may be layed
-     * todo : implement
-     *
-     * @return ArrayList
-     */
-    public ArrayList<Point> getAvailableSlots() {
+     should return all the possible slots where a tile may be layed
+     todo : implement
 
-        return null;
+     @return ArrayList
+     */
+    public ArrayList<Point> getAvailableSlots ()
+    {
+        ArrayList<Point> arrayList = new ArrayList<>();
+
+        //noinspection unchecked
+        for (Cell cell : grid)
+        {
+            if (cell instanceof Plot)
+            {
+                availableSlots.remove(cell);
+            }
+        }
+
+        for (Cell cell : availableSlots)
+        {
+            arrayList.add(cell.getCoords());
+        }
+
+        return arrayList;
     }
 }

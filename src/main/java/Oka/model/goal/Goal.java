@@ -14,20 +14,33 @@ package Oka.model.goal;
  . Last Modified : 14/10/17 22:27
  .................................................................................................*/
 
-import Oka.entities.IA.IA;
+import Oka.ai.AI;
 
 public abstract class Goal {
-    private final int value;
+    private final int     value;
+    private       boolean validated;
 
-    public Goal(int value) {
+    public Goal (int value)
+    {
         this.value = value;
+    }
+
+    public boolean isValidated ()
+    {
+        return validated;
+    }
+
+    public void setValidated (boolean validated)
+    {
+        this.validated = validated;
     }
 
     public int getValue() {
         return value;
     }
 
-    public boolean validate(IA ia){
+    public boolean validate (AI AI)
+    {
         return false;
     }
 }

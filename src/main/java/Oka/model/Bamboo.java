@@ -12,5 +12,4 @@ public class Bamboo {
     public Color getColor() {
         return color;
     }
-
 }
