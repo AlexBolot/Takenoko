@@ -46,7 +46,8 @@ public class GameBoardTest {
         assertNull(board.getCell(new Point(0, 1)));
         assertEquals(pond, board.getCell(new Point()));
         board.setGrid(mediumGrid);
-        assertEquals(new Plot(new Point(0, 1)), board.getCell(new Point(0, 1)));
+        Cell plot = mediumGrid.get(1);
+        assertEquals(plot, board.getCell(plot.getCoords()));
     }
 
     @Test

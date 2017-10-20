@@ -18,7 +18,7 @@ public class GameBoard
     private static GameBoard ourInstance = new GameBoard();
 
     private ArrayList<Cell> grid           = new ArrayList<Cell>();
-    private ArrayList<Cell> availableSlots = new ArrayList<>();
+    private ArrayList<Cell> availableSlots = new ArrayList<Cell>();
 
     private GameBoard ()
     {

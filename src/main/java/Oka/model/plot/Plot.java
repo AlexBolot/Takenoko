@@ -9,6 +9,10 @@ import java.util.ArrayList;
 public class Plot extends Cell {
     private ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
 
+    Color color = Color.BLUE;// Provisoirement fixer a une couleur pour la release 1
+    boolean isIrrigated;
+    PlotState state;
+
     public Plot() {
         super(null);
     }
@@ -16,10 +20,6 @@ public class Plot extends Cell {
     public ArrayList<Bamboo> getBamboo () {
         return bamboo;
     }
-
-    Color color = Color.BLUE;// Provisoirement fixer a une couleur pour la release 1
-    boolean isIrrigated;
-    PlotState state;
 
     public Plot(Point coords) {
         super(coords);
@@ -53,5 +53,18 @@ public class Plot extends Cell {
     public Bamboo giveBamboo() {
         if (bamboo.size() == 0) return null;
         return bamboo.remove(bamboo.size() - 1);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Plot)) return false;
+
+        Plot plot = (Plot) obj;
+        boolean equality;
+        equality = plot.bamboo.equals(this.bamboo);
+        equality = equality && plot.getCoords().equals(this.getCoords());
+        equality = equality && plot.getColor().equals(this.getColor());
+
+        return equality;
     }
 }
