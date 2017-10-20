@@ -23,7 +23,7 @@ public class AISimple extends AI
             //Si la case est celle du Gardener, on ne la considère pas.
             if (cell.getCoords().equals(coordsGardener)) continue;
 
-            Vector v = Vector.isOnVector(coordsGardener, cell.getCoords());
+            Vector v = Vector.findStraightVector(coordsGardener, cell.getCoords());
 
             if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() == 0)
             {
@@ -47,14 +47,18 @@ public class AISimple extends AI
             //Si la case est celle du Panda, on ne la considère pas.
             if (cell.getCoords().equals(coordsPanda)) continue;
 
-            Vector v = Vector.isOnVector(coordsPanda, cell.getCoords());
+            Vector v = Vector.findStraightVector(coordsPanda, cell.getCoords());
 
             if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() > 0)
             {
 
                 Point newCoords = v.applyVector(coordsPanda);
-                //todo: get the returned bamboo and add it to reserve
-                this.addBamboo(Panda.getInstance().move(cell.getCoords()));
+                try {
+                    this.addBamboo(Panda.getInstance().move(cell.getCoords()));
+                } catch (IllegalArgumentException e) {
+                    //todo: find correct behavior for wrong move behavior
+                    e.printStackTrace();
+                }
                 return;
             }
         }

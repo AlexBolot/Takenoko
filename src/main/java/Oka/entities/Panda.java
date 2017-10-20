@@ -3,6 +3,7 @@ package Oka.entities;
 import Oka.controler.GameBoard;
 import Oka.model.Bamboo;
 import Oka.model.Cell;
+import Oka.model.Vector;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
@@ -45,9 +46,11 @@ public class Panda extends Entity
     /**
      * moves the panda and eat bamboo at ariving state
      *
-     * @param newCoords
+     * @param newCoords Point, destination Point
      */
-    public Bamboo move(Point newCoords) {
+    public Bamboo move(Point newCoords) throws IllegalArgumentException {
+        if (!Vector.areAligned(this.coords, newCoords))
+            throw new IllegalArgumentException("Panda must move in straight line");
         this.setCoords(newCoords);
         return this.gatherBamboo();
     }
