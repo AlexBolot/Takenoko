@@ -78,9 +78,9 @@ public class GameBoard
     //TODO upgrade this on next release
     public Goal giveGoal ()
     {
-        //Very easy objective for now : get 1 bamboo to validate.
+        //Very easy objective for now : get 1 bamboo green to validate.
         //Will be changed in another release.
-        return new BambooGoal(1, 1);
+        return new BambooGoal(1, 1, Color.green);
     }
 
     //TODO upgrade this on next release

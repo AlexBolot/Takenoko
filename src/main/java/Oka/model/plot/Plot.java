@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 public class Plot extends Cell {
     private ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
+    private Color color = Color.GREEN;// Provisoirement fixer a une couleur pour la release 1
+    private boolean isIrrigated;
+    private PlotState state;
 
     public Plot() {
         super(null);
@@ -17,9 +20,6 @@ public class Plot extends Cell {
         return bamboo;
     }
 
-    Color color = Color.BLUE;// Provisoirement fixer a une couleur pour la release 1
-    boolean isIrrigated;
-    PlotState state;
 
     public Plot(Point coords) {
         super(coords);

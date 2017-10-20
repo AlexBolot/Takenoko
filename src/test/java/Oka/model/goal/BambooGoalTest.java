@@ -14,19 +14,20 @@ public class BambooGoalTest {
     @Test
     public void validate() throws Exception {
 
-        BambooGoal bg1 = new BambooGoal(3,1);
-        BambooGoal bg2 = new BambooGoal(3,2);
-        BambooGoal bg3 = new BambooGoal(3,3);
-
-        ArrayList<Bamboo> bamboos = new ArrayList<Bamboo>();
-        bamboos.add(new Bamboo(Color.green));
-        bamboos.add(new Bamboo(Color.green));
-        ArrayList<Goal> pendinggoal = new ArrayList<Goal>();
+        BambooGoal bg1 = new BambooGoal(3,1, Color.green);
+        BambooGoal bg2 = new BambooGoal(3,2, Color.blue);
+        BambooGoal bg3 = new BambooGoal(3,3, Color.green);
 
         AI AI = new AI();
 
+        ArrayList<Bamboo> bamboos = new ArrayList<Bamboo>();
+        AI.addBamboo(new Bamboo(Color.green));
+        AI.addBamboo(new Bamboo(Color.green));
+
+
+
         assertTrue(bg1.validate(AI));
-        assertTrue(bg2.validate(AI));
+        assertFalse(bg2.validate(AI));
         assertFalse(bg3.validate(AI));
     }
 

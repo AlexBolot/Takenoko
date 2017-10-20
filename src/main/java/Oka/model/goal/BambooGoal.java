@@ -15,19 +15,25 @@ package Oka.model.goal;
  .................................................................................................*/
 
 import Oka.ai.AI;
+import Oka.model.Bamboo;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class BambooGoal extends Goal
 {
     private int bambooAmount;
+    private Color bambooColor;
 
     public void setBambooAmount (int bambooAmount) {
         this.bambooAmount = bambooAmount;
     }
 
-    public BambooGoal (int value, int bambooAmount)
+    public BambooGoal (int value, int bambooAmount,Color bambooColor)
     {
         super(value);
         this.bambooAmount = bambooAmount;
+        this.bambooColor = bambooColor;
     }
 
     public int getBambooAmount() {
@@ -36,7 +42,14 @@ public class BambooGoal extends Goal
 
     public boolean validate (AI AI)
     {
-        if (AI.getBamboos().size() >= bambooAmount)
+        ArrayList<Bamboo> listBamboo = AI.getBamboos();
+        int nbBamboo = 0;
+        for(Bamboo b : listBamboo){
+            if(b.getColor().equals(bambooColor)){
+                nbBamboo++;
+            }
+        }
+        if (nbBamboo >= bambooAmount)
             return true;
         else
             return false;
