@@ -77,7 +77,6 @@ public class AISimple extends AI
         ArrayList<Point> free = board.getAvailableSlots();
         plot.setCoords(free.get(0));
         board.addCell(plot);
-
     }
 
     public void ValidateObjective ()

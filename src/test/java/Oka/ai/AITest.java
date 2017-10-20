@@ -17,11 +17,11 @@ public class AITest
     {
 
         ArrayList<Goal> goals = new ArrayList<>();
-        goals.add(new BambooGoal(3, 1));
-        goals.add(new BambooGoal(3, 2));
-        goals.add(new BambooGoal(3, 2));
-        goals.add(new BambooGoal(3, 3));
-        goals.add(new BambooGoal(3, 5));
+        goals.add(new BambooGoal(3, 1, Color.green));
+        goals.add(new BambooGoal(3, 2, Color.green));
+        goals.add(new BambooGoal(3, 2, Color.blue));
+        goals.add(new BambooGoal(3, 3, Color.green));
+        goals.add(new BambooGoal(3, 5, Color.green));
 
         ArrayList<Bamboo> bamboos = new ArrayList<>();
         bamboos.add(new Bamboo(Color.green));
@@ -45,7 +45,7 @@ public class AITest
         AI.checkGoal();
 
         assertEquals(5, AI.getGoals().size());
-        assertEquals(3, AI.getDoneGoals().size());
-        assertEquals(2, AI.getPendingGoals().size());
+        assertEquals(2, AI.getDoneGoals().size());
+        assertEquals(3, AI.getPendingGoals().size());
     }
 }
