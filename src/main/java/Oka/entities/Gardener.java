@@ -7,48 +7,55 @@ import Oka.model.plot.Plot;
 
 import java.awt.*;
 
-public class Gardener extends Entity
-{
+public class Gardener extends Entity {
     private static Gardener ourInstance = new Gardener();
-    private        Point    coords      = new Point();
+    private Point coords = new Point();
 
-    private Gardener ()
-    {
+    private Gardener() {
 
     }
 
-    public static Gardener getInstance ()
-    {
+    public static Gardener getInstance() {
         return ourInstance;
     }
 
-    public Point getCoords ()
-    {
+    public Point getCoords() {
         return coords;
     }
 
-    public void setCoords (Point coords)
-    {
+    public void setCoords(Point coords) {
         this.coords = coords;
     }
 
-    public void move (Point newCoords)
-    {
+    public void move(Point newCoords) {
         this.setCoords(newCoords);
         this.growBamboo();
     }
 
     /**
-     * make bamboo grows, on the tile where the gardener is present for now, later implementation wil include
-     * the neighboor tile groing effect
+     * make bamboo grows, on the tile where the gardener is present and neightbour tiles of same color
      */
-    private void growBamboo ()
-    {
+    private void growBamboo() {
+
         GameBoard board = GameBoard.getInstance();
-        Cell cell = board.getCell(this.getCoords());
-        if (!cell.getCoords().equals(new Point(0, 0))) {
-            Plot plot = (Plot) cell;
-            plot.addBamboo(new Bamboo(plot.getColor()));
+        Cell currentCell = board.getCell(this.getCoords());
+        // there are no effects if the gardener is on the pond
+        if (!currentCell.getCoords().equals(new Point(0, 0))) {
+            //adding to current plot
+            Plot currentPlot = (Plot) currentCell;
+            Color currentColor = currentPlot.getColor();
+            currentPlot.addBamboo(new Bamboo(currentColor));
+            //adding to neightbours
+            for (Cell c : board.getNeightbours(this.getCoords())) {
+                if (!c.getCoords().equals(new Point())) {
+
+                    Plot plot = (Plot) c;
+
+                    if (plot.getColor().equals(currentColor)) {
+                        plot.addBamboo(new Bamboo(currentColor));
+                    }
+                }
+            }
         }
 
     }

@@ -17,8 +17,9 @@ public class GameBoard
 {
     private static GameBoard ourInstance = new GameBoard();
 
-    private ArrayList<Cell> grid           = new ArrayList<Cell>();
-    private ArrayList<Cell> availableSlots = new ArrayList<Cell>();
+    private ArrayList<Cell> grid = new ArrayList<>();
+    private ArrayList<Cell> availableSlots = new ArrayList<>();
+
 
     private GameBoard ()
     {
@@ -114,5 +115,23 @@ public class GameBoard
         }
 
         return arrayList;
+    }
+
+    public ArrayList<Cell> getNeightbours(Point point) {
+
+        Vector[] vectors = new Vector[6];
+        vectors[0] = new Vector(Vector.Axis.x, 1);
+        vectors[1] = new Vector(Vector.Axis.x, -1);
+        vectors[2] = new Vector(Vector.Axis.y, 1);
+        vectors[3] = new Vector(Vector.Axis.y, -1);
+        vectors[4] = new Vector(Vector.Axis.z, 1);
+        vectors[5] = new Vector(Vector.Axis.z, -1);
+        ArrayList<Cell> neightbours = new ArrayList<>();
+        for (Vector v :
+                vectors) {
+            Cell c = getCell(v.applyVector(point));
+            if (c != null) neightbours.add(c);
+        }
+        return neightbours;
     }
 }
