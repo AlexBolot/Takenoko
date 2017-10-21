@@ -31,7 +31,6 @@ public class AISimple extends AI
                 Gardener.getInstance().move(cell.getCoords());
                 return;
             }
-
         }
     }
 
