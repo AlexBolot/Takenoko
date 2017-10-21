@@ -14,6 +14,10 @@ import java.util.Collections;
 public class AISimple extends AI
 {
 
+    public AISimple (String name) {
+        super(name);
+    }
+
     public void moveGardener ()
     {
         Point coordsGardener = Gardener.getInstance().getCoords();

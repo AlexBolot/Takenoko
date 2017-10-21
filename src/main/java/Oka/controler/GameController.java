@@ -17,6 +17,7 @@ package Oka.controler;
 import Oka.ai.AISimple;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
+import Oka.utils.Logger;
 
 import java.util.ArrayList;
 
@@ -26,11 +27,11 @@ public class GameController
     private AISimple currentPlayer;
 
     public void initGame(){
-        AISimple ai1 = new AISimple();
+        AISimple ai1 = new AISimple("Al");
         ai1.addGoal(GameBoard.getInstance().giveGoal());
         ai1.addGoal(GameBoard.getInstance().giveGoal());
 
-        AISimple ai2 = new AISimple();
+        AISimple ai2 = new AISimple("Ma");
         ai2.addGoal(GameBoard.getInstance().giveGoal());
         ai2.addGoal(GameBoard.getInstance().giveGoal());
 
@@ -40,37 +41,36 @@ public class GameController
     public void startGame(){
         int turn = 0;
         while(true){
-            turn++;
+            Logger.printTitle("\n========== Turn " + turn++ + " ==========\n");
             for(int i=0; i<listPlayer.size(); i++){
                 AISimple ai = listPlayer.get(i);
                 currentPlayer = ai;
-                int index = i+1;
-
                 ai.placePlot();
-                System.out.println("p"+index+" - gameBoard : " + GameBoard.getInstance().getGrid());
+                Logger.printSeparator(ai.getName());
+                Logger.printLine(ai.getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates
                 if (turn % 2 == 1)
                 {
                     ai.moveGardener();
-                    System.out.println("p"+index+" - gardener : " + Gardener.getInstance().getCoords());
+                    Logger.printLine(ai.getName() + " - gardener : " + Gardener.getInstance().getCoords());
                 }
                 else
                 {
                     ai.movePanda();
-                    System.out.println("p"+index+" - panda : " + Panda.getInstance().getCoords());
+                    Logger.printLine(ai.getName() +" - panda : " + Panda.getInstance().getCoords());
                 }
 
-                System.out.println("p"+index+" - bamboos = " + ai.getBamboos().size());
+                Logger.printLine(ai.getName() +" - bamboos = " + ai.getBamboos().size());
 
                 int checkGoal = ai.checkGoal();
 
                 if (checkGoal > 0)
                 {
-                    System.out.println("ai "+index+" WINS !!!");
+                    System.out.println(ai.getName() +" WINS !!!");
                     return;
                 }
-                System.out.println("===========");
+
             }
         }
     }

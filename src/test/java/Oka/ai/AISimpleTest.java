@@ -44,7 +44,7 @@ public class AISimpleTest
     @Test
     public void movePanda () throws Exception
     {
-        new AISimple().movePanda();
+        new AISimple("Ma").movePanda();
 
         Assert.assertEquals(p01, Panda.getInstance().getCoords());
     }
@@ -52,7 +52,7 @@ public class AISimpleTest
     @Test
     public void moveGardener () throws Exception
     {
-        new AISimple().moveGardener();
+        new AISimple("Ma").moveGardener();
 
         Assert.assertEquals(p10, Gardener.getInstance().getCoords());
     }

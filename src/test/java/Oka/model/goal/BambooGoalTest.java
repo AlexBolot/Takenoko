@@ -18,7 +18,7 @@ public class BambooGoalTest {
         BambooGoal bg2 = new BambooGoal(3,2, Color.blue);
         BambooGoal bg3 = new BambooGoal(3,3, Color.green);
 
-        AI AI = new AI();
+        AI AI = new AI("Ma");
 
         ArrayList<Bamboo> bamboos = new ArrayList<Bamboo>();
         AI.addBamboo(new Bamboo(Color.green));

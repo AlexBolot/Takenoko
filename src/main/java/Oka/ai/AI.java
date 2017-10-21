@@ -10,8 +10,13 @@ public class AI
 {
 
     private int actionsLeft;
+    private String name;
     private ArrayList<Bamboo> bamboos = new ArrayList<Bamboo>();
     private ArrayList<Goal>   goals   = new ArrayList<>();
+
+    public AI(String name){
+        this.name=name;
+    }
 
     public int getActionsLeft ()
     {
@@ -41,6 +46,14 @@ public class AI
     public void addGoal (Goal goal)
     {
         this.goals.add(goal);
+    }
+
+    public String getName () {
+        return name;
+    }
+
+    public void setName (String name) {
+        this.name = name;
     }
 
     public ArrayList<Goal> getDoneGoals ()

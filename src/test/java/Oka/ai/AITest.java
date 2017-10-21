@@ -30,7 +30,7 @@ public class AITest
         bamboos.add(new Bamboo(Color.green));
         bamboos.add(new Bamboo(Color.green));
 
-        AI AI = new AI();
+        AI AI = new AI("Ma");
 
         for (Goal goal : goals)
         {
