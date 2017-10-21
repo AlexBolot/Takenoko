@@ -25,8 +25,13 @@ import java.util.ArrayList;
 
 public class GameController
 {
+    private static GameController gameController = new GameController();
     private ArrayList<AISimple> listPlayer = new ArrayList<AISimple>();
     private AISimple currentPlayer;
+
+    public static GameController getInstance() {
+        return gameController;
+    }
 
     public void initGame(){
         AISimple ai1 = new AISimple("Al");
@@ -47,14 +52,15 @@ public class GameController
     }
     public void startGame(){
         int turn = 0;
-        while(true){
+        while(turn < 21){
             Logger.printTitle("\n========== Turn " + turn++ + " ==========\n");
             for(int i=0; i<listPlayer.size(); i++){
                 AISimple ai = listPlayer.get(i);
                 currentPlayer = ai;
                 ai.placePlot();
                 Logger.printSeparator(ai.getName());
-               // Logger.printLine(ai.getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
+                Logger.printLine(ai.getName() +" - goal = " + ai.getPendingGoals().toString());
+                Logger.printLine(ai.getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates
                 if (turn % 2 == 1)
@@ -79,6 +85,8 @@ public class GameController
                 }
 
             }
+
+            System.out.println("DRAW !!!");
         }
     }
 }

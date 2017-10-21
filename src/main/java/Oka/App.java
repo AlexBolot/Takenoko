@@ -10,7 +10,7 @@ public class App
 {
     public static void main (String[] args)
     {
-        GameController gc = new GameController();
+        GameController gc = GameController.getInstance();
         gc.initGame();
         gc.startGame();
     }

@@ -43,4 +43,8 @@ public abstract class Goal {
     {
         return false;
     }
+
+    public String toString(){
+        return "value = "+value;
+    }
 }

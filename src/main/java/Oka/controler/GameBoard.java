@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 import static Oka.model.Vector.Axis.*;
 
@@ -69,23 +70,40 @@ public class GameBoard
     //TODO upgrade this on next release
     public Goal giveGoal ()
     {
-        //Very easy objective for now : get 1 bamboo green to validate.
-        //Will be changed in another release.
-        return new BambooGoal(1, 1, Color.green);
+        Color tabColor[] = {Color.GREEN, Color.BLUE, Color.YELLOW};
+        return new BambooGoal(1, 1, tabColor[(int)Math.random()*2]);
     }
 
     //TODO upgrade this on next release
-    public Plot givePlot ()
+    public ArrayList<Plot> givePlot ()
     {
-        return new Plot();
+        Random rand = new Random();
+        Color tabColor[] = {Color.GREEN, Color.BLUE, Color.YELLOW};
+
+        Plot p1 = new Plot(tabColor[rand.nextInt(3)]);
+        Plot p2 = new Plot(tabColor[rand.nextInt(3)]);
+        Plot p3 = new Plot(tabColor[rand.nextInt(3)]);
+
+        ArrayList<Plot> listP =  new ArrayList<>();
+        listP.add(p1);
+        listP.add(p2);
+        listP.add(p3);
+
+        return listP;
     }
 
+    /**
+     should return all the possible slots where a tile may be layed
+     todo : implement
+
+     @return ArrayList
+     */
     public ArrayList<Point> getAvailableSlots ()
     {
         return availableSlots;
     }
 
-    public ArrayList<Point> getNeihboors (Point point)
+    public ArrayList<Point> getEveryNeihboors (Point point)
     {
         Vector[] vectors = new Vector[6];
         vectors[0] = new Vector(Vector.Axis.x, 1);
@@ -100,6 +118,26 @@ public class GameBoard
         for (Vector v : vectors)
         {
             neightbours.add(v.applyVector(point));
+        }
+
+        return neightbours;
+    }
+    public ArrayList<Cell> getExistingNeihboors (Point point)
+    {
+        Vector[] vectors = new Vector[6];
+        vectors[0] = new Vector(Vector.Axis.x, 1);
+        vectors[1] = new Vector(Vector.Axis.x, -1);
+        vectors[2] = new Vector(Vector.Axis.y, 1);
+        vectors[3] = new Vector(Vector.Axis.y, -1);
+        vectors[4] = new Vector(Vector.Axis.z, 1);
+        vectors[5] = new Vector(Vector.Axis.z, -1);
+
+        ArrayList<Cell> neightbours = new ArrayList<>();
+
+        for (Vector v : vectors)
+        {
+            if(grid.containsKey(v.applyVector(point)))
+                neightbours.add(grid.get(v.applyVector(point)));
         }
 
         return neightbours;
@@ -119,7 +157,7 @@ public class GameBoard
 
     private void refreshAvailableSlots (Cell cell)
     {
-        for (Point point : getNeihboors(cell.getCoords()))
+        for (Point point : getEveryNeihboors(cell.getCoords()))
         {
             if (!grid.containsKey(point) && !availableSlots.contains(point)) availableSlots.add(point);
         }

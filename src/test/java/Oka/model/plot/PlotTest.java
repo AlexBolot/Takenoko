@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class PlotTest extends TestCase {
     @Test
     public void testEquals() throws Exception {
-        Plot p1 = new Plot();
+        Plot p1 = new Plot(Color.BLUE);
         p1.setCoords(new Point(1, 0));
-        Plot p1B = new Plot(new Point(1, 0));
-        Plot p2 = new Plot(new Point(0, 1));
-        Plot p3 = new Plot(new Point(1, 0));
+        Plot p1B = new Plot(new Point(1, 0),Color.BLUE);
+        Plot p2 = new Plot(new Point(0, 1),Color.BLUE);
+        Plot p3 = new Plot(new Point(1, 0),Color.BLUE);
         ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
         bamboo.add(new Bamboo(Color.BLUE));
         p3.setBamboo(bamboo);
@@ -33,7 +33,7 @@ public class PlotTest extends TestCase {
     }
 
     public void testGiveBamboo() throws Exception {
-        Plot plot = new Plot(new Point(0, 1));
+        Plot plot = new Plot(new Point(0, 1),Color.BLUE);
         Bamboo b = new Bamboo(Color.BLUE);
         plot.addBamboo(b);
         Pond pond = new Pond();

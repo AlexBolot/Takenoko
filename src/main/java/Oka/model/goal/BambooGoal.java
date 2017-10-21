@@ -36,6 +36,10 @@ public class BambooGoal extends Goal
         this.bambooColor = bambooColor;
     }
 
+    public String toString(){
+        return super.toString() +"bambooAmount = "+bambooAmount;
+    }
+
     public int getBambooAmount() {
         return bambooAmount;
     }
@@ -49,10 +53,6 @@ public class BambooGoal extends Goal
                 nbBamboo++;
             }
         }
-        if (nbBamboo >= bambooAmount)
-            return true;
-        else
-            return false;
-
+        return nbBamboo >= bambooAmount;
     }
 }

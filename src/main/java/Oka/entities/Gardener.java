@@ -6,6 +6,7 @@ import Oka.model.Cell;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Gardener extends Entity {
     private static Gardener ourInstance = new Gardener();
@@ -46,7 +47,7 @@ public class Gardener extends Entity {
             Color currentColor = currentPlot.getColor();
             currentPlot.addBamboo(new Bamboo(currentColor));
             //adding to neightbours
-            for (Cell c : board.getNeihboors(this.getCoords()))
+            for (Cell c : board.getExistingNeihboors(this.getCoords()))
             {
                 if (!c.getCoords().equals(new Point())) {
 

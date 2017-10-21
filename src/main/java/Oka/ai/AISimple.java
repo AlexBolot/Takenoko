@@ -10,6 +10,7 @@ import Oka.model.plot.Plot;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class AISimple extends AI
 {
@@ -74,12 +75,13 @@ public class AISimple extends AI
     public void placePlot ()
     {
         GameBoard board = GameBoard.getInstance();
+        Random rand = new Random();
 
-        //todo: make giveplot return an arraylist from a card stack
-        ArrayList<Plot> draw = new ArrayList<>(Collections.singletonList(board.givePlot()));
+        //from a card stack
+        ArrayList<Plot> draw = board.givePlot();
 
         //tant qu'on nous renvois les même trois case
-        Plot plot = draw.get(0);
+        Plot plot = draw.get(rand.nextInt(3));
 
         //todo: add a available slot function
         ArrayList<Point> free = board.getAvailableSlots();

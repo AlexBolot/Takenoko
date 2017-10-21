@@ -8,22 +8,28 @@ import java.util.ArrayList;
 
 public class Plot extends Cell {
     private ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
-    private Color color = Color.GREEN;// Provisoirement fixer a une couleur pour la release 1
+    private Color color;
     private boolean isIrrigated;
     private PlotState state;
 
-    public Plot() {
-        super(null);
+    public Plot(Color color) {
+        super(new Point());
+        this.color = color;
     }
 
     public ArrayList<Bamboo> getBamboo () {
         return bamboo;
     }
 
-
     public Plot(Point coords) {
         super(coords);
-        addBamboo(new Bamboo(Color.GREEN));
+        state = new NeutralState();
+    }
+
+    public Plot(Point coords, Color color) {
+        super(coords);
+        addBamboo(new Bamboo(color));
+        this.color = color;
         state = new NeutralState();
     }
 
@@ -66,5 +72,18 @@ public class Plot extends Cell {
         equality = equality && plot.getColor().equals(this.getColor());
 
         return equality;
+    }
+
+    @Override
+    public String toString() {
+        String stringColor = "";
+        if(color.equals(Color.YELLOW)){
+            stringColor = "Yellow";
+        }else if (color.equals(Color.BLUE)){
+            stringColor = "Blue";
+        }else if (color.equals(Color.GREEN)){
+            stringColor = "Green";
+        }
+        return super.toString()+ " " + stringColor;
     }
 }
