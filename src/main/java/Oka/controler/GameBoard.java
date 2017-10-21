@@ -10,6 +10,7 @@ import Oka.model.plot.Plot;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static Oka.model.Vector.Axis.*;
 
@@ -17,15 +18,15 @@ public class GameBoard
 {
     private static GameBoard ourInstance = new GameBoard();
 
-    private ArrayList<Cell> grid = new ArrayList<>();
-    private ArrayList<Cell> availableSlots = new ArrayList<>();
+    private HashMap<Point, Cell> grid           = new HashMap<>();
+    private ArrayList<Point>     availableSlots = new ArrayList<>();
 
 
     private GameBoard ()
     {
         Pond pond = new Pond();
 
-        grid.add(pond);
+        grid.put(pond.getCoords(), pond);
 
         Point point1 = new Vector(x, 1).applyVector(pond.getCoords());
         Point point2 = new Vector(x, -1).applyVector(pond.getCoords());
@@ -34,12 +35,7 @@ public class GameBoard
         Point point5 = new Vector(z, 1).applyVector(pond.getCoords());
         Point point6 = new Vector(z, -1).applyVector(pond.getCoords());
 
-        availableSlots.addAll(Arrays.asList(new Plot(point1),
-                                            new Plot(point2),
-                                            new Plot(point3),
-                                            new Plot(point4),
-                                            new Plot(point5),
-                                            new Plot(point6)));
+        availableSlots.addAll(Arrays.asList(point1, point2, point3, point4, point5, point6));
 
 
     }
@@ -49,31 +45,25 @@ public class GameBoard
         return ourInstance;
     }
 
-    public ArrayList<Cell> getGrid ()
+    public HashMap<Point, Cell> getGrid ()
     {
         return grid;
     }
 
-    public void setGrid (ArrayList<Cell> grid)
+    public void setGrid (HashMap<Point, Cell> grid)
     {
         this.grid = grid;
     }
 
-    public Cell getCell (Point point)
+    public void addCell (Cell cell)
     {
-        for (Cell cell : grid)
-        {
-            if (cell.getCoords().equals(point))
-            {
-                return cell;
-            }
-        }
-        return null;
-    }
+        assertNotOnGrid(cell.getCoords());
+        assertIsAvailable(cell.getCoords());
 
-    public void addCell (Plot plot)
-    {
-        grid.add(plot);
+        grid.put(cell.getCoords(), cell);
+        availableSlots.remove(cell.getCoords());
+
+        refreshAvailableSlots(cell);
     }
 
     //TODO upgrade this on next release
@@ -90,35 +80,13 @@ public class GameBoard
         return new Plot();
     }
 
-    /**
-     should return all the possible slots where a tile may be layed
-     todo : implement
-
-     @return ArrayList
-     */
     public ArrayList<Point> getAvailableSlots ()
     {
-        ArrayList<Point> arrayList = new ArrayList<>();
-
-        //noinspection unchecked
-        for (Cell cell : grid)
-        {
-            if (cell instanceof Plot)
-            {
-                availableSlots.remove(cell);
-            }
-        }
-
-        for (Cell cell : availableSlots)
-        {
-            arrayList.add(cell.getCoords());
-        }
-
-        return arrayList;
+        return availableSlots;
     }
 
-    public ArrayList<Cell> getNeightbours(Point point) {
-
+    public ArrayList<Cell> getNeihboors (Point point)
+    {
         Vector[] vectors = new Vector[6];
         vectors[0] = new Vector(Vector.Axis.x, 1);
         vectors[1] = new Vector(Vector.Axis.x, -1);
@@ -127,11 +95,31 @@ public class GameBoard
         vectors[4] = new Vector(Vector.Axis.z, 1);
         vectors[5] = new Vector(Vector.Axis.z, -1);
         ArrayList<Cell> neightbours = new ArrayList<>();
-        for (Vector v :
-                vectors) {
-            Cell c = getCell(v.applyVector(point));
+        for (Vector v : vectors)
+        {
+            Cell c = grid.get(v.applyVector(point));
             if (c != null) neightbours.add(c);
         }
         return neightbours;
+    }
+
+    private void assertNotOnGrid (Point point)
+    {
+        if (point == null) throw new IllegalArgumentException("Point is null");
+        if (grid.containsKey(point)) throw new IllegalArgumentException("The cell is already on the grid");
+    }
+
+    private void assertIsAvailable (Point point) throws IllegalArgumentException
+    {
+        if (point == null) throw new IllegalArgumentException("Point is null");
+        if (!availableSlots.contains(point)) throw new IllegalArgumentException("The slot is not available");
+    }
+
+    private void refreshAvailableSlots (Cell cell)
+    {
+        for (Cell c : getNeihboors(cell.getCoords()))
+        {
+            if (!grid.containsKey(c.getCoords()) && !availableSlots.contains(c.getCoords())) availableSlots.add(c.getCoords());
+        }
     }
 }

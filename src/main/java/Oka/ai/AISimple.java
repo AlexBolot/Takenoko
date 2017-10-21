@@ -22,7 +22,8 @@ public class AISimple extends AI
     {
         Point coordsGardener = Gardener.getInstance().getCoords();
         GameBoard gameboard = GameBoard.getInstance();
-        for (Cell cell : gameboard.getGrid())
+
+        for (Cell cell : gameboard.getGrid().values())
         {
             //Si la case est celle du Gardener, on ne la considère pas.
             if (cell.getCoords().equals(coordsGardener)) continue;
@@ -45,7 +46,7 @@ public class AISimple extends AI
 
         Point coordsPanda = Panda.getInstance().getCoords();
         GameBoard gameboard = GameBoard.getInstance();
-        for (Cell cell : gameboard.getGrid())
+        for (Cell cell : gameboard.getGrid().values())
         {
             //Si la case est celle du Panda, on ne la considère pas.
             if (cell.getCoords().equals(coordsPanda)) continue;

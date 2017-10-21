@@ -36,7 +36,7 @@ public class Panda extends Entity
     public Bamboo gatherBamboo ()
     {
         GameBoard board = GameBoard.getInstance();
-        Cell tile = board.getCell(coords);
+        Cell tile = board.getGrid().get(coords);
         if (tile.getCoords().equals(new Point())) return null;
         Plot currentPlot = (Plot) tile;
 

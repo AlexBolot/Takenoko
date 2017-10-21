@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class PandaTest extends TestCase
 {
@@ -26,16 +26,21 @@ public class PandaTest extends TestCase
     }
 
     @Test
-    public void testGatherBamboo() {
+    public void testGatherBamboo ()
+    {
         GameBoard board = GameBoard.getInstance();
         Bamboo b = new Bamboo(Color.BLUE);
-        ArrayList<Cell> grid = new ArrayList<Cell>();
-        Plot p = new Plot(new Point(0, 1));
-        p.addBamboo(b);
-        grid.add(p);
+        HashMap<Point, Cell> grid = new HashMap<>();
+
+        Plot plot = new Plot(new Point(0, 1));
+        plot.addBamboo(b);
+
+        grid.put(plot.getCoords(), plot);
         board.setGrid(grid);
+
         panda.setCoords(new Point(0, 1));
+
         assertEquals(b, panda.gatherBamboo());
-        assertEquals(new ArrayList<Bamboo>(), p.getBamboo());
+        assertEquals(new ArrayList<Bamboo>(), plot.getBamboo());
     }
 }

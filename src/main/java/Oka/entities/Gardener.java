@@ -38,7 +38,7 @@ public class Gardener extends Entity {
     private void growBamboo() {
 
         GameBoard board = GameBoard.getInstance();
-        Cell currentCell = board.getCell(this.getCoords());
+        Cell currentCell = board.getGrid().get(this.getCoords());
         // there are no effects if the gardener is on the pond
         if (!currentCell.getCoords().equals(new Point(0, 0))) {
             //adding to current plot
@@ -46,7 +46,8 @@ public class Gardener extends Entity {
             Color currentColor = currentPlot.getColor();
             currentPlot.addBamboo(new Bamboo(currentColor));
             //adding to neightbours
-            for (Cell c : board.getNeightbours(this.getCoords())) {
+            for (Cell c : board.getNeihboors(this.getCoords()))
+            {
                 if (!c.getCoords().equals(new Point())) {
 
                     Plot plot = (Plot) c;
