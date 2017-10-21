@@ -85,7 +85,7 @@ public class GameBoard
         return availableSlots;
     }
 
-    public ArrayList<Cell> getNeihboors (Point point)
+    public ArrayList<Point> getNeihboors (Point point)
     {
         Vector[] vectors = new Vector[6];
         vectors[0] = new Vector(Vector.Axis.x, 1);
@@ -94,12 +94,14 @@ public class GameBoard
         vectors[3] = new Vector(Vector.Axis.y, -1);
         vectors[4] = new Vector(Vector.Axis.z, 1);
         vectors[5] = new Vector(Vector.Axis.z, -1);
-        ArrayList<Cell> neightbours = new ArrayList<>();
+
+        ArrayList<Point> neightbours = new ArrayList<>();
+
         for (Vector v : vectors)
         {
-            Cell c = grid.get(v.applyVector(point));
-            if (c != null) neightbours.add(c);
+            neightbours.add(v.applyVector(point));
         }
+
         return neightbours;
     }
 
@@ -117,9 +119,9 @@ public class GameBoard
 
     private void refreshAvailableSlots (Cell cell)
     {
-        for (Cell c : getNeihboors(cell.getCoords()))
+        for (Point point : getNeihboors(cell.getCoords()))
         {
-            if (!grid.containsKey(c.getCoords()) && !availableSlots.contains(c.getCoords())) availableSlots.add(c.getCoords());
+            if (!grid.containsKey(point) && !availableSlots.contains(point)) availableSlots.add(point);
         }
     }
 }
