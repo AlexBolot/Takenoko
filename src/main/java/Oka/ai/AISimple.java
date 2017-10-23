@@ -5,15 +5,15 @@ import Oka.controler.GameBoard;
 import Oka.entities.Entity;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
-import Oka.model.Bamboo;
 import Oka.model.Cell;
 import Oka.model.goal.BambooGoal;
 import Oka.model.plot.Plot;
 import Oka.utils.Logger;
 
 import java.awt.*;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class AISimple extends AI
@@ -86,10 +86,6 @@ public class AISimple extends AI
                 if (cell instanceof Plot) {
                     //TODO Temporary, will be used for logs (see OKA-56)
                     Plot plot = (Plot) cell;
-
-                    //TODO Temporary, will become useless when Inventory will be set
-                    //But it makes the whole thing work for now so...
-                    getBamboos().add(panda.gatherBamboo());
                 }
 
                 return true;

@@ -16,7 +16,7 @@ package Oka.entities;
 
 import java.awt.*;
 
-public class Entity
+public abstract class Entity
 {
     private Point coords;
 
@@ -30,10 +30,9 @@ public class Entity
         return coords;
     }
 
-    protected Object setCoords (Point coords)
+    protected void setCoords (Point coords)
     {
         this.coords = coords;
-        return null;
     }
 
     public boolean move (Point point)

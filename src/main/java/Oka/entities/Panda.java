@@ -1,6 +1,7 @@
 package Oka.entities;
 
 import Oka.controler.GameBoard;
+import Oka.controler.GameController;
 import Oka.model.Bamboo;
 import Oka.model.Cell;
 import Oka.model.plot.Plot;
@@ -11,32 +12,29 @@ public class Panda extends Entity
 {
     private static Panda ourInstance = new Panda();
 
-    private Panda ()
-    {
-
-    }
-
     public static Panda getInstance ()
     {
         return ourInstance;
     }
 
     @Override
-    public Bamboo setCoords (Point point)
+    public void setCoords (Point point)
     {
-        //Temporary
+        if (point == null) throw new IllegalArgumentException("Parameter is null");
+
         super.setCoords(point);
-        return gatherBamboo();
 
-    }
+        Cell arrivalCell = GameBoard.getInstance().getGrid().get(point);
 
-    public Bamboo gatherBamboo ()
-    {
-        GameBoard board = GameBoard.getInstance();
-        Cell tile = board.getGrid().get(getCoords());
-        if (tile.getCoords().equals(new Point())) return null;
-        Plot currentPlot = (Plot) tile;
+        if (arrivalCell instanceof Plot)
+        {
+            Plot arrivalPlot = (Plot) arrivalCell;
 
-        return currentPlot.giveBamboo();
+            Bamboo bamboo = arrivalPlot.giveBamboo();
+
+            if (bamboo == null) return;
+
+            GameController.getInstance().getCurrentPlayer().addBamboo(bamboo);
+        }
     }
 }

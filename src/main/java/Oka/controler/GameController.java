@@ -48,6 +48,7 @@ public class GameController
         listPlayer.add(ai1);
         listPlayer.add(ai2);
     }
+
     public void startGame(){
         int turn = 0;
         while (turn < 5)
@@ -85,7 +86,13 @@ public class GameController
 
             }
 
-    }        System.out.println("DRAW !!!");
+        }
+        System.out.println("DRAW !!!");
 
+    }
+
+    public AISimple getCurrentPlayer ()
+    {
+        return currentPlayer;
     }
 }
