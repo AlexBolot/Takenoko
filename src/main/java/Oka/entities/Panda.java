@@ -11,8 +11,6 @@ import java.awt.*;
 public class Panda extends Entity
 {
     private static Panda ourInstance = new Panda();
-    private        Point coords      = new Point();
-
 
     private Panda ()
     {
@@ -24,19 +22,17 @@ public class Panda extends Entity
         return ourInstance;
     }
 
-    public Point getCoords ()
+    @Override
+    public void setCoords (Point point)
     {
-        return coords;
-    }
-
-    public void setCoords (Point coords) {
-        this.coords = coords;
+        //Temporary
+        super.setCoords(point);
     }
 
     public Bamboo gatherBamboo ()
     {
         GameBoard board = GameBoard.getInstance();
-        Cell tile = board.getGrid().get(coords);
+        Cell tile = board.getGrid().get(getCoords());
         if (tile.getCoords().equals(new Point())) return null;
         Plot currentPlot = (Plot) tile;
 
@@ -44,13 +40,13 @@ public class Panda extends Entity
     }
 
     /**
-     * moves the panda and eat bamboo at ariving state
-     *
-     * @param newCoords Point, destination Point
+     moves the panda and eat bamboo at ariving state
+
+     @param newCoords Point, destination Point
      */
-    public Bamboo move(Point newCoords) throws IllegalArgumentException {
-        if (!Vector.areAligned(this.coords, newCoords))
-            throw new IllegalArgumentException("Panda must move in straight line");
+    public Bamboo move (Point newCoords) throws IllegalArgumentException
+    {
+        if (!Vector.areAligned(getCoords(), newCoords)) throw new IllegalArgumentException("Panda must move in straight line");
         this.setCoords(newCoords);
         return this.gatherBamboo();
     }

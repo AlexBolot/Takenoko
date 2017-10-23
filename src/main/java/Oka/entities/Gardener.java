@@ -6,11 +6,9 @@ import Oka.model.Cell;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Gardener extends Entity {
     private static Gardener ourInstance = new Gardener();
-    private Point coords = new Point();
 
     private Gardener() {
 
@@ -20,12 +18,11 @@ public class Gardener extends Entity {
         return ourInstance;
     }
 
-    public Point getCoords() {
-        return coords;
-    }
-
-    public void setCoords(Point coords) {
-        this.coords = coords;
+    @Override
+    public void setCoords (Point point)
+    {
+        //Temporary
+        super.setCoords(point);
     }
 
     public void move(Point newCoords) {
