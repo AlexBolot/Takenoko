@@ -19,18 +19,17 @@ import Oka.model.Bamboo;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
-public class BambooGoal extends Goal
-{
+public class BambooGoal extends Goal {
     private int bambooAmount;
     private Color bambooColor;
 
-    public void setBambooAmount (int bambooAmount) {
+    public void setBambooAmount(int bambooAmount) {
         this.bambooAmount = bambooAmount;
     }
 
-    public BambooGoal (int value, int bambooAmount,Color bambooColor)
-    {
+    public BambooGoal(int value, int bambooAmount, Color bambooColor) {
         super(value);
         this.bambooAmount = bambooAmount;
         this.bambooColor = bambooColor;
@@ -44,15 +43,13 @@ public class BambooGoal extends Goal
         return bambooAmount;
     }
 
-    public boolean validate (AI AI)
-    {
+    public boolean validate(AI AI) {
         ArrayList<Bamboo> listBamboo = AI.getBamboos();
-        int nbBamboo = 0;
-        for(Bamboo b : listBamboo){
-            if(b.getColor().equals(bambooColor)){
-                nbBamboo++;
-            }
-        }
+        Stream rightBamboos = listBamboo
+                .stream()
+                .filter(b -> b.getColor().equals(this.bambooColor));
+        int nbBamboo = (int) rightBamboos.count();
         return nbBamboo >= bambooAmount;
+
     }
 }

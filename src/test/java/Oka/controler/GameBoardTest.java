@@ -46,6 +46,7 @@ public class GameBoardTest
 
         plot = new Plot(new Point(1, -1));
         mediumGrid.put(plot.getCoords(), plot);
+
     }
 
     @Test

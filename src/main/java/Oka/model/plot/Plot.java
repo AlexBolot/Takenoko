@@ -69,7 +69,12 @@ public class Plot extends Cell {
         boolean equality;
         equality = plot.bamboo.equals(this.bamboo);
         equality = equality && plot.getCoords().equals(this.getCoords());
-        equality = equality && plot.getColor().equals(this.getColor());
+        if (this.getColor() != null && plot.getColor() != null) {
+
+            equality = equality && plot.getColor().equals(this.getColor());
+        } else {
+            equality = equality && this.getColor() == plot.getColor();
+        }
 
         return equality;
     }
