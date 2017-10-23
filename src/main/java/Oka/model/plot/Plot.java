@@ -75,7 +75,7 @@ public class Plot extends Cell {
         String stringColor = "";
         if(color.equals(Color.YELLOW)){
             stringColor = "Yellow";
-        }else if (color.equals(Color.BLUE)){
+        }else if (color.equals(Color.pink)){
             stringColor = "Blue";
         }else if (color.equals(Color.GREEN)){
             stringColor = "Green";

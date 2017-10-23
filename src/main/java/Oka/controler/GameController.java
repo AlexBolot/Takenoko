@@ -36,14 +36,14 @@ public class GameController
         ai1.addGoal(GameBoard.getInstance().giveGoal());
         ai1.addGoal(GameBoard.getInstance().giveGoal());
         // TODO Remplacer les lignes du dessus par les lignes en commentaires, quand l'inventaire sera crée pour stock les bamboos
-        //ai1.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
-        //ai1.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
+        //ai1.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
+        //ai1.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
 
         AISimple ai2 = new AISimple("Ma");
         ai2.addGoal(GameBoard.getInstance().giveGoal());
         ai2.addGoal(GameBoard.getInstance().giveGoal());
-        //ai2.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
-        //ai2.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
+        //ai2.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
+        //ai2.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
 
         listPlayer.add(ai1);
         listPlayer.add(ai2);
@@ -59,7 +59,7 @@ public class GameController
                 ai.placePlot();
                 Logger.printSeparator(ai.getName());
                 Logger.printLine(ai.getName() +" - goal = " + ai.getPendingGoals().toString());
-                //Logger.printLine(ai.getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
+                Logger.printLine(ai.getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates
                 if (turn % 2 == 1)
@@ -85,7 +85,7 @@ public class GameController
 
             }
 
-        }
-        System.out.println("DRAW !!!");
+    }        System.out.println("DRAW !!!");
+
     }
 }

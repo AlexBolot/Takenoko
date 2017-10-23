@@ -29,10 +29,10 @@ public class PandaTest extends TestCase
     public void testGatherBamboo ()
     {
         GameBoard board = GameBoard.getInstance();
-        Bamboo b = new Bamboo(Color.BLUE);
+        Bamboo b = new Bamboo(Color.pink);
         HashMap<Point, Cell> grid = new HashMap<>();
 
-        Plot plot = new Plot(Color.BLUE);
+        Plot plot = new Plot(Color.pink);
         plot.addBamboo();
 
         grid.put(plot.getCoords(), plot);

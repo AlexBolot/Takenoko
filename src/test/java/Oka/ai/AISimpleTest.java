@@ -32,11 +32,11 @@ public class AISimpleTest
     @Before
     public void before ()
     {
-        Plot plot1 = new Plot(p01, Color.BLUE);
+        Plot plot1 = new Plot(p01, Color.pink);
         plot1.addBamboo();
         GameBoard.getInstance().addCell(plot1);
 
-        Plot plot2 = new Plot(p10, Color.BLUE);
+        Plot plot2 = new Plot(p10, Color.pink);
         GameBoard.getInstance().addCell(plot2);
     }
 

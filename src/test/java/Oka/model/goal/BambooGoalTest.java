@@ -15,7 +15,7 @@ public class BambooGoalTest {
     public void validate() throws Exception {
 
         BambooGoal bg1 = new BambooGoal(3,1, Color.green);
-        BambooGoal bg2 = new BambooGoal(3,2, Color.blue);
+        BambooGoal bg2 = new BambooGoal(3,2, Color.pink);
         BambooGoal bg3 = new BambooGoal(3,3, Color.green);
 
         AI AI = new AI("Ma");

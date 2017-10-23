@@ -1,5 +1,6 @@
 package Oka.ai;
 
+import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
 import Oka.entities.Entity;
 import Oka.entities.Gardener;
@@ -89,12 +90,23 @@ public class AISimple extends AI
     {
         GameBoard board = GameBoard.getInstance();
         Random rand = new Random();
+        DrawStack drawStack = new DrawStack();
+        ArrayList<Plot> draw = null;
 
-        //from a card stack
-        ArrayList<Plot> draw = board.givePlot();
+        try{
+            //from a card stack
+            draw = drawStack.giveTreePlot();
+        }catch (NullPointerException e){
+            System.out.print("IL N'Y A PLUS DE CARTE DANS LA PIOCHE");
+        }
 
         //tant qu'on nous renvois les même trois case
-        Plot plot = draw.get(rand.nextInt(3));
+        int randInt = rand.nextInt(3);
+        Plot plot = draw.get(randInt);
+
+        // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
+        draw.remove(randInt);
+        drawStack.giveBackPlot(draw);
 
         //todo: add a available slot function
         ArrayList<Point> free = board.getAvailableSlots();
