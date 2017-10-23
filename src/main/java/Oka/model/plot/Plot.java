@@ -28,9 +28,9 @@ public class Plot extends Cell {
 
     public Plot(Point coords, Color color) {
         super(coords);
-        addBamboo(new Bamboo(color));
         this.color = color;
         state = new NeutralState();
+        addBamboo(new Bamboo(color));
     }
 
     public void addBamboo(Bamboo bamboo) {

@@ -21,7 +21,7 @@ public class GardenerTest
 
     //todo: update with different colors on plot, once plot's color is implemented
     @Test
-    public void move () throws Exception
+    public void moveUniformColor() throws Exception
     {
         GameBoard board = GameBoard.getInstance();
 
@@ -30,22 +30,48 @@ public class GardenerTest
         Pond pond = new Pond();
         grid.put(pond.getCoords(), pond);
 
-        Plot plot = new Plot(new Point(1, 1));
+        Plot plot = new Plot(new Point(1, 1), Color.BLUE);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(0, 1));
+        plot = new Plot(new Point(0, 1), Color.BLUE);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(1, 0));
+        plot = new Plot(new Point(1, 0), Color.BLUE);
         grid.put(plot.getCoords(), plot);
 
         board.setGrid(grid);
-
+        gardener.setCoords(new Point(0, 1));
         gardener.move(new Point(1, 1));
 
         assertEquals(2, ((Plot) board.getGrid().get(new Point(1, 1))).getBamboo().size());
         assertEquals(2, ((Plot) board.getGrid().get(new Point(0, 1))).getBamboo().size());
         assertEquals(2, ((Plot) board.getGrid().get(new Point(1, 0))).getBamboo().size());
+    }
+
+    @Test
+    public void moveMixedColor() {
+        GameBoard board = GameBoard.getInstance();
+
+        HashMap<Point, Cell> grid = new HashMap<>();
+        Pond pond = new Pond();
+        grid.put(pond.getCoords(), pond);
+
+        Plot plot = new Plot(new Point(1, 1), Color.green);
+        grid.put(plot.getCoords(), plot);
+
+        plot = new Plot(new Point(0, 1), Color.green);
+        grid.put(plot.getCoords(), plot);
+
+        plot = new Plot(new Point(1, 0), Color.blue);
+        grid.put(plot.getCoords(), plot);
+
+        board.setGrid(grid);
+        gardener.setCoords(new Point(0, 1));
+        gardener.move(new Point(1, 1));
+
+        assertEquals(2, ((Plot) board.getGrid().get(new Point(1, 1))).getBamboo().size());
+        assertEquals(2, ((Plot) board.getGrid().get(new Point(0, 1))).getBamboo().size());
+        assertEquals(1, ((Plot) board.getGrid().get(new Point(1, 0))).getBamboo().size());
     }
 
     private Gardener gardener = Gardener.getInstance();
