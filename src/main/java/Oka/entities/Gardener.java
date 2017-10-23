@@ -23,10 +23,6 @@ public class Gardener extends Entity {
     {
         //Temporary
         super.setCoords(point);
-    }
-
-    public void move(Point newCoords) {
-        this.setCoords(newCoords);
         this.growBamboo();
     }
 

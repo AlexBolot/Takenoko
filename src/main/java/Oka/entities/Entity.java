@@ -34,4 +34,13 @@ public class Entity
     {
         this.coords = coords;
     }
+
+    public boolean move (Point point)
+    {
+        if (point == null) throw new IllegalArgumentException("Point is null");
+
+        this.setCoords(point);
+
+        return true;
+    }
 }

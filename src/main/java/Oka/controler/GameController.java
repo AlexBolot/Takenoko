@@ -17,8 +17,6 @@ package Oka.controler;
 import Oka.ai.AISimple;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
-import Oka.model.Enums;
-import Oka.model.goal.BambooGoal;
 import Oka.utils.Logger;
 
 import java.util.ArrayList;
@@ -52,15 +50,16 @@ public class GameController
     }
     public void startGame(){
         int turn = 0;
-        while(turn < 21){
-            Logger.printTitle("\n========== Turn " + turn++ + " ==========\n");
+        while (turn < 5)
+        {
+            Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
             for(int i=0; i<listPlayer.size(); i++){
                 AISimple ai = listPlayer.get(i);
                 currentPlayer = ai;
                 ai.placePlot();
                 Logger.printSeparator(ai.getName());
                 Logger.printLine(ai.getName() +" - goal = " + ai.getPendingGoals().toString());
-                Logger.printLine(ai.getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
+                //Logger.printLine(ai.getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates
                 if (turn % 2 == 1)
@@ -86,7 +85,7 @@ public class GameController
 
             }
 
-            System.out.println("DRAW !!!");
         }
+        System.out.println("DRAW !!!");
     }
 }

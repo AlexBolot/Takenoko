@@ -1,5 +1,6 @@
 package Oka.controler;
 
+import Oka.entities.Entity;
 import Oka.model.Cell;
 import Oka.model.Pond;
 import Oka.model.Vector;
@@ -161,5 +162,14 @@ public class GameBoard
         {
             if (!grid.containsKey(point) && !availableSlots.contains(point)) availableSlots.add(point);
         }
+    }
+
+    public boolean moveEntity (Entity entity, Point point)
+    {
+        if (entity == null) throw new IllegalArgumentException("Entity is null");
+        if (point == null) throw new IllegalArgumentException("Point is null");
+        if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
+
+        return Vector.areAligned(entity.getCoords(), point) && entity.move(point);
     }
 }
