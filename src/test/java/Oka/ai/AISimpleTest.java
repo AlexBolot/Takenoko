@@ -17,7 +17,6 @@ package Oka.ai;
 import Oka.controler.GameBoard;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
-import Oka.model.Bamboo;
 import Oka.model.plot.Plot;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,11 +32,11 @@ public class AISimpleTest
     @Before
     public void before ()
     {
-        Plot plot1 = new Plot(p01,null);
-        plot1.addBamboo(new Bamboo(Color.BLUE));
+        Plot plot1 = new Plot(p01, Color.BLUE);
+        plot1.addBamboo();
         GameBoard.getInstance().addCell(plot1);
 
-        Plot plot2 = new Plot(p10,null);
+        Plot plot2 = new Plot(p10, Color.BLUE);
         GameBoard.getInstance().addCell(plot2);
     }
 

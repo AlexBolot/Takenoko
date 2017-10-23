@@ -32,8 +32,8 @@ public class PandaTest extends TestCase
         Bamboo b = new Bamboo(Color.BLUE);
         HashMap<Point, Cell> grid = new HashMap<>();
 
-        Plot plot = new Plot(new Point(0, 1));
-        plot.addBamboo(b);
+        Plot plot = new Plot(Color.BLUE);
+        plot.addBamboo();
 
         grid.put(plot.getCoords(), plot);
         board.setGrid(grid);

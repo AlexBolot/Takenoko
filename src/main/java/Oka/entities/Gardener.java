@@ -1,7 +1,6 @@
 package Oka.entities;
 
 import Oka.controler.GameBoard;
-import Oka.model.Bamboo;
 import Oka.model.Cell;
 import Oka.model.plot.Plot;
 
@@ -38,7 +37,7 @@ public class Gardener extends Entity {
             //adding to current plot
             Plot currentPlot = (Plot) currentCell;
             Color currentColor = currentPlot.getColor();
-            currentPlot.addBamboo(new Bamboo(currentColor));
+            currentPlot.addBamboo();
             //adding to neightbours
             for (Cell c : board.getExistingNeihboors(this.getCoords()))
             {
@@ -47,7 +46,7 @@ public class Gardener extends Entity {
                     Plot plot = (Plot) c;
 
                     if (plot.getColor().equals(currentColor)) {
-                        plot.addBamboo(new Bamboo(currentColor));
+                        plot.addBamboo();
                     }
                 }
             }
