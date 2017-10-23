@@ -52,4 +52,8 @@ public class BambooGoal extends Goal {
         return nbBamboo >= bambooAmount;
 
     }
+
+    public Color bamboocolor() {
+        return bambooColor;
+    }
 }
