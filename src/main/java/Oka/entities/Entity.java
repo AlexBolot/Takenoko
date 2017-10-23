@@ -30,9 +30,10 @@ public class Entity
         return coords;
     }
 
-    protected void setCoords (Point coords)
+    protected Object setCoords (Point coords)
     {
         this.coords = coords;
+        return null;
     }
 
     public boolean move (Point point)

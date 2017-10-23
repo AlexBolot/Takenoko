@@ -22,10 +22,12 @@ public class Panda extends Entity
     }
 
     @Override
-    public void setCoords (Point point)
+    public Bamboo setCoords (Point point)
     {
         //Temporary
         super.setCoords(point);
+        return gatherBamboo();
+
     }
 
     public Bamboo gatherBamboo ()
