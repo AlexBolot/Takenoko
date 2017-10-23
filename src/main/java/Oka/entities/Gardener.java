@@ -18,11 +18,12 @@ public class Gardener extends Entity {
     }
 
     @Override
-    public void setCoords (Point point)
+    public Object setCoords (Point point)
     {
         //Temporary
         super.setCoords(point);
         this.growBamboo();
+        return null;
     }
 
     /**

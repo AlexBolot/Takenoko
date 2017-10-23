@@ -110,25 +110,24 @@ public class AISimple extends AI
         DrawStack drawStack = new DrawStack();
         ArrayList<Plot> draw = null;
 
+        // On pioche trois parcelles si possible
         try{
-            //from a card stack
-            draw = DrawStack.giveTreePlot();
+            draw = drawStack.giveTreePlot();
+            //tant qu'on nous renvois les même trois case
+            int randInt = rand.nextInt(3);
+            Plot plot = draw.get(randInt);
+
+            // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
+            draw.remove(randInt);
+            drawStack.giveBackPlot(draw);
+
+            //todo: add a available slot function
+            ArrayList<Point> free = board.getAvailableSlots();
+            plot.setCoords(free.get(0));
+            board.addCell(plot);
         }catch (NullPointerException e){
             System.out.print("IL N'Y A PLUS DE CARTE DANS LA PIOCHE");
         }
-
-        //tant qu'on nous renvois les même trois case
-        int randInt = rand.nextInt(3);
-        Plot plot = draw.get(randInt);
-
-        // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
-        draw.remove(randInt);
-        drawStack.giveBackPlot(draw);
-
-        //todo: add a available slot function
-        ArrayList<Point> free = board.getAvailableSlots();
-        plot.setCoords(free.get(0));
-        board.addCell(plot);
     }
 
     public void ValidateObjective ()
