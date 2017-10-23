@@ -19,7 +19,7 @@ public class AITest
         ArrayList<Goal> goals = new ArrayList<>();
         goals.add(new BambooGoal(3, 1, Color.green));
         goals.add(new BambooGoal(3, 2, Color.green));
-        goals.add(new BambooGoal(3, 2, Color.blue));
+        goals.add(new BambooGoal(3, 2, Color.pink));
         goals.add(new BambooGoal(3, 3, Color.green));
         goals.add(new BambooGoal(3, 5, Color.green));
 

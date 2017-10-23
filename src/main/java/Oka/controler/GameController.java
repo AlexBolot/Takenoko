@@ -17,8 +17,6 @@ package Oka.controler;
 import Oka.ai.AISimple;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
-import Oka.model.Enums;
-import Oka.model.goal.BambooGoal;
 import Oka.utils.Logger;
 
 import java.util.ArrayList;
@@ -38,22 +36,23 @@ public class GameController
         ai1.addGoal(GameBoard.getInstance().giveGoal());
         ai1.addGoal(GameBoard.getInstance().giveGoal());
         // TODO Remplacer les lignes du dessus par les lignes en commentaires, quand l'inventaire sera crée pour stock les bamboos
-        //ai1.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
-        //ai1.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
+        //ai1.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
+        //ai1.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
 
         AISimple ai2 = new AISimple("Ma");
         ai2.addGoal(GameBoard.getInstance().giveGoal());
         ai2.addGoal(GameBoard.getInstance().giveGoal());
-        //ai2.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
-        //ai2.addGoal(DrawStack.draw(Enums.goalType.BambooGoal));
+        //ai2.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
+        //ai2.addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
 
         listPlayer.add(ai1);
         listPlayer.add(ai2);
     }
     public void startGame(){
         int turn = 0;
-        while(turn < 21){
-            Logger.printTitle("\n========== Turn " + turn++ + " ==========\n");
+        while (turn < 5)
+        {
+            Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
             for(int i=0; i<listPlayer.size(); i++){
                 AISimple ai = listPlayer.get(i);
                 currentPlayer = ai;
@@ -86,7 +85,7 @@ public class GameController
 
             }
 
-            System.out.println("DRAW !!!");
-        }
+    }        System.out.println("DRAW !!!");
+
     }
 }

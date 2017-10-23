@@ -1,16 +1,13 @@
 package Oka.entities;
 
 import Oka.controler.GameBoard;
-import Oka.model.Bamboo;
 import Oka.model.Cell;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Gardener extends Entity {
     private static Gardener ourInstance = new Gardener();
-    private Point coords = new Point();
 
     private Gardener() {
 
@@ -20,16 +17,11 @@ public class Gardener extends Entity {
         return ourInstance;
     }
 
-    public Point getCoords() {
-        return coords;
-    }
-
-    public void setCoords(Point coords) {
-        this.coords = coords;
-    }
-
-    public void move(Point newCoords) {
-        this.setCoords(newCoords);
+    @Override
+    public void setCoords (Point point)
+    {
+        //Temporary
+        super.setCoords(point);
         this.growBamboo();
     }
 
@@ -45,7 +37,7 @@ public class Gardener extends Entity {
             //adding to current plot
             Plot currentPlot = (Plot) currentCell;
             Color currentColor = currentPlot.getColor();
-            currentPlot.addBamboo(new Bamboo(currentColor));
+            currentPlot.addBamboo();
             //adding to neightbours
             for (Cell c : board.getExistingNeihboors(this.getCoords()))
             {
@@ -54,7 +46,7 @@ public class Gardener extends Entity {
                     Plot plot = (Plot) c;
 
                     if (plot.getColor().equals(currentColor)) {
-                        plot.addBamboo(new Bamboo(currentColor));
+                        plot.addBamboo();
                     }
                 }
             }

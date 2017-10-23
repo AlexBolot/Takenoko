@@ -1,15 +1,17 @@
 package Oka.ai;
 
+import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
+import Oka.entities.Entity;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Cell;
-import Oka.model.Vector;
 import Oka.model.plot.Plot;
+import Oka.utils.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 public class AISimple extends AI
@@ -19,54 +21,66 @@ public class AISimple extends AI
         super(name);
     }
 
-    public void moveGardener ()
+    public boolean moveGardener ()
     {
-        Point coordsGardener = Gardener.getInstance().getCoords();
-        GameBoard gameboard = GameBoard.getInstance();
+        Gardener gardener = Gardener.getInstance();
+        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
-        for (Cell cell : gameboard.getGrid().values())
+        int maxBamboo = 4;
+
+        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
         {
-            //Si la case est celle du Gardener, on ne la considère pas.
-            if (cell.getCoords().equals(coordsGardener)) continue;
-
-            Vector v = Vector.findStraightVector(coordsGardener, cell.getCoords());
-
-            if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() == 0)
+            //noinspection Duplicates TODO will be fixed when adding logs
+            if (moveEntity(gardener, bambooSize))
             {
-                Point newCoords = v.applyVector(coordsGardener);
-                Gardener.getInstance().move(cell.getCoords());
-                return;
+                Cell cell = grid.get(gardener.getCoords());
+
+                if (cell instanceof Plot)
+                {
+                    //Temporary, will be used for logs (see OKA-56)
+                    Plot plot = (Plot) cell;
+                }
+
+                return true;
             }
+
         }
+
+        return false;
     }
 
-    public void movePanda ()
+    public boolean movePanda ()
     {
-        //todo: move code to GAMEBOARD, for responsability coherence and panda move in Panda.move(Point point)
+        Panda panda = Panda.getInstance();
+        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
+        int maxBamboo = 4;
 
-        Point coordsPanda = Panda.getInstance().getCoords();
-        GameBoard gameboard = GameBoard.getInstance();
-        for (Cell cell : gameboard.getGrid().values())
+        for (int bambooSize = maxBamboo; bambooSize > 0; bambooSize--)
         {
-            //Si la case est celle du Panda, on ne la considère pas.
-            if (cell.getCoords().equals(coordsPanda)) continue;
-
-            Vector v = Vector.findStraightVector(coordsPanda, cell.getCoords());
-
-            if (v != null && cell instanceof Plot && ((Plot) cell).getBamboo().size() > 0)
+            //noinspection Duplicates TODO will be fixed when adding logs
+            if (moveEntity(panda, bambooSize))
             {
+                Logger.printLine("moved gardener : " + panda.getCoords());
 
-                Point newCoords = v.applyVector(coordsPanda);
-                try {
-                    this.addBamboo(Panda.getInstance().move(cell.getCoords()));
-                } catch (IllegalArgumentException e) {
-                    //todo: find correct behavior for wrong move behavior
-                    e.printStackTrace();
+                Cell cell = grid.get(panda.getCoords());
+
+                if (cell instanceof Plot)
+                {
+                    //TODO Temporary, will be used for logs (see OKA-56)
+                    Plot plot = (Plot) cell;
+
+                    //TODO Temporary, will become useless when Inventory will be set
+                    //But it makes the whole thing work for now so...
+                    getBamboos().add(panda.gatherBamboo());
                 }
-                return;
+
+                return true;
             }
+
         }
+
+        return false;
     }
 
     /**
@@ -76,12 +90,23 @@ public class AISimple extends AI
     {
         GameBoard board = GameBoard.getInstance();
         Random rand = new Random();
+        DrawStack drawStack = new DrawStack();
+        ArrayList<Plot> draw = null;
 
-        //from a card stack
-        ArrayList<Plot> draw = board.givePlot();
+        try{
+            //from a card stack
+            draw = drawStack.giveTreePlot();
+        }catch (NullPointerException e){
+            System.out.print("IL N'Y A PLUS DE CARTE DANS LA PIOCHE");
+        }
 
         //tant qu'on nous renvois les même trois case
-        Plot plot = draw.get(rand.nextInt(3));
+        int randInt = rand.nextInt(3);
+        Plot plot = draw.get(randInt);
+
+        // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
+        draw.remove(randInt);
+        drawStack.giveBackPlot(draw);
 
         //todo: add a available slot function
         ArrayList<Point> free = board.getAvailableSlots();
@@ -92,5 +117,23 @@ public class AISimple extends AI
     public void ValidateObjective ()
     {
         //Todo
+    }
+
+    private boolean moveEntity (Entity entity, int bambooSize)
+    {
+        GameBoard gameBoard = GameBoard.getInstance();
+        HashMap<Point, Cell> grid = gameBoard.getGrid();
+        Point currentPoint = entity.getCoords();
+
+        for (Point point : grid.keySet())
+        {
+            if (point.equals(currentPoint) || !(grid.get(point) instanceof Plot)) continue;
+
+            Plot plot = (Plot) grid.get(point);
+
+            if (plot.getBamboo().size() == bambooSize && gameBoard.moveEntity(entity, point)) return true;
+        }
+
+        return false;
     }
 }

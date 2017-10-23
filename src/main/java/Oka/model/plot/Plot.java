@@ -30,16 +30,12 @@ public class Plot extends Cell {
         super(coords);
         this.color = color;
         state = new NeutralState();
-        addBamboo(new Bamboo(color));
+        addBamboo();
     }
 
-    public void addBamboo(Bamboo bamboo) {
-        if (bamboo.getColor().equals(this.color)) {
-            this.bamboo.add(bamboo);
-        } else {
-            //todo: decider si on code cette exception ou pas, parceque ce serait épique
-            //throw new BadBambooColorException;
-        }
+    public void addBamboo ()
+    {
+        if (this.bamboo.size() < 4) this.bamboo.add(new Bamboo(this.color));
     }
 
     public void setBamboo(ArrayList<Bamboo> bamboo) {
@@ -84,7 +80,7 @@ public class Plot extends Cell {
         String stringColor = "";
         if(color.equals(Color.YELLOW)){
             stringColor = "Yellow";
-        }else if (color.equals(Color.BLUE)){
+        }else if (color.equals(Color.pink)){
             stringColor = "Blue";
         }else if (color.equals(Color.GREEN)){
             stringColor = "Green";

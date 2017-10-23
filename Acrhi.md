@@ -9,3 +9,6 @@ _ce fichier contient la description de nos décisions d'architecture logiciel_
 - Creation d'une fonction getNeigthbours qui renvoies les cases adjacentes a un element.
  _(voire OKA-32)_
  
+
+- Ce n'est plus le GameBoard qui gère la pioche des plots, mais directement la classe DrawStack avec les méthode giveTreePlot() and giveBackPlot()
+ 

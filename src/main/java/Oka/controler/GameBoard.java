@@ -1,5 +1,6 @@
 package Oka.controler;
 
+import Oka.entities.Entity;
 import Oka.model.Cell;
 import Oka.model.Pond;
 import Oka.model.Vector;
@@ -70,26 +71,8 @@ public class GameBoard
     //TODO upgrade this on next release
     public Goal giveGoal ()
     {
-        Color tabColor[] = {Color.GREEN, Color.BLUE, Color.YELLOW};
+        Color tabColor[] = {Color.GREEN, Color.pink, Color.YELLOW};
         return new BambooGoal(1, 1, tabColor[(int)Math.random()*2]);
-    }
-
-    //TODO upgrade this on next release
-    public ArrayList<Plot> givePlot ()
-    {
-        Random rand = new Random();
-        Color tabColor[] = {Color.GREEN, Color.BLUE, Color.YELLOW};
-
-        Plot p1 = new Plot(tabColor[rand.nextInt(3)]);
-        Plot p2 = new Plot(tabColor[rand.nextInt(3)]);
-        Plot p3 = new Plot(tabColor[rand.nextInt(3)]);
-
-        ArrayList<Plot> listP =  new ArrayList<>();
-        listP.add(p1);
-        listP.add(p2);
-        listP.add(p3);
-
-        return listP;
     }
 
     /**
@@ -161,5 +144,14 @@ public class GameBoard
         {
             if (!grid.containsKey(point) && !availableSlots.contains(point)) availableSlots.add(point);
         }
+    }
+
+    public boolean moveEntity (Entity entity, Point point)
+    {
+        if (entity == null) throw new IllegalArgumentException("Entity is null");
+        if (point == null) throw new IllegalArgumentException("Point is null");
+        if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
+
+        return Vector.areAligned(entity.getCoords(), point) && entity.move(point);
     }
 }

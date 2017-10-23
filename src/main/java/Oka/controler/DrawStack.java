@@ -3,6 +3,7 @@ package Oka.controler;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
+import Oka.model.plot.Plot;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,8 +14,12 @@ import static Oka.model.Enums.goalType.BambooGoal;
 public class DrawStack {
     private static final int MaxBambooGoal = 10;
 
+    private static int nbPinkPlot = 7;
+    private static int nbYellowPlot = 9;
+    private static int nbGreenPlot = 11;
 
-    public static Goal draw(Enums.goalType goalType) {
+
+    public static Goal drawGoal(Enums.goalType goalType) {
         switch (goalType) {
 
             case BambooGoal:
@@ -27,6 +32,53 @@ public class DrawStack {
                 break;
         }
         return null;
+    }
+    public static ArrayList<Plot> giveTreePlot() {
+        Random rand = new Random();
+        Color tabColor[] = {Color.GREEN, Color.PINK, Color.YELLOW};
+        ArrayList<Plot> listP =  new ArrayList<>();
+        Plot plot;
+        int totalPlotFree = nbPinkPlot + nbYellowPlot + nbGreenPlot,
+                index,
+                randInt;
+        if(totalPlotFree > 3) {
+            for (int i = 0; i < 3; i++) {
+                totalPlotFree = nbPinkPlot + nbYellowPlot + nbGreenPlot;
+                randInt = rand.nextInt(totalPlotFree);
+
+                if (randInt < nbPinkPlot) {
+                    index = 0;
+                    nbPinkPlot--;
+                } else if (randInt > nbPinkPlot && randInt < nbPinkPlot + nbYellowPlot) {
+                    index = 1;
+                    nbYellowPlot--;
+                } else {
+                    index = 2;
+                    nbGreenPlot--;
+                }
+
+                plot = new Plot(tabColor[index]);
+
+                listP.add(plot);
+            }
+            return listP;
+        }else
+            return null;
+
+
+    }
+
+    public void giveBackPlot(ArrayList<Plot> listP){
+        Color colorPlot;
+        for(int i = 0; i<listP.size(); i++){
+            colorPlot = listP.get(i).getColor();
+            if(colorPlot.equals(Color.yellow))
+                nbYellowPlot++;
+            else if (colorPlot.equals(Color.green))
+                nbGreenPlot++;
+            else
+                nbPinkPlot++;
+        }
     }
 
 

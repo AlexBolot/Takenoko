@@ -14,7 +14,33 @@ package Oka.entities;
  . Last Modified : 18/10/17 16:30
  .................................................................................................*/
 
+import java.awt.*;
+
 public class Entity
 {
+    private Point coords;
 
+    protected Entity ()
+    {
+        coords = new Point();
+    }
+
+    public Point getCoords ()
+    {
+        return coords;
+    }
+
+    protected void setCoords (Point coords)
+    {
+        this.coords = coords;
+    }
+
+    public boolean move (Point point)
+    {
+        if (point == null) throw new IllegalArgumentException("Point is null");
+
+        this.setCoords(point);
+
+        return true;
+    }
 }
