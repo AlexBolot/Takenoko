@@ -79,11 +79,11 @@ public class Plot extends Cell {
     public String toString() {
         String stringColor = "";
         if(color.equals(Color.YELLOW)){
-            stringColor = "Yellow";
+            stringColor = "YELLOW";
         }else if (color.equals(Color.pink)){
-            stringColor = "Blue";
+            stringColor = "PINK";
         }else if (color.equals(Color.GREEN)){
-            stringColor = "Green";
+            stringColor = "GREEN";
         }
         return super.toString()+ " " + stringColor;
     }
