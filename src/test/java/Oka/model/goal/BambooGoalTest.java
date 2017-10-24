@@ -33,7 +33,7 @@ public class BambooGoalTest {
     @Test
     public void validateBorder() {
         BambooGoal bg1 = new BambooGoal(1, 1234, Color.green);
-        BambooGoal bg2 = new BambooGoal(1, -1, Color.blue);
+        BambooGoal bg2 = new BambooGoal(1, -1, Color.pink);
         BambooGoal bg3 = new BambooGoal(1, 4, Color.red);
 
         AI nAI = new AI("normal");
@@ -41,12 +41,12 @@ public class BambooGoalTest {
         AI fullAi = new AI("Full");
         Color[] colors = new Color[3];
         colors[0] = Color.green;
-        colors[1] = Color.blue;
+        colors[1] = Color.pink;
         colors[2] = Color.red;
 
         Random random = new Random();
 
-        fullAi.addBamboo(new Bamboo(Color.BLUE));
+        fullAi.addBamboo(new Bamboo(Color.pink));
         fullAi.addBamboo(new Bamboo(Color.green));
         fullAi.addBamboo(new Bamboo(Color.red));
 

@@ -30,13 +30,13 @@ public class GardenerTest
         Pond pond = new Pond();
         grid.put(pond.getCoords(), pond);
 
-        Plot plot = new Plot(new Point(1, 1), Color.BLUE);
+        Plot plot = new Plot(new Point(1, 1), Color.pink);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(0, 1), Color.BLUE);
+        plot = new Plot(new Point(0, 1), Color.pink);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(1, 0), Color.BLUE);
+        plot = new Plot(new Point(1, 0), Color.pink);
         grid.put(plot.getCoords(), plot);
 
         board.setGrid(grid);
@@ -62,7 +62,7 @@ public class GardenerTest
         plot = new Plot(new Point(0, 1), Color.green);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(1, 0), Color.blue);
+        plot = new Plot(new Point(1, 0), Color.pink);
         grid.put(plot.getCoords(), plot);
 
         board.setGrid(grid);
