@@ -7,6 +7,7 @@ import Oka.model.Vector;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
+import Oka.model.Enums;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
-import static Oka.model.Vector.Axis.*;
 
 public class GameBoard
 {
@@ -30,12 +30,12 @@ public class GameBoard
 
         grid.put(pond.getCoords(), pond);
 
-        Point point1 = new Vector(x, 1).applyVector(pond.getCoords());
-        Point point2 = new Vector(x, -1).applyVector(pond.getCoords());
-        Point point3 = new Vector(y, 1).applyVector(pond.getCoords());
-        Point point4 = new Vector(y, -1).applyVector(pond.getCoords());
-        Point point5 = new Vector(z, 1).applyVector(pond.getCoords());
-        Point point6 = new Vector(z, -1).applyVector(pond.getCoords());
+        Point point1 = new Vector(Enums.Axis.x, 1).applyVector(pond.getCoords());
+        Point point2 = new Vector(Enums.Axis.x, -1).applyVector(pond.getCoords());
+        Point point3 = new Vector(Enums.Axis.y, 1).applyVector(pond.getCoords());
+        Point point4 = new Vector(Enums.Axis.y, -1).applyVector(pond.getCoords());
+        Point point5 = new Vector(Enums.Axis.z, 1).applyVector(pond.getCoords());
+        Point point6 = new Vector(Enums.Axis.z, -1).applyVector(pond.getCoords());
 
         availableSlots.addAll(Arrays.asList(point1, point2, point3, point4, point5, point6));
 
@@ -71,7 +71,7 @@ public class GameBoard
     //TODO upgrade this on next release
     public Goal giveGoal ()
     {
-        Color tabColor[] = {Color.GREEN, Color.pink, Color.YELLOW};
+        Enums.Color tabColor[] = {Enums.Color.GREEN, Enums.Color.PINK, Enums.Color.YELLOW};
         return new BambooGoal(1, 1, tabColor[(int)Math.random()*2]);
     }
 
@@ -89,12 +89,12 @@ public class GameBoard
     public ArrayList<Point> getEveryNeihboors (Point point)
     {
         Vector[] vectors = new Vector[6];
-        vectors[0] = new Vector(Vector.Axis.x, 1);
-        vectors[1] = new Vector(Vector.Axis.x, -1);
-        vectors[2] = new Vector(Vector.Axis.y, 1);
-        vectors[3] = new Vector(Vector.Axis.y, -1);
-        vectors[4] = new Vector(Vector.Axis.z, 1);
-        vectors[5] = new Vector(Vector.Axis.z, -1);
+        vectors[0] = new Vector(Enums.Axis.x, 1);
+        vectors[1] = new Vector(Enums.Axis.x, -1);
+        vectors[2] = new Vector(Enums.Axis.y, 1);
+        vectors[3] = new Vector(Enums.Axis.y, -1);
+        vectors[4] = new Vector(Enums.Axis.z, 1);
+        vectors[5] = new Vector(Enums.Axis.z, -1);
 
         ArrayList<Point> neightbours = new ArrayList<>();
 
@@ -108,12 +108,12 @@ public class GameBoard
     public ArrayList<Cell> getExistingNeihboors (Point point)
     {
         Vector[] vectors = new Vector[6];
-        vectors[0] = new Vector(Vector.Axis.x, 1);
-        vectors[1] = new Vector(Vector.Axis.x, -1);
-        vectors[2] = new Vector(Vector.Axis.y, 1);
-        vectors[3] = new Vector(Vector.Axis.y, -1);
-        vectors[4] = new Vector(Vector.Axis.z, 1);
-        vectors[5] = new Vector(Vector.Axis.z, -1);
+        vectors[0] = new Vector(Enums.Axis.x, 1);
+        vectors[1] = new Vector(Enums.Axis.x, -1);
+        vectors[2] = new Vector(Enums.Axis.y, 1);
+        vectors[3] = new Vector(Enums.Axis.y, -1);
+        vectors[4] = new Vector(Enums.Axis.z, 1);
+        vectors[5] = new Vector(Enums.Axis.z, -1);
 
         ArrayList<Cell> neightbours = new ArrayList<>();
 

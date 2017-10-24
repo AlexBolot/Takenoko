@@ -2,6 +2,7 @@ package Oka.model.goal;
 
 import Oka.ai.AI;
 import Oka.model.Bamboo;
+import Oka.model.Enums;
 import org.junit.Test;
 
 import java.awt.*;
@@ -15,15 +16,15 @@ public class BambooGoalTest {
     @Test
     public void validateRIGHT() throws Exception {
 
-        BambooGoal bg1 = new BambooGoal(3, 1, Color.green);
-        BambooGoal bg2 = new BambooGoal(3, 2, Color.pink);
-        BambooGoal bg3 = new BambooGoal(3, 3, Color.green);
+        BambooGoal bg1 = new BambooGoal(3, 1, Enums.Color.GREEN);
+        BambooGoal bg2 = new BambooGoal(3, 2, Enums.Color.PINK);
+        BambooGoal bg3 = new BambooGoal(3, 3, Enums.Color.GREEN);
 
         AI ai = new AI("Ma");
 
         ArrayList<Bamboo> bamboos = new ArrayList<Bamboo>();
-        ai.addBamboo(new Bamboo(Color.green));
-        ai.addBamboo(new Bamboo(Color.green));
+        ai.addBamboo(new Bamboo(Enums.Color.GREEN));
+        ai.addBamboo(new Bamboo(Enums.Color.GREEN));
 
         assertTrue(bg1.validate(ai));
         assertFalse(bg2.validate(ai));
@@ -32,23 +33,23 @@ public class BambooGoalTest {
 
     @Test
     public void validateBorder() {
-        BambooGoal bg1 = new BambooGoal(1, 1234, Color.green);
-        BambooGoal bg2 = new BambooGoal(1, -1, Color.pink);
-        BambooGoal bg3 = new BambooGoal(1, 4, Color.red);
+        BambooGoal bg1 = new BambooGoal(1, 1234, Enums.Color.GREEN);
+        BambooGoal bg2 = new BambooGoal(1, -1, Enums.Color.PINK);
+        BambooGoal bg3 = new BambooGoal(1, 4, Enums.Color.PINK);
 
         AI nAI = new AI("normal");
         AI emptyAi = new AI("empty");
         AI fullAi = new AI("Full");
-        Color[] colors = new Color[3];
-        colors[0] = Color.green;
-        colors[1] = Color.pink;
-        colors[2] = Color.red;
+        Enums.Color[] colors = new Enums.Color[3];
+        colors[0] = Enums.Color.GREEN;
+        colors[1] = Enums.Color.PINK;
+        colors[2] = Enums.Color.PINK;
 
         Random random = new Random();
 
-        fullAi.addBamboo(new Bamboo(Color.pink));
-        fullAi.addBamboo(new Bamboo(Color.green));
-        fullAi.addBamboo(new Bamboo(Color.red));
+        fullAi.addBamboo(new Bamboo(Enums.Color.PINK));
+        fullAi.addBamboo(new Bamboo(Enums.Color.GREEN));
+        fullAi.addBamboo(new Bamboo(Enums.Color.PINK));
 
         for (int i = 0; i < 1000; i++) {
             fullAi.addBamboo(
@@ -67,7 +68,7 @@ public class BambooGoalTest {
     @Test(expected = NullPointerException.class)
     public void validateNull() {
 
-        BambooGoal b = new BambooGoal(1, 1, Color.green);
+        BambooGoal b = new BambooGoal(1, 1, Enums.Color.GREEN);
         b.validate(null);
     }
 }

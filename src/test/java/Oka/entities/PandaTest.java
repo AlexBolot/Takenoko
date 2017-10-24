@@ -3,6 +3,7 @@ package Oka.entities;
 import Oka.controler.GameBoard;
 import Oka.model.Bamboo;
 import Oka.model.Cell;
+import Oka.model.Enums;
 import Oka.model.plot.Plot;
 import junit.framework.TestCase;
 import org.junit.Ignore;
@@ -31,10 +32,10 @@ public class PandaTest extends TestCase
     public void testGatherBamboo ()
     {
         GameBoard board = GameBoard.getInstance();
-        Bamboo b = new Bamboo(Color.pink);
+        Bamboo b = new Bamboo(Enums.Color.PINK);
         HashMap<Point, Cell> grid = new HashMap<>();
 
-        Plot plot = new Plot(Color.pink);
+        Plot plot = new Plot(Enums.Color.PINK);
         plot.addBamboo();
 
         grid.put(plot.getCoords(), plot);

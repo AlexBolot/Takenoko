@@ -24,7 +24,7 @@ public class DrawStack {
 
             case BambooGoal:
                 Random random = new Random();
-                BambooGoal bambooGoal = new BambooGoal(2, random.nextInt(3) + 2, Color.red);
+                BambooGoal bambooGoal = new BambooGoal(2, random.nextInt(3) + 2, Enums.Color.PINK);
                 return bambooGoal;
             case PlotGoal:
                 break;
@@ -35,7 +35,7 @@ public class DrawStack {
     }
     public static ArrayList<Plot> giveTreePlot() {
         Random rand = new Random();
-        Color tabColor[] = {Color.GREEN, Color.PINK, Color.YELLOW};
+        Enums.Color tabColor[] = {Enums.Color.GREEN, Enums.Color.PINK, Enums.Color.YELLOW};
         ArrayList<Plot> listP =  new ArrayList<>();
         Plot plot;
         int totalPlotFree = nbPinkPlot + nbYellowPlot + nbGreenPlot,
@@ -69,7 +69,7 @@ public class DrawStack {
     }
 
     public void giveBackPlot(ArrayList<Plot> listP){
-        Color colorPlot;
+        Enums.Color colorPlot;
         for(int i = 0; i<listP.size(); i++){
             colorPlot = listP.get(i).getColor();
             if(colorPlot.equals(Color.yellow))

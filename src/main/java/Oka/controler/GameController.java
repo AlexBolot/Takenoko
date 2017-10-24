@@ -33,7 +33,7 @@ public class GameController
 
     public void play (ArrayList<AISimple> playable){
         int turn =0;
-        while(turn<10){
+        while(turn<30){
             Logger.printTitle("\n========== Turn "+ turn++ + " ==========\n");
         for ( AISimple ai : playable) {
             currentPlayer=ai;
@@ -41,7 +41,7 @@ public class GameController
 
             int checkGoal = ai.checkGoal();
             if (checkGoal > 0) {
-                System.out.println(ai.getName() + " WINS !!!");
+                Logger.printWin( ai.getName() + " WINS !!!");
                 return;
             }
         }

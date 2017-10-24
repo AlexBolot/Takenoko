@@ -49,7 +49,24 @@ public class Logger {
         }
 
         printStream.println(str.toString());
+
     }
+    public static void printWin (String playerName) {
+        StringBuilder str = new StringBuilder();
+        str.append("\n");
+        for (int i = 0; i < indent - 1; i++) {
+            str.append(" ");
+        }
+
+        for (int i = 0; i < 12; i++) {
+            str.append(" ");
+        }
+
+        str.append(" ").append(playerName).append(" ");
+
+        printStream.println(str.toString());
+
+    }}
 
 
 
@@ -58,7 +75,8 @@ public class Logger {
 
 
 
-}
+
+
 
 
 

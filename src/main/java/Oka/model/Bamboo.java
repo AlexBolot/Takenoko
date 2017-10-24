@@ -3,13 +3,13 @@ package Oka.model;
 import java.awt.*;
 
 public class Bamboo {
-    private final Color color;
+    private Enums.Color color;
 
-    public Bamboo(Color color) {
+    public Bamboo(Enums.Color color) {
         this.color = color;
     }
 
-    public Color getColor() {
+    public Enums.Color getColor() {
         return color;
     }
 }

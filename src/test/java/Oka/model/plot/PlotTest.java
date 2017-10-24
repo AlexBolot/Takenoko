@@ -1,6 +1,7 @@
 package Oka.model.plot;
 
 import Oka.model.Bamboo;
+import Oka.model.Enums;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -10,13 +11,13 @@ import java.util.ArrayList;
 public class PlotTest extends TestCase {
     @Test
     public void testEquals() throws Exception {
-        Plot p1 = new Plot(Color.pink);
+        Plot p1 = new Plot(Enums.Color.PINK);
         p1.setCoords(new Point(1, 0));
-        Plot p1B = new Plot(new Point(1, 0),Color.pink);
-        Plot p2 = new Plot(new Point(0, 1),Color.pink);
-        Plot p3 = new Plot(new Point(1, 0),Color.pink);
+        Plot p1B = new Plot(new Point(1, 0),Enums.Color.PINK);
+        Plot p2 = new Plot(new Point(0, 1),Enums.Color.PINK);
+        Plot p3 = new Plot(new Point(1, 0),Enums.Color.PINK);
         ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
-        bamboo.add(new Bamboo(Color.pink));
+        bamboo.add(new Bamboo(Enums.Color.PINK));
         p3.setBamboo(bamboo);
 
         assertTrue(p1.equals(p1B));
@@ -31,8 +32,8 @@ public class PlotTest extends TestCase {
     }
 
     public void testGiveBamboo() throws Exception {
-        Plot plot = new Plot(new Point(0, 1),Color.pink);
-        Bamboo b = new Bamboo(Color.pink);
+        Plot plot = new Plot(new Point(0, 1),Enums.Color.PINK);
+        Bamboo b = new Bamboo(Enums.Color.PINK);
         plot.addBamboo();
         assertEquals(b, plot.giveBamboo());
         assertEquals(null, plot.giveBamboo());

@@ -41,7 +41,7 @@ public class AISimple extends AI
                 .map(g -> (BambooGoal) g)//we cast them as such
                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
         // todo: optimise based on proximity to completion
-        Color color = bambooGoals.get(0).bamboocolor();
+        Enums.Color color = bambooGoals.get(0).bamboocolor();
         int maxBamboo = 4;
 
         for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++) {
@@ -77,7 +77,7 @@ public class AISimple extends AI
                 .map(g -> (BambooGoal) g)//we cast them as such
                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
         //todo: optimise based on proximity to completion
-        Color color = bambooGoals.get(0).bamboocolor();
+        Enums.Color color = bambooGoals.get(0).bamboocolor();
 
         for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--) {
             //noinspection Duplicates TODO will be fixed when adding logs
@@ -141,7 +141,7 @@ public class AISimple extends AI
      * @param color      Color, desired color of the tile
      * @return true if the asked tile could be found, false otherwise
      */
-    private boolean moveEntity(Entity entity, int bambooSize, Color color)
+    private boolean moveEntity(Entity entity, int bambooSize, Enums.Color color)
     {
         GameBoard gameBoard = GameBoard.getInstance();
         HashMap<Point, Cell> grid = gameBoard.getGrid();
@@ -167,7 +167,8 @@ public class AISimple extends AI
                 addGoal(GameBoard.getInstance().giveGoal());
             }
                 Logger.printSeparator(getName());
-                Logger.printLine(getName() +" - goal = " + getPendingGoals().toString());         //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
+                Logger.printLine(getName() +" - goal = " + getPendingGoals().toString());
+                Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates
                 if (new Random().nextBoolean())

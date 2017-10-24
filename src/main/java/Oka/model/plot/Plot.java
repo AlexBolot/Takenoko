@@ -2,17 +2,18 @@ package Oka.model.plot;
 
 import Oka.model.Bamboo;
 import Oka.model.Cell;
+import Oka.model.Enums;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Plot extends Cell {
     private ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
-    private Color color;
+    private Enums.Color color;
     private boolean isIrrigated;
     private PlotState state;
 
-    public Plot(Color color) {
+    public Plot(Enums.Color color) {
         super(new Point());
         this.color = color;
     }
@@ -26,7 +27,7 @@ public class Plot extends Cell {
         state = new NeutralState();
     }
 
-    public Plot(Point coords, Color color) {
+    public Plot(Point coords, Enums.Color color) {
         super(coords);
         this.color = color;
         state = new NeutralState();
@@ -42,7 +43,7 @@ public class Plot extends Cell {
         this.bamboo = bamboo;
     }
 
-    public Color getColor() {
+    public Enums.Color getColor() {
         return color;
     }
 
@@ -77,14 +78,6 @@ public class Plot extends Cell {
 
     @Override
     public String toString() {
-        String stringColor = "";
-        if(color.equals(Color.YELLOW)){
-            stringColor = "YELLOW";
-        }else if (color.equals(Color.pink)){
-            stringColor = "PINK";
-        }else if (color.equals(Color.GREEN)){
-            stringColor = "GREEN";
-        }
-        return super.toString()+ " " + stringColor;
+        return super.toString()+ " " + color;
     }
 }

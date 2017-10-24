@@ -51,9 +51,9 @@ public class VectorTest {
 
     @Test
     public void testFindStraightVector() throws Exception {
-        Vector xV = new Vector(Vector.Axis.x, 1);
-        Vector yV = new Vector(Vector.Axis.y, 1);
-        Vector nxV = new Vector(Vector.Axis.z, 1);
+        Vector xV = new Vector(Enums.Axis.x, 1);
+        Vector yV = new Vector(Enums.Axis.y, 1);
+        Vector nxV = new Vector(Enums.Axis.z, 1);
 
         assertEquals(xV, Vector.findStraightVector(o, x));
         assertEquals(yV, Vector.findStraightVector(o, y));

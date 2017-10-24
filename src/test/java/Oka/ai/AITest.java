@@ -1,6 +1,7 @@
 package Oka.ai;
 
 import Oka.model.Bamboo;
+import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
 import org.junit.Test;
@@ -17,18 +18,18 @@ public class AITest
     {
 
         ArrayList<Goal> goals = new ArrayList<>();
-        goals.add(new BambooGoal(3, 1, Color.green));
-        goals.add(new BambooGoal(3, 2, Color.green));
-        goals.add(new BambooGoal(3, 2, Color.pink));
-        goals.add(new BambooGoal(3, 3, Color.green));
-        goals.add(new BambooGoal(3, 5, Color.green));
+        goals.add(new BambooGoal(3, 1, Enums.Color.GREEN));
+        goals.add(new BambooGoal(3, 2, Enums.Color.GREEN));
+        goals.add(new BambooGoal(3, 2, Enums.Color.PINK));
+        goals.add(new BambooGoal(3, 3, Enums.Color.GREEN));
+        goals.add(new BambooGoal(3, 5, Enums.Color.GREEN));
 
         ArrayList<Bamboo> bamboos = new ArrayList<>();
-        bamboos.add(new Bamboo(Color.green));
-        bamboos.add(new Bamboo(Color.green));
-        bamboos.add(new Bamboo(Color.green));
-        bamboos.add(new Bamboo(Color.green));
-        bamboos.add(new Bamboo(Color.green));
+        bamboos.add(new Bamboo(Enums.Color.GREEN));
+        bamboos.add(new Bamboo(Enums.Color.GREEN));
+        bamboos.add(new Bamboo(Enums.Color.GREEN));
+        bamboos.add(new Bamboo(Enums.Color.GREEN));
+        bamboos.add(new Bamboo(Enums.Color.GREEN));
 
         AI AI = new AI("Ma");
 

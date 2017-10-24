@@ -4,16 +4,13 @@ import java.awt.*;
 
 public class Vector {
     private int length;
-    private Axis axis;
+    private Enums.Axis axis;
 
-    public Vector(Axis axis, int length) {
+    public Vector(Enums.Axis axis, int length) {
         this.axis = axis;
         this.length = length;
     }
 
-    public enum Axis {
-        x, y, z
-    }
 
     public Point applyVector(Point point) {
         Point newPoint = (Point) point.clone();
@@ -53,13 +50,13 @@ public class Vector {
      */
     public static Vector findStraightVector(Point point, Point point1) {
         if (point.getX() != point1.getX() && point.getY() == point1.getY()) {
-            return new Vector(Axis.x, (int) Math.abs(point1.getX() - point.getX()));
+            return new Vector(Enums.Axis.x, (int) Math.abs(point1.getX() - point.getX()));
         }
         if (point.getX() == point1.getX() && point.getY() != point1.getY()) {
-            return new Vector(Axis.y, (int) Math.abs(point1.getY() - point.getY()));
+            return new Vector(Enums.Axis.y, (int) Math.abs(point1.getY() - point.getY()));
         }
         if (point.getX() - point1.getX() == -(point.getY() - point1.getY())) {
-            return new Vector(Axis.z, (int) Math.abs(point1.getX() - point.getX()));
+            return new Vector(Enums.Axis.z, (int) Math.abs(point1.getX() - point.getX()));
         }
         return null;
     }

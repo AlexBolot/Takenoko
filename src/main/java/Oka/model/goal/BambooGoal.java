@@ -16,6 +16,7 @@ package Oka.model.goal;
 
 import Oka.ai.AI;
 import Oka.model.Bamboo;
+import Oka.model.Enums;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,20 +24,20 @@ import java.util.stream.Stream;
 
 public class BambooGoal extends Goal {
     private int bambooAmount;
-    private Color bambooColor;
+    private Enums.Color bambooColor;
 
     public void setBambooAmount(int bambooAmount) {
         this.bambooAmount = bambooAmount;
     }
 
-    public BambooGoal(int value, int bambooAmount, Color bambooColor) {
+    public BambooGoal(int value, int bambooAmount, Enums.Color bambooColor) {
         super(value);
         this.bambooAmount = bambooAmount;
         this.bambooColor = bambooColor;
     }
 
     public String toString(){
-        return super.toString() +"bambooAmount = "+bambooAmount;
+        return super.toString() +" bambooAmount = "+bambooAmount +" bambooColor = " + bambooColor;
     }
 
     public int getBambooAmount() {
@@ -53,7 +54,7 @@ public class BambooGoal extends Goal {
 
     }
 
-    public Color bamboocolor() {
+    public Enums.Color bamboocolor() {
         return bambooColor;
     }
 }

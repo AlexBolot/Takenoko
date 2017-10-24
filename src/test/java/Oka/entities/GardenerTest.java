@@ -2,6 +2,7 @@ package Oka.entities;
 
 import Oka.controler.GameBoard;
 import Oka.model.Cell;
+import Oka.model.Enums;
 import Oka.model.Pond;
 import Oka.model.plot.Plot;
 import org.junit.Before;
@@ -30,13 +31,13 @@ public class GardenerTest
         Pond pond = new Pond();
         grid.put(pond.getCoords(), pond);
 
-        Plot plot = new Plot(new Point(1, 1), Color.pink);
+        Plot plot = new Plot(new Point(1, 1), Enums.Color.PINK);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(0, 1), Color.pink);
+        plot = new Plot(new Point(0, 1), Enums.Color.PINK);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(1, 0), Color.pink);
+        plot = new Plot(new Point(1, 0), Enums.Color.PINK);
         grid.put(plot.getCoords(), plot);
 
         board.setGrid(grid);
@@ -56,13 +57,13 @@ public class GardenerTest
         Pond pond = new Pond();
         grid.put(pond.getCoords(), pond);
 
-        Plot plot = new Plot(new Point(1, 1), Color.green);
+        Plot plot = new Plot(new Point(1, 1), Enums.Color.GREEN);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(0, 1), Color.green);
+        plot = new Plot(new Point(0, 1), Enums.Color.GREEN);
         grid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(1, 0), Color.pink);
+        plot = new Plot(new Point(1, 0), Enums.Color.PINK);
         grid.put(plot.getCoords(), plot);
 
         board.setGrid(grid);
