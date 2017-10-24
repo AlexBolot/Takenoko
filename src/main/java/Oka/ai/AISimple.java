@@ -6,6 +6,7 @@ import Oka.entities.Entity;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Cell;
+import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.plot.Plot;
 import Oka.utils.Logger;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 public class AISimple extends AI
 {
+
 
     public AISimple (String name) {
         super(name);
@@ -46,6 +48,7 @@ public class AISimple extends AI
             //noinspection Duplicates TODO will be fixed when adding logs
             if (moveEntity(gardener, bambooSize,color)) {
                 Cell cell = grid.get(gardener.getCoords());
+                Logger.printLine("moved gardener : " + gardener.getCoords());
 
                 if (cell instanceof Plot) {
                     //Temporary, will be used for logs (see OKA-56)
@@ -76,10 +79,10 @@ public class AISimple extends AI
         //todo: optimise based on proximity to completion
         Color color = bambooGoals.get(0).bamboocolor();
 
-        for (int bambooSize = maxBamboo; bambooSize > 0; bambooSize--) {
+        for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--) {
             //noinspection Duplicates TODO will be fixed when adding logs
             if (moveEntity(panda, bambooSize,color)) {
-                Logger.printLine("moved gardener : " + panda.getCoords());
+                Logger.printLine("moved panda : " + panda.getCoords());
 
                 Cell cell = grid.get(panda.getCoords());
 
@@ -87,7 +90,6 @@ public class AISimple extends AI
                     //TODO Temporary, will be used for logs (see OKA-56)
                     Plot plot = (Plot) cell;
                 }
-
                 return true;
             }
 
@@ -151,11 +153,39 @@ public class AISimple extends AI
 
             Plot plot = (Plot) grid.get(point);
 
-            if (plot.getBamboo().size() == bambooSize && plot.getColor().equals(color) && gameBoard.moveEntity(entity, point)) {
+            if (plot.getBamboo().size() == bambooSize  && plot.getColor().equals(color) && gameBoard.moveEntity(entity, point)) {
                 return true;
             }
         }
 
         return false;
     }
-}
+    public  void play (){
+             placePlot();
+
+            if (getGoals().size()==0){
+                addGoal(GameBoard.getInstance().giveGoal());
+            }
+                Logger.printSeparator(getName());
+                Logger.printLine(getName() +" - goal = " + getPendingGoals().toString());         //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
+
+                //noinspection Duplicates
+                if (new Random().nextBoolean())
+                {
+                    moveGardener();
+                }
+                else
+                {
+                    movePanda();
+
+                }
+        Logger.printLine(getName() +" - bamboos = " + getBamboos().size());
+
+            }
+
+        }
+
+
+
+
+
