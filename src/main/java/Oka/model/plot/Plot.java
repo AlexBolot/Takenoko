@@ -3,6 +3,7 @@ package Oka.model.plot;
 import Oka.model.Bamboo;
 import Oka.model.Cell;
 import Oka.model.Enums;
+import Oka.model.plot.state.NeutralState;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,11 +12,24 @@ public class Plot extends Cell {
     private ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
     private Enums.Color color;
     private boolean isIrrigated;
-    private PlotState state;
+    private NeutralState state;
 
+    public boolean isIrrigated() {
+        return isIrrigated || state.getIsIrrigated();
+    }
+
+    public void setIsIrrigated(boolean bool){
+        this.isIrrigated = bool;
+    }
     public Plot(Enums.Color color) {
         super(new Point());
         this.color = color;
+        this.state = new NeutralState();
+    }
+    public Plot(Enums.Color color, NeutralState state){
+        super(new Point());
+        this.color = color;
+        this.state = state;
     }
 
     public ArrayList<Bamboo> getBamboo () {
@@ -36,7 +50,10 @@ public class Plot extends Cell {
 
     public void addBamboo ()
     {
-        if (this.bamboo.size() < 4) this.bamboo.add(new Bamboo(this.color));
+        for(int i=0; i<state.getHowManyaddBambo(); i++) {
+            if (this.bamboo.size() < 4)
+                this.bamboo.add(new Bamboo(this.color));
+        }
     }
 
     public void setBamboo(ArrayList<Bamboo> bamboo) {
@@ -54,7 +71,7 @@ public class Plot extends Cell {
      * @return Bamboo
      */
     public Bamboo giveBamboo() {
-        if (bamboo.size() == 0) return null;
+        if (bamboo.size() == 0 || !state.authorizationGetBamboo()) return null;
         return bamboo.remove(bamboo.size() - 1);
     }
 

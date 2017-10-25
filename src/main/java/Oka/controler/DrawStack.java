@@ -49,7 +49,7 @@ public class DrawStack {
                 if (randInt < nbPinkPlot) {
                     index = 0;
                     nbPinkPlot--;
-                } else if (randInt > nbPinkPlot && randInt < nbPinkPlot + nbYellowPlot) {
+                } else if (randInt >= nbPinkPlot && randInt < nbPinkPlot + nbYellowPlot) {
                     index = 1;
                     nbYellowPlot--;
                 } else {
@@ -64,8 +64,6 @@ public class DrawStack {
             return listP;
         }else
             return null;
-
-
     }
 
     public void giveBackPlot(ArrayList<Plot> listP){
