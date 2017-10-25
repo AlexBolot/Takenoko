@@ -15,6 +15,7 @@ package Oka.model.goal;
  .................................................................................................*/
 
 import Oka.ai.AI;
+import Oka.ai.BambooHolder;
 
 public abstract class Goal {
     private final int     value;
@@ -39,7 +40,7 @@ public abstract class Goal {
         return value;
     }
 
-    public boolean validate (AI AI)
+    public boolean validate (BambooHolder bambooHolder)
     {
         return false;
     }

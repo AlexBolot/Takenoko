@@ -36,7 +36,7 @@ public class AISimple extends AI
     public boolean moveGardener () {
         Gardener gardener = Gardener.getInstance();
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
-        ArrayList<BambooGoal> bambooGoals = this.getPendingGoals().stream()
+        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false).stream()
                 .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
                 .map(g -> (BambooGoal) g)//we cast them as such
                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
@@ -72,7 +72,7 @@ public class AISimple extends AI
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
         int maxBamboo = 4;
-        ArrayList<BambooGoal> bambooGoals = this.getPendingGoals().stream()
+        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false).stream()
                 .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
                 .map(g -> (BambooGoal) g)//we cast them as such
                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
@@ -167,7 +167,7 @@ public class AISimple extends AI
                 addGoal(GameBoard.getInstance().giveGoal());
             }
                 Logger.printSeparator(getName());
-                Logger.printLine(getName() +" - goal = " + getPendingGoals().toString());
+                Logger.printLine(getName() +" - goal = " + getGoalValidated(false).toString());         //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid())
                 Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates

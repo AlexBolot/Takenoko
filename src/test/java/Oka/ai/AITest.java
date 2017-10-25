@@ -24,13 +24,6 @@ public class AITest
         goals.add(new BambooGoal(3, 3, Enums.Color.GREEN));
         goals.add(new BambooGoal(3, 5, Enums.Color.GREEN));
 
-        ArrayList<Bamboo> bamboos = new ArrayList<>();
-        bamboos.add(new Bamboo(Enums.Color.GREEN));
-        bamboos.add(new Bamboo(Enums.Color.GREEN));
-        bamboos.add(new Bamboo(Enums.Color.GREEN));
-        bamboos.add(new Bamboo(Enums.Color.GREEN));
-        bamboos.add(new Bamboo(Enums.Color.GREEN));
-
         AI AI = new AI("Ma");
 
         for (Goal goal : goals)
@@ -38,15 +31,15 @@ public class AITest
             AI.addGoal(goal);
         }
 
-        for (Bamboo bamboo : bamboos)
+        for (int i = 0; i < 5; i++)
         {
-            AI.addBamboo(bamboo);
+            AI.addBamboo(Enums.Color.GREEN);
         }
 
         AI.checkGoal();
 
         assertEquals(5, AI.getGoals().size());
-        assertEquals(2, AI.getDoneGoals().size());
-        assertEquals(3, AI.getPendingGoals().size());
+        assertEquals(2, AI.getGoalValidated(true).size());
+        assertEquals(3, AI.getGoalValidated(false).size());
     }
 }

@@ -1,9 +1,10 @@
 package Oka.ai;
 
 import Oka.model.Bamboo;
-import Oka.model.goal.BambooGoal;
+import Oka.model.Enums;
 import Oka.model.goal.Goal;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class AI
@@ -11,8 +12,8 @@ public class AI
 
     private int actionsLeft;
     private String name;
-    private ArrayList<Bamboo> bamboos = new ArrayList<Bamboo>();
-    private ArrayList<Goal>   goals   = new ArrayList<>();
+    private BambooHolder bambooholder = new BambooHolder();
+    private GoalHolder   goalholder   = new GoalHolder();
 
     public AI(String name){
         this.name=name;
@@ -28,24 +29,24 @@ public class AI
         this.actionsLeft = actionsLeft;
     }
 
-    public ArrayList<Bamboo> getBamboos ()
+    public BambooHolder getBamboos ()
     {
-        return bamboos;
+        return bambooholder;
     }
 
-    public void addBamboo (Bamboo bamboo)
+    public void addBamboo (Enums.Color color)
     {
-        this.bamboos.add(bamboo);
+        this.bambooholder.addBamboo(color);
     }
 
     public ArrayList<Goal> getGoals ()
     {
-        return goals;
+        return goalholder;
     }
 
     public void addGoal (Goal goal)
     {
-        this.goals.add(goal);
+        this.goalholder.addGoal(goal);
     }
 
     public String getName () {
@@ -56,49 +57,14 @@ public class AI
         this.name = name;
     }
 
-    public ArrayList<Goal> getDoneGoals ()
+    public ArrayList<Goal> getGoalValidated(boolean validated)
     {
-        ArrayList<Goal> doneGoals = new ArrayList<>();
-
-        for (Goal goal : goals)
-        {
-            if (goal.isValidated()) doneGoals.add(goal);
-        }
-
-        return doneGoals;
-    }
-
-    public ArrayList<Goal> getPendingGoals ()
-    {
-        ArrayList<Goal> pendingGoals = new ArrayList<>();
-
-        for (Goal goal : goals)
-        {
-            if (!goal.isValidated()) pendingGoals.add(goal);
-        }
-
-        return pendingGoals;
+        return goalholder.getGoalValidated(validated);
     }
 
     public int checkGoal ()
     {
-        for (Goal goal : goals)
-        {
-            if (!goal.isValidated() && goal.validate(this))
-            {
-                goal.setValidated(true);
-
-                if (goal instanceof BambooGoal)
-                {
-                    for (int j = 0; j < ((BambooGoal) goal).getBambooAmount(); j++)
-                    {
-                        bamboos.remove(bamboos.size() - 1);
-                    }
-                }
-            }
-        }
-
-        return getDoneGoals().size();
+        return goalholder.checkGoal(bambooholder).size();
     }
 }
 

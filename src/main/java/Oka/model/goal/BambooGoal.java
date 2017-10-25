@@ -15,6 +15,8 @@ package Oka.model.goal;
  .................................................................................................*/
 
 import Oka.ai.AI;
+import Oka.ai.BambooHolder;
+import Oka.ai.GoalHolder;
 import Oka.model.Bamboo;
 import Oka.model.Enums;
 
@@ -25,6 +27,10 @@ import java.util.stream.Stream;
 public class BambooGoal extends Goal {
     private int bambooAmount;
     private Enums.Color bambooColor;
+
+    public Enums.Color getBambooColor() {
+        return bambooColor;
+    }
 
     public void setBambooAmount(int bambooAmount) {
         this.bambooAmount = bambooAmount;
@@ -44,14 +50,8 @@ public class BambooGoal extends Goal {
         return bambooAmount;
     }
 
-    public boolean validate(AI AI) {
-        ArrayList<Bamboo> listBamboo = AI.getBamboos();
-        Stream rightBamboos = listBamboo
-                .stream()
-                .filter(b -> b.getColor().equals(this.bambooColor));
-        int nbBamboo = (int) rightBamboos.count();
-        return nbBamboo >= bambooAmount;
-
+    public boolean validate(BambooHolder bambooHolder) {
+        return bambooHolder.countBamboo(bambooColor) >= bambooAmount;
     }
 
     public Enums.Color bamboocolor() {
