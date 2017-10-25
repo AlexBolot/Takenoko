@@ -161,8 +161,10 @@ public class AISimple extends AI
         return false;
     }
     public  void play (){
-             placePlot();
+        setActionsLeft(2);
 
+
+            while (actionsLeft>0){
             if (getGoals().size()==0){
                 addGoal(GameBoard.getInstance().giveGoal());
             }
@@ -171,22 +173,55 @@ public class AISimple extends AI
                 //Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates
+                placePlot();
+                actionsLeft--;
                 if (new Random().nextBoolean())
                 {
                     moveGardener();
+                    actionsLeft--;
                 }
                 else
                 {
                     movePanda();
+                    actionsLeft--;
 
                 }
         Logger.printLine(getName() +" - bamboos = " + getBamboos().size());
 
             }
 
-        }
+        }}
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Release 5 dés switch (dés.draw()){
+            case 1:setActionsLeft(3);
+                break;
+            case 2: .
+                break;
+            case 3: moveGardener();
+                break;
+            case 4: movePanda();
+                break;
+            case 5: DrawAmenagement();
+                break;
+            case 6:
+                IA.Choosedés();
+                break;} */
