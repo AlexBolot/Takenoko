@@ -1,40 +1,40 @@
 package Oka.ai;
 
+import Oka.entities.Gardener;
+import Oka.model.Bamboo;
 import Oka.model.goal.BambooGoal;
+import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
-public class GoalHolder extends ArrayList{
+import static java.util.stream.Collectors.toList;
+
+public class GoalHolder extends ArrayList<Goal>{
 
     public ArrayList<Goal> getGoalValidated(boolean validate){
-        BambooGoal bambooGoal;
         ArrayList<Goal> listGoal = new ArrayList<>();
 
-        for(Object o : this){
-            bambooGoal = (BambooGoal) o;
-            if( (bambooGoal.isValidated() && validate) || (!bambooGoal.isValidated() && !validate) )
-                listGoal.add(bambooGoal);
+        for(Goal goal : this){
+            if( (goal.isValidated() && validate) || (!goal.isValidated() && !validate) )
+                listGoal.add(goal);
         }
         return listGoal;
     }
 
-    public BambooHolder checkGoal(BambooHolder bambooHolder){
-        Goal goal;
-        for(Object o : this) {
-            goal = (Goal) o;
-
-            if (!goal.isValidated() && goal.validate(bambooHolder)) {
-                goal.setValidated(true);
-                if (goal instanceof BambooGoal) {
-                    BambooGoal bambooGoal = (BambooGoal) goal;
-                    bambooHolder.removeByColor(bambooGoal.getBambooColor(),bambooGoal.getBambooAmount());
+    public void checkGoal(BambooHolder bambooHolder){
+        this.forEach(goal -> {
+            if (!goal.isValidated()){
+                if (goal instanceof BambooGoal){
+                    goal.validate(bambooHolder);
+                }
+                else if (goal instanceof GardenerGoal) {
+                    ((GardenerGoal) goal).validate();
                 }
             }
-        }
-        return bambooHolder;
+        });
     }
-
     public void addGoal(Goal goal){
         this.add(goal);
     }

@@ -59,12 +59,16 @@ public class AI
 
     public ArrayList<Goal> getGoalValidated(boolean validated)
     {
-        return goalholder.getGoalValidated(validated);
+        return new ArrayList<Goal>(goalholder.getGoalValidated(validated));
     }
 
     public int checkGoal ()
     {
-        return goalholder.checkGoal(bambooholder).size();
+        goalholder.checkGoal(bambooholder);
+        return goalholder.getGoalValidated(true).size();
+
     }
+
+
 }
 

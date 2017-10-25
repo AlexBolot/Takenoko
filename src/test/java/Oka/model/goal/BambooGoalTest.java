@@ -24,11 +24,14 @@ public class BambooGoalTest {
         AI ai = new AI("Ma");
         ai.addBamboo(Enums.Color.GREEN);
         ai.addBamboo(Enums.Color.GREEN);
-
-        assertTrue(bg1.validate(ai.getBamboos()));
-        assertFalse(bg2.validate(ai.getBamboos()));
-        assertTrue(bg3.validate(ai.getBamboos()));
-        assertFalse(bg4.validate(ai.getBamboos()));
+        bg1.validate(ai.getBamboos());
+        assertTrue(bg1.isValidated());
+        bg2.validate(ai.getBamboos());
+        assertFalse(bg2.isValidated());
+        bg3.validate(ai.getBamboos());
+        assertTrue(bg3.isValidated());
+        bg4.validate(ai.getBamboos());
+        assertFalse(bg4.isValidated());
     }
 
     @Test
@@ -54,12 +57,16 @@ public class BambooGoalTest {
         for (int i = 0; i < 1000; i++) {
             fullAi.addBamboo(colors[random.nextInt(colors.length)]);
         }
-
-        assertTrue(bg2.validate(nAI.getBamboos()));
-        assertTrue(bg3.validate(fullAi.getBamboos()));
-        assertTrue(bg2.validate(emptyAi.getBamboos()));
-        assertFalse(bg1.validate(nAI.getBamboos()));
-        assertFalse(bg1.validate(fullAi.getBamboos()));
+        bg2.validate(nAI.getBamboos());
+        assertTrue(bg2.isValidated());
+        bg3.validate(fullAi.getBamboos());
+        assertTrue(bg3.isValidated());
+        bg2.validate(emptyAi.getBamboos());
+        assertTrue(bg2.isValidated());
+        bg1.validate(nAI.getBamboos());
+        assertFalse(bg1.isValidated());
+        bg1.validate(fullAi.getBamboos());
+        assertFalse(bg1.isValidated());
 
     }
 

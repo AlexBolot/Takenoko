@@ -2,14 +2,13 @@ package Oka.controler;
 
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
+import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-
-import static Oka.model.Enums.goalType.BambooGoal;
 
 public class DrawStack {
     private static final int MaxBambooGoal = 10;
@@ -20,16 +19,17 @@ public class DrawStack {
 
 
     public static Goal drawGoal(Enums.goalType goalType) {
+        Random random = new Random();
         switch (goalType) {
 
             case BambooGoal:
-                Random random = new Random();
                 BambooGoal bambooGoal = new BambooGoal(2, random.nextInt(3) + 2, Enums.Color.PINK);
                 return bambooGoal;
             case PlotGoal:
                 break;
-            case GardenGoal:
-                break;
+            case GardenerGoal:
+                GardenerGoal gardenerGoal = new GardenerGoal(2,random.nextInt(3)+1,Enums.Color.PINK);
+                return gardenerGoal;
         }
         return null;
     }

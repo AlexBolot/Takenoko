@@ -50,8 +50,11 @@ public class BambooGoal extends Goal {
         return bambooAmount;
     }
 
-    public boolean validate(BambooHolder bambooHolder) {
-        return bambooHolder.countBamboo(bambooColor) >= bambooAmount;
+    public void validate(BambooHolder bambooHolder) {
+        if (bambooHolder.countBamboo(bambooColor) >= bambooAmount){
+            setValidated(true);
+            bambooHolder.removeByColor(bambooColor,bambooAmount);
+        }
     }
 
     public Enums.Color bamboocolor() {

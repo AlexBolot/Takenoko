@@ -40,9 +40,9 @@ public abstract class Goal {
         return value;
     }
 
-    public boolean validate (BambooHolder bambooHolder)
+    public void validate (BambooHolder bambooHolder)
     {
-        return false;
+
     }
 
     public String toString(){

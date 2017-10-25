@@ -77,7 +77,8 @@ public class AISimple extends AI
                 .map(g -> (BambooGoal) g)//we cast them as such
                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
         //todo: optimise based on proximity to completion
-        Enums.Color color = bambooGoals.get(0).bamboocolor();
+        Enums.Color color;
+        color = bambooGoals.get(0).bamboocolor();
 
         for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--) {
             //noinspection Duplicates TODO will be fixed when adding logs
@@ -166,11 +167,13 @@ public class AISimple extends AI
 
             while (actionsLeft>0){
             if (getGoals().size()==0){
-                addGoal(GameBoard.getInstance().giveGoal());
+                addGoal(DrawStack.drawGoal(Enums.goalType.GardenerGoal));
+                addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
             }
                 Logger.printSeparator(getName());
-                Logger.printLine(getName() +" - goal = " + getGoalValidated(false).toString());         //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid())
-                Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
+                Logger.printLine(getName() +" - goal = " + getGoalValidated(false).toString());
+                //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid())
+
 
                 //noinspection Duplicates
                 placePlot();
