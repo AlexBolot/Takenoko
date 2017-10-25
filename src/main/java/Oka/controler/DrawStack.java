@@ -13,9 +13,9 @@ import java.util.Random;
 public class DrawStack {
     private static final int MaxBambooGoal = 10;
 
-    private static int nbPinkPlot = 7;
-    private static int nbYellowPlot = 9;
-    private static int nbGreenPlot = 11;
+    private static int nbPinkPlot = Enums.DrawStack.nbPinkPlot.getNb();
+    private static int nbYellowPlot = Enums.DrawStack.nbYellowPlot.getNb();
+    private static int nbGreenPlot = Enums.DrawStack.nbGreenPlot.getNb();
 
 
     public static Goal drawGoal(Enums.goalType goalType) {
@@ -49,7 +49,7 @@ public class DrawStack {
                 if (randInt < nbPinkPlot) {
                     index = 0;
                     nbPinkPlot--;
-                } else if (randInt > nbPinkPlot && randInt < nbPinkPlot + nbYellowPlot) {
+                } else if (randInt >= nbPinkPlot && randInt < nbPinkPlot + nbYellowPlot) {
                     index = 1;
                     nbYellowPlot--;
                 } else {
@@ -64,8 +64,6 @@ public class DrawStack {
             return listP;
         }else
             return null;
-
-
     }
 
     public void giveBackPlot(ArrayList<Plot> listP){
