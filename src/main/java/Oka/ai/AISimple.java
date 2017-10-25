@@ -168,7 +168,7 @@ public class AISimple extends AI
             }
                 Logger.printSeparator(getName());
                 Logger.printLine(getName() +" - goal = " + getGoalValidated(false).toString());         //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid())
-                Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
+                //Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid());
 
                 //noinspection Duplicates
                 if (new Random().nextBoolean())

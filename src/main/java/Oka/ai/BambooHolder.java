@@ -2,12 +2,10 @@ package Oka.ai;
 
 import Oka.model.Bamboo;
 
-import java.awt.*;
 import Oka.model.Enums;
 import java.util.ArrayList;
 
 public class BambooHolder extends ArrayList {
-
 
     public int countBamboo(Enums.Color color) {
         int countBamboo = 0;
@@ -32,5 +30,4 @@ public class BambooHolder extends ArrayList {
     public void addBamboo(Enums.Color color){
         this.add(new Bamboo((color)));
     }
-
 }
