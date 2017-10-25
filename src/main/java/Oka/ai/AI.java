@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class AI
 {
 
-    private int actionsLeft;
+    protected int actionsLeft;
     private String name;
     private BambooHolder bambooholder = new BambooHolder();
     private GoalHolder   goalholder   = new GoalHolder();
