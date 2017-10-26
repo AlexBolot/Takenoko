@@ -32,7 +32,7 @@ public class GameController
     public void play (ArrayList<AISimple> playable){
         int turn =0;
         while(turn<30){
-            Logger.printTitle("\n========== Turn "+ turn++ + " ==========\n");
+            Logger.printTitle("\n========== Turn "+ ++turn + " ==========\n");
         for ( AISimple ai : playable) {
             currentPlayer=ai;
             ai.play();
