@@ -51,4 +51,14 @@ public class GameController
     {
         return currentPlayer;
     }
+
+    public void setListPlayer (ArrayList<AISimple> listPlayer)
+    {
+        this.listPlayer = listPlayer;
+    }
+
+    public void setCurrentPlayer (AISimple currentPlayer)
+    {
+        this.currentPlayer = currentPlayer;
+    }
 }

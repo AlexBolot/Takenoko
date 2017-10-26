@@ -55,6 +55,11 @@ public class GameBoard
         this.grid = grid;
     }
 
+    public void setAvailableSlots (ArrayList<Point> availableSlots)
+    {
+        this.availableSlots = availableSlots;
+    }
+
     public void addCell (Cell cell)
     {
         assertNotOnGrid(cell.getCoords());

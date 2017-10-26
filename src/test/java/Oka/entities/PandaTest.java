@@ -17,6 +17,7 @@ public class PandaTest extends TestCase
 {
     private Panda panda = Panda.getInstance();
 
+
     public void testGetAndSetCoords () throws Exception
     {
         Point p1 = panda.getCoords();
