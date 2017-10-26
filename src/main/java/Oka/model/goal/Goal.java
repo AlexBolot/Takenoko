@@ -14,7 +14,6 @@ package Oka.model.goal;
  . Last Modified : 14/10/17 22:27
  .................................................................................................*/
 
-import Oka.ai.AI;
 import Oka.ai.BambooHolder;
 
 public abstract class Goal {

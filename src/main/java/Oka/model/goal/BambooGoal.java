@@ -14,15 +14,8 @@ package Oka.model.goal;
  . Last Modified : 16/10/17 14:11
  .................................................................................................*/
 
-import Oka.ai.AI;
 import Oka.ai.BambooHolder;
-import Oka.ai.GoalHolder;
-import Oka.model.Bamboo;
 import Oka.model.Enums;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.stream.Stream;
 
 public class BambooGoal extends Goal {
     private int bambooAmount;

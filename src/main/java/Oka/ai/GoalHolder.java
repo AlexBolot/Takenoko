@@ -1,15 +1,10 @@
 package Oka.ai;
 
-import Oka.entities.Gardener;
-import Oka.model.Bamboo;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 public class GoalHolder extends ArrayList<Goal>{
 

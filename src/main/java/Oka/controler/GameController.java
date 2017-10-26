@@ -15,8 +15,6 @@ package Oka.controler;
  .................................................................................................*/
 
 import Oka.ai.AISimple;
-import Oka.entities.Gardener;
-import Oka.entities.Panda;
 import Oka.utils.Logger;
 
 import java.util.ArrayList;

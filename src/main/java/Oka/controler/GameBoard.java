@@ -2,18 +2,16 @@ package Oka.controler;
 
 import Oka.entities.Entity;
 import Oka.model.Cell;
+import Oka.model.Enums;
 import Oka.model.Pond;
 import Oka.model.Vector;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
-import Oka.model.plot.Plot;
-import Oka.model.Enums;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Random;
 
 
 public class GameBoard

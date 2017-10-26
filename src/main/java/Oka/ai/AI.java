@@ -1,10 +1,8 @@
 package Oka.ai;
 
-import Oka.model.Bamboo;
 import Oka.model.Enums;
 import Oka.model.goal.Goal;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class AI
