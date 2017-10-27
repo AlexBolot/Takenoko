@@ -6,6 +6,11 @@ public class Logger {
     private static PrintStream printStream = System.out;
     private static int indent = 1;
 
+    public static void setPrintStream (PrintStream printStream)
+    {
+        Logger.printStream = printStream;
+    }
+
     public static void printLine (String string)
     {
         StringBuilder str = new StringBuilder();

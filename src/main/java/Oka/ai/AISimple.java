@@ -21,36 +21,42 @@ public class AISimple extends AI
 {
 
 
-    public AISimple (String name) {
+    public AISimple (String name)
+    {
         super(name);
     }
 
     /**
-     * moves the gardener to a desired spot
-     * chooses the spot based on the current bamboo objective
-     * returns true if it managed to move
-     * false otherwise
-     *
-     * @return boolean
+     moves the gardener to a desired spot
+     chooses the spot based on the current bamboo objective
+     returns true if it managed to move
+     false otherwise
+
+     @return boolean
      */
-    public boolean moveGardener () {
+    public boolean moveGardener ()
+    {
         Gardener gardener = Gardener.getInstance();
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
-        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false).stream()
-                .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
-                .map(g -> (BambooGoal) g)//we cast them as such
-                .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
+                                                .stream()
+                                                .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
+                                                .map(g -> (BambooGoal) g)//we cast them as such
+                                                .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
         // todo: optimise based on proximity to completion
         Enums.Color color = bambooGoals.get(0).bamboocolor();
         int maxBamboo = 4;
 
-        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++) {
+        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
+        {
             //noinspection Duplicates TODO will be fixed when adding logs
-            if (moveEntity(gardener, bambooSize,color)) {
+            if (moveEntity(gardener, bambooSize, color))
+            {
                 Cell cell = grid.get(gardener.getCoords());
-                Logger.printLine("moved gardener : " + gardener.getCoords());
+                Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
 
-                if (cell instanceof Plot) {
+                if (cell instanceof Plot)
+                {
                     //Temporary, will be used for logs (see OKA-56)
                     Plot plot = (Plot) cell;
                 }
@@ -64,29 +70,35 @@ public class AISimple extends AI
     }
 
     /**
-     * moves the panda to a tile of the desired color based on bamboogoal
-     * @return true if the tile was found, false otherwise
+     moves the panda to a tile of the desired color based on bamboogoal
+
+     @return true if the tile was found, false otherwise
      */
-    public boolean movePanda () {
+    public boolean movePanda ()
+    {
         Panda panda = Panda.getInstance();
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
         int maxBamboo = 4;
-        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false).stream()
-                .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
-                .map(g -> (BambooGoal) g)//we cast them as such
-                .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
+                                                .stream()
+                                                .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
+                                                .map(g -> (BambooGoal) g)//we cast them as such
+                                                .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
         //todo: optimise based on proximity to completion
         Enums.Color color = bambooGoals.get(0).bamboocolor();
 
-        for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--) {
+        for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
+        {
             //noinspection Duplicates TODO will be fixed when adding logs
-            if (moveEntity(panda, bambooSize,color)) {
-                Logger.printLine("moved panda : " + panda.getCoords());
+            if (moveEntity(panda, bambooSize, color))
+            {
+                Logger.printLine(getName() + " moved panda : " + panda.getCoords());
 
                 Cell cell = grid.get(panda.getCoords());
 
-                if (cell instanceof Plot) {
+                if (cell instanceof Plot)
+                {
                     //TODO Temporary, will be used for logs (see OKA-56)
                     Plot plot = (Plot) cell;
                 }
@@ -109,7 +121,8 @@ public class AISimple extends AI
         ArrayList<Plot> draw = null;
 
         // On pioche trois parcelles si possible
-        try{
+        try
+        {
             draw = drawStack.giveTreePlot();
             //tant qu'on nous renvois les même trois case
             int randInt = rand.nextInt(3);
@@ -123,7 +136,12 @@ public class AISimple extends AI
             ArrayList<Point> free = board.getAvailableSlots();
             plot.setCoords(free.get(0));
             board.addCell(plot);
-        }catch (NullPointerException e){
+
+            Logger.printLine(getName() + " placed : " + plot);
+
+        }
+        catch (NullPointerException e)
+        {
             System.out.print("IL N'Y A PLUS DE CARTE DANS LA PIOCHE");
         }
     }
@@ -134,14 +152,14 @@ public class AISimple extends AI
     }
 
     /**
-     * moves a passed entity to a spot with the desired bamboo quantity.
-     *
-     * @param entity     Entity, Panda or gardener
-     * @param bambooSize int, the desired bamboo amount on the tile
-     * @param color      Color, desired color of the tile
-     * @return true if the asked tile could be found, false otherwise
+     moves a passed entity to a spot with the desired bamboo quantity.
+
+     @param entity     Entity, Panda or gardener
+     @param bambooSize int, the desired bamboo amount on the tile
+     @param color      Color, desired color of the tile
+     @return true if the asked tile could be found, false otherwise
      */
-    private boolean moveEntity(Entity entity, int bambooSize, Enums.Color color)
+    private boolean moveEntity (Entity entity, int bambooSize, Enums.Color color)
     {
         GameBoard gameBoard = GameBoard.getInstance();
         HashMap<Point, Cell> grid = gameBoard.getGrid();
@@ -153,46 +171,52 @@ public class AISimple extends AI
 
             Plot plot = (Plot) grid.get(point);
 
-            if (plot.getBamboo().size() == bambooSize  && plot.getColor().equals(color) && gameBoard.moveEntity(entity, point)) {
+            if (plot.getBamboo().size() == bambooSize && plot.getColor().equals(color) && gameBoard.moveEntity(entity, point))
+            {
                 return true;
             }
         }
 
         return false;
     }
-    public  void play (){
+
+    public void play ()
+    {
         setActionsLeft(2);
 
 
-            while (actionsLeft>0){
-            if (getGoals().size()==0){
+        while (actionsLeft > 0)
+        {
+            if (getGoals().size() == 0)
+            {
                 addGoal(DrawStack.drawGoal(Enums.goalType.GardenerGoal));
                 addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
             }
-                Logger.printSeparator(getName());
-                Logger.printLine(getName() +" - goal = " + getGoalValidated(false).toString());
-                //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid())
+            Logger.printSeparator(getName());
+            Logger.printLine(getName() + " - goal = " + getGoalValidated(false).toString());
+            //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid())
 
 
-                //noinspection Duplicates
-                placePlot();
+            //noinspection Duplicates
+            placePlot();
+            actionsLeft--;
+            if (new Random().nextBoolean())
+            {
+                moveGardener();
                 actionsLeft--;
-                if (new Random().nextBoolean())
-                {
-                    moveGardener();
-                    actionsLeft--;
-                }
-                else
-                {
-                    movePanda();
-                    actionsLeft--;
-
-                }
-        Logger.printLine(getName() +" - bamboos = " + getBamboos().size());
+            }
+            else
+            {
+                movePanda();
+                actionsLeft--;
 
             }
+            Logger.printLine(getName() + " - bamboos = " + getBamboos().size());
 
-        }}
+        }
+
+    }
+}
 
 
 

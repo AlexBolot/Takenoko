@@ -5,12 +5,9 @@ import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Pond;
 import Oka.model.Vector;
-import Oka.model.goal.BambooGoal;
-import Oka.model.goal.Goal;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 
@@ -21,23 +18,11 @@ public class GameBoard
     private HashMap<Point, Cell> grid           = new HashMap<>();
     private ArrayList<Point>     availableSlots = new ArrayList<>();
 
-
     private GameBoard ()
     {
-        Pond pond = new Pond();
+        availableSlots.add(new Point());
 
-        grid.put(pond.getCoords(), pond);
-
-        Point point1 = new Vector(Enums.Axis.x, 1).applyVector(pond.getCoords());
-        Point point2 = new Vector(Enums.Axis.x, -1).applyVector(pond.getCoords());
-        Point point3 = new Vector(Enums.Axis.y, 1).applyVector(pond.getCoords());
-        Point point4 = new Vector(Enums.Axis.y, -1).applyVector(pond.getCoords());
-        Point point5 = new Vector(Enums.Axis.z, 1).applyVector(pond.getCoords());
-        Point point6 = new Vector(Enums.Axis.z, -1).applyVector(pond.getCoords());
-
-        availableSlots.addAll(Arrays.asList(point1, point2, point3, point4, point5, point6));
-
-
+        addCell(new Pond());
     }
 
     public static GameBoard getInstance ()
@@ -71,13 +56,6 @@ public class GameBoard
         refreshAvailableSlots(cell);
     }
 
-    //TODO upgrade this on next release
-    public Goal giveGoal ()
-    {
-        Enums.Color tabColor[] = {Enums.Color.GREEN, Enums.Color.PINK, Enums.Color.YELLOW};
-        return new BambooGoal(1, 1, tabColor[(int)Math.random()*2]);
-    }
-
     /**
      should return all the possible slots where a tile may be layed
      todo : implement
@@ -108,6 +86,7 @@ public class GameBoard
 
         return neightbours;
     }
+
     public ArrayList<Cell> getExistingNeihboors (Point point)
     {
         Vector[] vectors = new Vector[6];
@@ -122,8 +101,7 @@ public class GameBoard
 
         for (Vector v : vectors)
         {
-            if(grid.containsKey(v.applyVector(point)))
-                neightbours.add(grid.get(v.applyVector(point)));
+            if (grid.containsKey(v.applyVector(point))) neightbours.add(grid.get(v.applyVector(point)));
         }
 
         return neightbours;

@@ -20,8 +20,7 @@ import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Pond;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
 
 public class Cleaner
 {
@@ -37,14 +36,22 @@ public class Cleaner
 
     public static void cleanGameBoard ()
     {
-        GameBoard.getInstance().setGrid(new HashMap<>());
-        GameBoard.getInstance().setAvailableSlots(new ArrayList<>());
+        GameBoard gameBoard = GameBoard.getInstance();
+
+        //Clear the lists
+        gameBoard.getGrid().clear();
+        gameBoard.getAvailableSlots().clear();
+
+        //Adding Pond's coords to the available slots.
+        gameBoard.getAvailableSlots().add(new Point());
+
+        //Adding the Pond to the grid.
+        gameBoard.addCell(new Pond());
     }
 
     public static void cleanGameController ()
     {
         GameController.getInstance().setCurrentPlayer(null);
-        GameController.getInstance().setListPlayer(new ArrayList<>());
     }
 
     public static void clearAll ()
