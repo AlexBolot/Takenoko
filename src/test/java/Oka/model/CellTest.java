@@ -21,18 +21,4 @@ public class CellTest extends TestCase {
         super.setUp();
     }
 
-    public void testGardenerIsHere() {
-        //Right test for gardener is here
-
-        assertTrue(center.GardenerIsHere());
-        assertFalse(side.GardenerIsHere());
-
-    }
-
-    public void testPandaIsHere() {
-        assertTrue(center.PandaIsHere());
-        assertFalse(side.PandaIsHere());
-    }
-
-
 }
