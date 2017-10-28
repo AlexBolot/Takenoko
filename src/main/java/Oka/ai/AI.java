@@ -68,7 +68,6 @@ public class AI
     }
     //endregion
 
-    //region==========EQUALS/TOSTRING======
 
 }
 

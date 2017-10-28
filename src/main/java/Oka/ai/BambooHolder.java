@@ -24,7 +24,7 @@ public class BambooHolder extends ArrayList {
         for(int i=0; i<this.size() && tabIndex.length < n; i++) {
             Bamboo bamboo = (Bamboo) this.get(i);
             if(bamboo.getColor().equals(color))
-                tabIndex[tabIndex.length] = i;
+                tabIndex[tabIndex.length-1] = i;
         }
     }
 
