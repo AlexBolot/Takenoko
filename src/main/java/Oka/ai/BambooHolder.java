@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class BambooHolder extends ArrayList {
 
+    //region==========METHODS==============
     public int countBamboo(Enums.Color color) {
         int countBamboo = 0;
         for(Object o : this){
@@ -30,4 +31,5 @@ public class BambooHolder extends ArrayList {
     public void addBamboo(Enums.Color color){
         this.add(new Bamboo((color)));
     }
+    //endregion
 }

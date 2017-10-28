@@ -9,15 +9,21 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class GardenerGoal extends Goal {
+
+    //region==========ATTRIBUTES===========
     private Enums.Color color;
     private int bambooAmount;
+    //endregion
 
+    //region==========CONSTRUCTORS=========
     public GardenerGoal (int value,int bambooAmount,Enums.Color color) {
         super(value);
         this.bambooAmount=bambooAmount;
         this.color=color;
     }
+    //endregion
 
+    //region==========GETTER/SETTER========
     public int getBambooAmount () {
         return bambooAmount;
     }
@@ -34,12 +40,9 @@ public class GardenerGoal extends Goal {
     public void setColor (Enums.Color color) {
         this.color = color;
     }
+    //endregion
 
-
-    public String toString(){
-        return super.toString() +" bambooAmount = "+bambooAmount +" plotColor = " + color;
-    }
-
+    //region==========METHODS==============
     public boolean validate(){
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
         for(Cell cell : grid.values()) {
@@ -51,5 +54,13 @@ public class GardenerGoal extends Goal {
         }
         return false;
     }
+    //endregion
+
+    //region==========EQUALS/TOSTRING======
+    public String toString(){
+        return super.toString() +" bambooAmount = "+bambooAmount +" plotColor = " + color;
+    }
+    //endregion
+
 
 }

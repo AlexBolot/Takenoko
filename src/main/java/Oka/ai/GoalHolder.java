@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class GoalHolder extends ArrayList<Goal>{
 
+    //region==========METHODS==============
     public ArrayList<Goal> getGoalValidated(boolean validate){
         ArrayList<Goal> listGoal = new ArrayList<>();
 
@@ -33,4 +34,5 @@ public class GoalHolder extends ArrayList<Goal>{
     public void addGoal(Goal goal){
         this.add(goal);
     }
+    //endregion
 }

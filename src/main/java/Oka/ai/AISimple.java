@@ -20,12 +20,14 @@ import java.util.stream.Collectors;
 public class AISimple extends AI
 {
 
-
+    //region==========CONSTRUCTORS=========
     public AISimple (String name)
     {
         super(name);
     }
+    //endregion
 
+    //region==========METHODS==============
     /**
      moves the gardener to a desired spot
      chooses the spot based on the current bamboo objective
@@ -44,7 +46,7 @@ public class AISimple extends AI
                                                 .map(g -> (BambooGoal) g)//we cast them as such
                                                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
         // todo: optimise based on proximity to completion
-        Enums.Color color = bambooGoals.get(0).bamboocolor();
+        Enums.Color color = bambooGoals.get(0).bambooColor();
         int maxBamboo = 4;
 
         for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
@@ -86,7 +88,7 @@ public class AISimple extends AI
                                                 .map(g -> (BambooGoal) g)//we cast them as such
                                                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
         //todo: optimise based on proximity to completion
-        Enums.Color color = bambooGoals.get(0).bamboocolor();
+        Enums.Color color = bambooGoals.get(0).bambooColor();
 
         for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
         {
@@ -216,6 +218,7 @@ public class AISimple extends AI
         }
 
     }
+    //endregion
 }
 
 

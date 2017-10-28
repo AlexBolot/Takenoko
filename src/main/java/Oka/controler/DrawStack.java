@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DrawStack {
-    private static final int MaxBambooGoal = 10;
 
+    //region==========ATTRIBUTES===========
+    private static final int MaxBambooGoal = 10;
     private static int nbPinkPlot = Enums.DrawStack.nbPinkPlot.getNb();
     private static int nbYellowPlot = Enums.DrawStack.nbYellowPlot.getNb();
     private static int nbGreenPlot = Enums.DrawStack.nbGreenPlot.getNb();
+    //endregion
 
-
+    //region==========METHODS==============
     public static Goal drawGoal(Enums.goalType goalType) {
         Random random = new Random();
         switch (goalType) {
@@ -78,6 +80,7 @@ public class DrawStack {
                 nbPinkPlot++;
         }
     }
+    //endregion
 
 
 }

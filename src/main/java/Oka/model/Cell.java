@@ -5,13 +5,18 @@ import java.awt.*;
 
 public class Cell
 {
+    //region==========ATTRIBUTES===========
     private Point   coords;
+    //endregion
 
+    //region==========CONSTRUCTORS=========
     public Cell (Point coords)
     {
         this.coords = coords;
     }
+    //endregion
 
+    //region==========GETTER/SETTER========
     public Point getCoords ()
     {
         return coords;
@@ -21,7 +26,9 @@ public class Cell
     {
         this.coords = coords;
     }
+    //endregion
 
+    //region==========EQUALS/TOSTRING======
     public String toString ()
     {
         return getClass().getSimpleName() + "[x=" + getCoords().x + ",y=" + getCoords().y + "]";
@@ -36,4 +43,5 @@ public class Cell
 
         return this.getCoords().getX() == c.getCoords().getX() && this.getCoords().getY() == c.getCoords().getY();
     }
+    //endregion
 }

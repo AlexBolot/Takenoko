@@ -17,19 +17,20 @@ package Oka.model.goal;
 import Oka.ai.BambooHolder;
 
 public abstract class Goal {
+
+    //region==========ATTRIBUTES===========
     private final int     value;
     private       boolean validated;
+    //endregion
 
+    //region==========CONSTRUCTORS=========
     public Goal (int value)
     {
         this.value = value;
     }
+    //endregion
 
-    public boolean isValidated ()
-    {
-        return validated;
-    }
-
+    //region==========GETTER/SETTER========
     public void setValidated (boolean validated)
     {
         this.validated = validated;
@@ -38,13 +39,24 @@ public abstract class Goal {
     public int getValue() {
         return value;
     }
+    //endregion
+
+    //region==========METHODS==============
+    public boolean isValidated ()
+    {
+        return validated;
+    }
+
 
     public void validate (BambooHolder bambooHolder)
     {
 
     }
+    //endregion
 
+    //region==========EQUALS/TOSTRING======
     public String toString(){
         return "value = "+value;
     }
+    //endregion
 }

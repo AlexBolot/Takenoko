@@ -8,8 +8,11 @@ import java.awt.*;
 
 public class Gardener extends Entity
 {
+    //region==========ATTRIBUTES===========
     private static Gardener ourInstance = new Gardener();
+    //endregion
 
+    //region==========GETTER/SETTER========
     public static Gardener getInstance ()
     {
         return ourInstance;
@@ -46,5 +49,6 @@ public class Gardener extends Entity
             }
         }
     }
+    //endregion
 }
 

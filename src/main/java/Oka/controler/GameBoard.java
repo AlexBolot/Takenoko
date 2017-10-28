@@ -13,18 +13,22 @@ import java.util.HashMap;
 
 public class GameBoard
 {
+    //region==========ATTRIBUTES===========
     private static GameBoard ourInstance = new GameBoard();
-
     private HashMap<Point, Cell> grid           = new HashMap<>();
     private ArrayList<Point>     availableSlots = new ArrayList<>();
+    //endregion
 
+    //region==========CONSTRUCTORS=========
     private GameBoard ()
     {
         availableSlots.add(new Point());
 
         addCell(new Pond());
     }
+    //endregion
 
+    //region==========GETTER/SETTER========
     public static GameBoard getInstance ()
     {
         return ourInstance;
@@ -45,17 +49,6 @@ public class GameBoard
         this.availableSlots = availableSlots;
     }
 
-    public void addCell (Cell cell)
-    {
-        assertNotOnGrid(cell.getCoords());
-        assertIsAvailable(cell.getCoords());
-
-        grid.put(cell.getCoords(), cell);
-        availableSlots.remove(cell.getCoords());
-
-        refreshAvailableSlots(cell);
-    }
-
     /**
      should return all the possible slots where a tile may be layed
      todo : implement
@@ -65,6 +58,19 @@ public class GameBoard
     public ArrayList<Point> getAvailableSlots ()
     {
         return availableSlots;
+    }
+    //endregion
+
+    //region==========METHODS==============
+    public void addCell (Cell cell)
+    {
+        assertNotOnGrid(cell.getCoords());
+        assertIsAvailable(cell.getCoords());
+
+        grid.put(cell.getCoords(), cell);
+        availableSlots.remove(cell.getCoords());
+
+        refreshAvailableSlots(cell);
     }
 
     public ArrayList<Point> getEveryNeihboors (Point point)
@@ -135,4 +141,5 @@ public class GameBoard
 
         return Vector.areAligned(entity.getCoords(), point) && entity.move(point);
     }
+    //endregion
 }

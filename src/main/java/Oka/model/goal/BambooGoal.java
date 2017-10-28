@@ -18,9 +18,21 @@ import Oka.ai.BambooHolder;
 import Oka.model.Enums;
 
 public class BambooGoal extends Goal {
+
+    //region==========ATTRIBUTES===========
     private int bambooAmount;
     private Enums.Color bambooColor;
+    //endregion
 
+    //region==========CONSTRUCTORS=========
+    public BambooGoal(int value, int bambooAmount, Enums.Color bambooColor) {
+        super(value);
+        this.bambooAmount = bambooAmount;
+        this.bambooColor = bambooColor;
+    }
+    //endregion
+
+    //region==========GETTER/SETTER========
     public Enums.Color getBambooColor() {
         return bambooColor;
     }
@@ -29,20 +41,12 @@ public class BambooGoal extends Goal {
         this.bambooAmount = bambooAmount;
     }
 
-    public BambooGoal(int value, int bambooAmount, Enums.Color bambooColor) {
-        super(value);
-        this.bambooAmount = bambooAmount;
-        this.bambooColor = bambooColor;
-    }
-
-    public String toString(){
-        return super.toString() +" bambooAmount = "+bambooAmount +" bambooColor = " + bambooColor;
-    }
-
     public int getBambooAmount() {
         return bambooAmount;
     }
+    //endregion
 
+    //region==========METHODS==============
     public void validate(BambooHolder bambooHolder) {
         if (bambooHolder.countBamboo(bambooColor) >= bambooAmount){
             setValidated(true);
@@ -50,7 +54,19 @@ public class BambooGoal extends Goal {
         }
     }
 
-    public Enums.Color bamboocolor() {
+    public Enums.Color bambooColor () {
         return bambooColor;
     }
+    //endregion
+
+    //region==========EQUALS/TOSTRING======
+    public String toString(){
+        return super.toString() +" bambooAmount = "+bambooAmount +" bambooColor = " + bambooColor;
+
+    }
+    //endregion
+
+
+
+
 }

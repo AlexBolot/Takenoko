@@ -18,13 +18,18 @@ import java.awt.*;
 
 public abstract class Entity
 {
+    //region==========ATTRIBUTES===========
     private Point coords;
+    //endregion
 
+    //region==========CONSTRUCTORS=========
     protected Entity ()
     {
         coords = new Point();
     }
+    //endregion
 
+    //region==========GETTER/SETTER========
     public Point getCoords ()
     {
         return coords;
@@ -34,7 +39,9 @@ public abstract class Entity
     {
         this.coords = coords;
     }
+    //endregion
 
+    //region==========METHODS==============
     public boolean move (Point point)
     {
         if (point == null) throw new IllegalArgumentException("Point is null");
@@ -43,4 +50,5 @@ public abstract class Entity
 
         return true;
     }
+    //endregion
 }

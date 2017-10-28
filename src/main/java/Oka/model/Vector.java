@@ -3,15 +3,20 @@ package Oka.model;
 import java.awt.*;
 
 public class Vector {
+
+    //region==========ATTRIBUTES===========
     private int length;
     private Enums.Axis axis;
+    //endregion
 
+    //region==========CONSTRUCTORS=========
     public Vector(Enums.Axis axis, int length) {
         this.axis = axis;
         this.length = length;
     }
+    //endregion
 
-
+    //region==========METHODS==============
     public Point applyVector(Point point) {
         Point newPoint = (Point) point.clone();
 
@@ -60,7 +65,9 @@ public class Vector {
         }
         return null;
     }
+    //endregion
 
+    //region==========EQUALS/TOSTRING======
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Vector)) {
@@ -69,4 +76,5 @@ public class Vector {
         Vector v = (Vector) obj;
         return v.axis.equals(this.axis) && v.length == this.length;
     }
+    //endregion
 }

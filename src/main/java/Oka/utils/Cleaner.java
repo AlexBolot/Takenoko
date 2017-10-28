@@ -24,6 +24,8 @@ import java.awt.*;
 
 public class Cleaner
 {
+
+    //region==========METHODS==============
     public static void cleanPanda ()
     {
         Panda.getInstance().setCoords(new Pond().getCoords());
@@ -61,4 +63,5 @@ public class Cleaner
         cleanGameBoard();
         cleanGameController();
     }
+    //endregion
 }

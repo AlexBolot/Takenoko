@@ -10,8 +10,11 @@ import java.awt.*;
 
 public class Panda extends Entity
 {
+    //region==========ATTRIBUTES===========
     private static Panda ourInstance = new Panda();
+    //endregion//
 
+    //region==========GETTER/SETTER========
     public static Panda getInstance ()
     {
         return ourInstance;
@@ -37,4 +40,5 @@ public class Panda extends Entity
             GameController.getInstance().getCurrentPlayer().addBamboo(bamboo.getColor());
         }
     }
+    //endregion
 }

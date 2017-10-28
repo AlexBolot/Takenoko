@@ -9,17 +9,18 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Plot extends Cell {
+
+    //region==========ATTRIBUTES===========
     private ArrayList<Bamboo> bamboo = new ArrayList<Bamboo>();
     private Enums.Color color;
     private boolean isIrrigated;
     private NeutralState state;
+    //endregion
 
-    public boolean isIrrigated() {
-        return isIrrigated || state.getIsIrrigated();
-    }
-
-    public void setIsIrrigated(boolean bool){
-        this.isIrrigated = bool;
+    //region==========CONSTRUCTORS=========
+    public Plot(Point coords) {
+        super(coords);
+        state = new NeutralState();
     }
     public Plot(Enums.Color color) {
         super(new Point());
@@ -31,21 +32,33 @@ public class Plot extends Cell {
         this.color = color;
         this.state = state;
     }
-
-    public ArrayList<Bamboo> getBamboo () {
-        return bamboo;
-    }
-
-    public Plot(Point coords) {
-        super(coords);
-        state = new NeutralState();
-    }
-
     public Plot(Point coords, Enums.Color color) {
         super(coords);
         this.color = color;
         state = new NeutralState();
         addBamboo();
+    }
+    //endregion
+
+    //region==========GETTER/SETTER========
+    public ArrayList<Bamboo> getBamboo () {
+        return bamboo;
+    }
+    public void setIsIrrigated(boolean bool){
+        this.isIrrigated = bool;
+    }
+    public void setBamboo(ArrayList<Bamboo> bamboo) {
+        this.bamboo = bamboo;
+    }
+
+    public Enums.Color getColor() {
+        return color;
+    }
+    //endregion
+
+    //region==========METHODS==============
+    public boolean isIrrigated() {
+        return isIrrigated || state.getIsIrrigated();
     }
 
     public void addBamboo ()
@@ -56,13 +69,7 @@ public class Plot extends Cell {
         }
     }
 
-    public void setBamboo(ArrayList<Bamboo> bamboo) {
-        this.bamboo = bamboo;
-    }
 
-    public Enums.Color getColor() {
-        return color;
-    }
 
     /**
      * return the top bamboo from the plot reserve and removes it
@@ -74,7 +81,9 @@ public class Plot extends Cell {
         if (bamboo.size() == 0 || !state.authorizationGetBamboo()) return null;
         return bamboo.remove(bamboo.size() - 1);
     }
+    //endregion
 
+    //region==========EQUALS/TOSTRING======
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Plot)) return false;
@@ -97,4 +106,5 @@ public class Plot extends Cell {
     public String toString() {
         return super.toString()+ " " + color;
     }
+    //endregion
 }

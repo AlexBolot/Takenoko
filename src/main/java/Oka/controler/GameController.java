@@ -21,30 +21,17 @@ import java.util.ArrayList;
 
 public class GameController
 {
+    //region==========ATTRIBUTES===========
     private static GameController gameController = new GameController();
-    private ArrayList<AISimple> listPlayer = new ArrayList<AISimple>();
-    private AISimple currentPlayer;
 
+    private ArrayList<AISimple> listPlayer = new ArrayList<AISimple>();
+
+    private AISimple currentPlayer;
+    //endregion//
+
+    //region==========GETTER/SETTER========
     public static GameController getInstance() {
         return gameController;
-    }
-
-    public void play (ArrayList<AISimple> playable){
-        int turn =0;
-        while(turn<30){
-            Logger.printTitle("\n========== Turn "+ ++turn + " ==========\n");
-        for ( AISimple ai : playable) {
-            currentPlayer=ai;
-            ai.play();
-
-            int checkGoal = ai.checkGoal();
-            if (checkGoal > 0) {
-                Logger.printWin( ai.getName() + " WINS !!!");
-                return;
-            }
-        }
-
-    }
     }
 
     public AISimple getCurrentPlayer ()
@@ -61,4 +48,26 @@ public class GameController
     {
         this.currentPlayer = currentPlayer;
     }
+    //endregion
+
+    //region==========METHODS==============
+    public void play (ArrayList<AISimple> playable){
+        int turn =0;
+        while(turn<30){
+            Logger.printTitle("\n========== Turn "+ ++turn + " ==========\n");
+            for ( AISimple ai : playable) {
+                currentPlayer=ai;
+                ai.play();
+
+                int checkGoal = ai.checkGoal();
+                if (checkGoal > 0) {
+                    Logger.printWin( ai.getName() + " WINS !!!");
+                    return;
+                }
+            }
+
+        }
+    }
+    //endregion
+
 }

@@ -3,14 +3,19 @@ package Oka.utils;
 import java.io.PrintStream;
 
 public class Logger {
+    //region==========ATTRIBUTES===========
     private static PrintStream printStream = System.out;
     private static int indent = 1;
+    //endregion
 
+    //region==========GETTER/SETTER========
     public static void setPrintStream (PrintStream printStream)
     {
         Logger.printStream = printStream;
     }
+    //endregion
 
+    //region==========METHODS==============
     public static void printLine (String string)
     {
         StringBuilder str = new StringBuilder();
@@ -71,7 +76,10 @@ public class Logger {
 
         printStream.println(str.toString());
 
-    }}
+    }
+    //endregion
+
+}
 
 
 
