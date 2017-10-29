@@ -2,10 +2,11 @@ package Oka.utils;
 
 import java.io.PrintStream;
 
-public class Logger {
+public class Logger
+{
     //region==========ATTRIBUTES===========
     private static PrintStream printStream = System.out;
-    private static int indent = 1;
+    private static int         indent      = 1;
     //endregion
 
     //region==========GETTER/SETTER========
@@ -24,6 +25,7 @@ public class Logger {
         {
             str.append(" ");
         }
+
         str.append("-> ");
 
         str.append(string);
@@ -59,26 +61,29 @@ public class Logger {
         }
 
         printStream.println(str.toString());
-
     }
-    public static void printWin (String playerName) {
+
+    public static void printWin (String playerName)
+    {
         StringBuilder str = new StringBuilder();
+
         str.append("\n");
-        for (int i = 0; i < indent - 1; i++) {
+
+        for (int i = 0; i < indent - 1; i++)
+        {
             str.append(" ");
         }
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 12; i++)
+        {
             str.append(" ");
         }
 
         str.append(" ").append(playerName).append(" ");
 
         printStream.println(str.toString());
-
     }
     //endregion
-
 }
 
 

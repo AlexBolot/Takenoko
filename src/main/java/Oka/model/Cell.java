@@ -1,12 +1,11 @@
 package Oka.model;
 
-
 import java.awt.*;
 
 public class Cell
 {
     //region==========ATTRIBUTES===========
-    private Point   coords;
+    private Point coords;
     //endregion
 
     //region==========CONSTRUCTORS=========

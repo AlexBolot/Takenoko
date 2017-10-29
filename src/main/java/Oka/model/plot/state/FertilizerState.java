@@ -1,10 +1,10 @@
 package Oka.model.plot.state;
 
-public class FertilizerState extends NeutralState {
-
+public class FertilizerState extends NeutralState
+{
     @Override
-    public int getHowManyaddBambo(){
+    public int getHowManyaddBambo ()
+    {
         return 2;
     }
-
 }

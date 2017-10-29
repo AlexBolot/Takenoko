@@ -24,24 +24,18 @@ public class GameController
     //region==========ATTRIBUTES===========
     private static GameController gameController = new GameController();
 
-    private ArrayList<AISimple> listPlayer = new ArrayList<AISimple>();
-
     private AISimple currentPlayer;
     //endregion//
 
     //region==========GETTER/SETTER========
-    public static GameController getInstance() {
+    public static GameController getInstance ()
+    {
         return gameController;
     }
 
     public AISimple getCurrentPlayer ()
     {
         return currentPlayer;
-    }
-
-    public void setListPlayer (ArrayList<AISimple> listPlayer)
-    {
-        this.listPlayer = listPlayer;
     }
 
     public void setCurrentPlayer (AISimple currentPlayer)
@@ -51,23 +45,27 @@ public class GameController
     //endregion
 
     //region==========METHODS==============
-    public void play (ArrayList<AISimple> playable){
-        int turn =0;
-        while(turn<30){
-            Logger.printTitle("\n========== Turn "+ ++turn + " ==========\n");
-            for ( AISimple ai : playable) {
-                currentPlayer=ai;
+    public void play (ArrayList<AISimple> playable)
+    {
+        int turn = 0;
+        while (turn < 30)
+        {
+            Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
+
+            for (AISimple ai : playable)
+            {
+                currentPlayer = ai;
                 ai.play();
 
                 int checkGoal = ai.checkGoal();
-                if (checkGoal > 0) {
-                    Logger.printWin( ai.getName() + " WINS !!!");
+
+                if (checkGoal > 0)
+                {
+                    Logger.printWin(ai.getName() + " WINS !!!");
                     return;
                 }
             }
-
         }
     }
     //endregion
-
 }

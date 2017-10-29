@@ -15,17 +15,19 @@ package Oka.model.goal;
  .................................................................................................*/
 
 import Oka.ai.BambooHolder;
-import Oka.model.Enums;
 
-public class BambooGoal extends Goal {
+import static Oka.model.Enums.Color;
 
+public class BambooGoal extends Goal
+{
     //region==========ATTRIBUTES===========
-    private int bambooAmount;
-    private Enums.Color bambooColor;
+    private int   bambooAmount;
+    private Color bambooColor;
     //endregion
 
     //region==========CONSTRUCTORS=========
-    public BambooGoal(int value, int bambooAmount, Enums.Color bambooColor) {
+    public BambooGoal (int value, int bambooAmount, Color bambooColor)
+    {
         super(value);
         this.bambooAmount = bambooAmount;
         this.bambooColor = bambooColor;
@@ -33,40 +35,45 @@ public class BambooGoal extends Goal {
     //endregion
 
     //region==========GETTER/SETTER========
-    public Enums.Color getBambooColor() {
+    public Color getBambooColor ()
+    {
         return bambooColor;
     }
 
-    public void setBambooAmount(int bambooAmount) {
-        this.bambooAmount = bambooAmount;
+    public int getBambooAmount ()
+    {
+        return bambooAmount;
     }
 
-    public int getBambooAmount() {
-        return bambooAmount;
+    public void setBambooAmount (int bambooAmount)
+    {
+        this.bambooAmount = bambooAmount;
     }
     //endregion
 
     //region==========METHODS==============
-    public void validate(BambooHolder bambooHolder) {
-        if (bambooHolder.countBamboo(bambooColor) >= bambooAmount){
+    public void validate (BambooHolder bambooHolder)
+    {
+        if (bambooHolder.countBamboo(bambooColor) >= bambooAmount)
+        {
             setValidated(true);
-            bambooHolder.removeByColor(bambooColor,bambooAmount);
+            bambooHolder.removeByColor(bambooColor, bambooAmount);
         }
     }
 
-    public Enums.Color bambooColor () {
+    public Color bambooColor ()
+    {
         return bambooColor;
     }
     //endregion
 
     //region==========EQUALS/TOSTRING======
-    public String toString(){
-        return super.toString() +" bambooAmount = "+bambooAmount +" bambooColor = " + bambooColor;
+    public String toString ()
+    {
+        return super.toString() + " bambooAmount = " + bambooAmount + " bambooColor = " + bambooColor;
 
     }
     //endregion
-
-
 
 
 }

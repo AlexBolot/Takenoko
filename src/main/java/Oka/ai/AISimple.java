@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 
 public class AISimple extends AI
 {
-
     //region==========CONSTRUCTORS=========
     public AISimple (String name)
     {
@@ -28,6 +27,7 @@ public class AISimple extends AI
     //endregion
 
     //region==========METHODS==============
+
     /**
      moves the gardener to a desired spot
      chooses the spot based on the current bamboo objective
@@ -40,11 +40,13 @@ public class AISimple extends AI
     {
         Gardener gardener = Gardener.getInstance();
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+
         ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
                                                 .stream()
                                                 .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
                                                 .map(g -> (BambooGoal) g)//we cast them as such
                                                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+
         // todo: optimise based on proximity to completion
         Enums.Color color = bambooGoals.get(0).bambooColor();
         int maxBamboo = 4;
@@ -65,9 +67,7 @@ public class AISimple extends AI
 
                 return true;
             }
-
         }
-
         return false;
     }
 
@@ -87,6 +87,7 @@ public class AISimple extends AI
                                                 .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
                                                 .map(g -> (BambooGoal) g)//we cast them as such
                                                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+
         //todo: optimise based on proximity to completion
         Enums.Color color = bambooGoals.get(0).bambooColor();
 
@@ -106,7 +107,6 @@ public class AISimple extends AI
                 }
                 return true;
             }
-
         }
 
         return false;
@@ -119,20 +119,19 @@ public class AISimple extends AI
     {
         GameBoard board = GameBoard.getInstance();
         Random rand = new Random();
-        DrawStack drawStack = new DrawStack();
-        ArrayList<Plot> draw = null;
+        ArrayList<Plot> draw;
 
         // On pioche trois parcelles si possible
         try
         {
-            draw = drawStack.giveTreePlot();
+            draw = DrawStack.giveTreePlot();
             //tant qu'on nous renvois les même trois case
             int randInt = rand.nextInt(3);
             Plot plot = draw.get(randInt);
 
             // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
             draw.remove(randInt);
-            drawStack.giveBackPlot(draw);
+            DrawStack.giveBackPlot(draw);
 
             //todo: add a available slot function
             ArrayList<Point> free = board.getAvailableSlots();
@@ -140,17 +139,11 @@ public class AISimple extends AI
             board.addCell(plot);
 
             Logger.printLine(getName() + " placed : " + plot);
-
         }
         catch (NullPointerException e)
         {
-            System.out.print("IL N'Y A PLUS DE CARTE DANS LA PIOCHE");
+            Logger.printLine("IL N'Y A PLUS DE CARTE DANS LA PIOCHE");
         }
-    }
-
-    public void ValidateObjective ()
-    {
-        //Todo
     }
 
     /**
@@ -186,7 +179,6 @@ public class AISimple extends AI
     {
         setActionsLeft(2);
 
-
         while (actionsLeft > 0)
         {
             if (getGoals().size() == 0)
@@ -194,12 +186,10 @@ public class AISimple extends AI
                 addGoal(DrawStack.drawGoal(Enums.goalType.GardenerGoal));
                 addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
             }
+
             Logger.printSeparator(getName());
             Logger.printLine(getName() + " - goal = " + getGoalValidated(false).toString());
-            //  Logger.printLine(getName() + " - gameBoard : " + GameBoard.getInstance().getGrid())
 
-
-            //noinspection Duplicates
             placePlot();
             actionsLeft--;
             if (new Random().nextBoolean())
@@ -211,12 +201,10 @@ public class AISimple extends AI
             {
                 movePanda();
                 actionsLeft--;
-
             }
+
             Logger.printLine(getName() + " - bamboos = " + getBamboos().size());
-
         }
-
     }
     //endregion
 }

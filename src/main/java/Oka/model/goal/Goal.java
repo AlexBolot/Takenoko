@@ -14,10 +14,8 @@ package Oka.model.goal;
  . Last Modified : 14/10/17 22:27
  .................................................................................................*/
 
-import Oka.ai.BambooHolder;
-
-public abstract class Goal {
-
+public abstract class Goal
+{
     //region==========ATTRIBUTES===========
     private final int     value;
     private       boolean validated;
@@ -36,7 +34,8 @@ public abstract class Goal {
         this.validated = validated;
     }
 
-    public int getValue() {
+    public int getValue ()
+    {
         return value;
     }
     //endregion
@@ -46,17 +45,12 @@ public abstract class Goal {
     {
         return validated;
     }
-
-
-    public void validate (BambooHolder bambooHolder)
-    {
-
-    }
     //endregion
 
     //region==========EQUALS/TOSTRING======
-    public String toString(){
-        return "value = "+value;
+    public String toString ()
+    {
+        return "value = " + value;
     }
     //endregion
 }

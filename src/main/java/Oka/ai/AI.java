@@ -51,10 +51,12 @@ public class AI
     {
         this.bambooHolder.addBamboo(color);
     }
+
     public void addGoal (Goal goal)
     {
         this.goalHolder.addGoal(goal);
     }
+
     public ArrayList<Goal> getGoalValidated(boolean validated)
     {
         return new ArrayList<>(goalHolder.getGoalValidated(validated));
@@ -64,10 +66,7 @@ public class AI
     {
         goalHolder.checkGoal(bambooHolder);
         return goalHolder.getGoalValidated(true).size();
-
     }
     //endregion
-
-
 }
 

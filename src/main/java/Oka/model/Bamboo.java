@@ -1,18 +1,23 @@
 package Oka.model;
 
-public class Bamboo {
+import Oka.model.Enums.Color;
+
+public class Bamboo
+{
     //region==========ATTRIBUTES===========
-    private Enums.Color color;
+    private Color color;
     //endregion
 
     //region==========CONSTRUCTORS=========
-    public Bamboo(Enums.Color color) {
+    public Bamboo (Color color)
+    {
         this.color = color;
     }
     //endregion
 
     //region==========GETTER/SETTER========
-    public Enums.Color getColor() {
+    public Color getColor ()
+    {
         return color;
     }
     //endregion

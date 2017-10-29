@@ -10,13 +10,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class GameBoard
 {
     //region==========ATTRIBUTES===========
-    private static GameBoard ourInstance = new GameBoard();
-    private HashMap<Point, Cell> grid           = new HashMap<>();
-    private ArrayList<Point>     availableSlots = new ArrayList<>();
+    private static GameBoard            ourInstance    = new GameBoard();
+    private        HashMap<Point, Cell> grid           = new HashMap<>();
+    private        ArrayList<Point>     availableSlots = new ArrayList<>();
     //endregion
 
     //region==========CONSTRUCTORS=========

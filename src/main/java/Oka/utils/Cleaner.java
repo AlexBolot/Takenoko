@@ -24,7 +24,6 @@ import java.awt.*;
 
 public class Cleaner
 {
-
     //region==========METHODS==============
     public static void cleanPanda ()
     {
