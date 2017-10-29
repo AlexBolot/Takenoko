@@ -64,7 +64,7 @@ public class DrawStack
         return null;
     }
 
-    public static int whereIsRandInt(int randInt, Enums.DrawStack tab[]){
+    private static int whereIsRandInt(int randInt, Enums.DrawStack tab[]){
         int index = 0,
                 total = tab[index].getnbPlotByColor();
         while(randInt > total ){
@@ -74,7 +74,7 @@ public class DrawStack
         return index;
     }
 
-    public static Plot setPlotState(int indexColor, int randInt){
+    private static Plot setPlotState(int indexColor, int randInt){
         Enums.DrawStack drawStack = Enums.DrawStack.values()[indexColor];
         Enums.Color color = Enums.Color.values()[indexColor];
         int index = 0,
@@ -96,34 +96,23 @@ public class DrawStack
 
     public static void giveBackPlot(ArrayList<Plot> listP) {
         Enums.Color colorPlot;
+        int index = 0;
         for (int i = 0; i < listP.size(); i++) {
             colorPlot = listP.get(i).getColor();
-
-            if (colorPlot.equals(Color.YELLOW))
-                setNbState(Enums.DrawStack.nbYellowPlot,listP.get(i));
-
-            if (colorPlot.equals(Color.GREEN))
-                setNbState(Enums.DrawStack.nbGreenPlot,listP.get(i));
-
-            if (colorPlot.equals(Color.PINK))
-                setNbState(Enums.DrawStack.nbPinkPlot,listP.get(i));
+            while(colorPlot.equals(Enums.Color.values()[index])){
+                index++;
+            }
+            setNbState(Enums.DrawStack.values()[index],listP.get(i));
         }
     }
 
-    public static void setNbState(Enums.DrawStack nbColorPlot, Plot plot){
-        int tab[] = nbColorPlot.getTabState();
-        if(plot.getState() == new NeutralState()){
-            tab[0]++;
-            nbColorPlot.setTabState(tab);
-        }else if(plot.getState() == new PondState()){
-            tab[1]++;
-            nbColorPlot.setTabState(tab);
-        }else if(plot.getState() == new PenState()){
-            tab[2]++;
-            nbColorPlot.setTabState(tab);
-        }else{
-            tab[3]++;
-            nbColorPlot.setTabState(tab);
+    private static void setNbState(Enums.DrawStack nbColorPlot, Plot plot){
+        int tab[] = nbColorPlot.getTabState(),
+                index = 0;
+        while(plot.getState().getState() != Enums.State.values()[index]){
+            index++;
         }
+        tab[index]++;
+        nbColorPlot.setTabState(tab);
     }
 }
