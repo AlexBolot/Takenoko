@@ -183,7 +183,7 @@ public class AISimple extends AI
         {
             if (getGoals().size() == 0)
             {
-                addGoal(DrawStack.drawGoal(Enums.goalType.GardenerGoal));
+                addGoal(DrawStack.drawGoal(Enums.goalType.GardenGoal));
                 addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
             }
 

@@ -17,6 +17,14 @@ public class Plot extends Cell
     private NeutralState state;
     //endregion
 
+    public NeutralState getState() {
+        return state;
+    }
+
+    public boolean isIrrigated() {
+        return isIrrigated || state.getIsIrrigated();
+    }
+
     //region==========CONSTRUCTORS=========
     public Plot (Point coords)
     {
@@ -70,10 +78,7 @@ public class Plot extends Cell
     //endregion
 
     //region==========METHODS==============
-    public boolean isIrrigated ()
-    {
-        return isIrrigated || state.getIsIrrigated();
-    }
+
 
     public void addBamboo ()
     {
