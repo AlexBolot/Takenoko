@@ -16,64 +16,89 @@ package Oka.model.goal;
 
 import Oka.ai.BambooHolder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import static Oka.model.Enums.Color;
 
 public class BambooGoal extends Goal
 {
     //region==========ATTRIBUTES===========
-    private int   bambooAmount;
-    private Color bambooColor;
+    private HashMap<Color, Integer> values = new HashMap<>();
     //endregion
 
     //region==========CONSTRUCTORS=========
     public BambooGoal (int value, int bambooAmount, Color bambooColor)
     {
         super(value);
-        this.bambooAmount = bambooAmount;
-        this.bambooColor = bambooColor;
+        this.values.put(bambooColor, bambooAmount);
+    }
+
+    public BambooGoal (int value, HashMap<Color, Integer> values)
+    {
+        super(value);
+        this.values = values;
     }
     //endregion
 
     //region==========GETTER/SETTER========
-    public Color getBambooColor ()
+    public int getColorAmount ()
     {
-        return bambooColor;
+        return (int) values.values().stream().filter(integer -> integer > 0).count();
     }
 
-    public int getBambooAmount ()
+    public int getAmountByColor (Color color)
     {
-        return bambooAmount;
+        return values.get(color);
     }
 
-    public void setBambooAmount (int bambooAmount)
+    /**
+     @return Randomly, one of the colors required for this goal.
+     */
+    public Color getColor ()
     {
-        this.bambooAmount = bambooAmount;
+        ArrayList<Color> colors = values.entrySet().stream().filter(entry -> entry.getValue() > 0).map(Map.Entry::getKey).collect(Collectors
+                                                                                                                                          .toCollection(
+                                                                                                                                                  ArrayList::new));
+        return colors.get(new Random().nextInt(colors.size()));
     }
+
     //endregion
 
     //region==========METHODS==============
     public void validate (BambooHolder bambooHolder)
     {
-        if (bambooHolder.countBamboo(bambooColor) >= bambooAmount)
+        for (Color color : values.keySet())
         {
-            setValidated(true);
-            bambooHolder.removeByColor(bambooColor, bambooAmount);
+            if (bambooHolder.countBamboo(color) < values.get(color)) return;
         }
-    }
 
-    public Color bambooColor ()
-    {
-        return bambooColor;
+        for (Color color : values.keySet())
+        {
+            bambooHolder.removeByColor(color, values.get(color));
+        }
     }
     //endregion
 
     //region==========EQUALS/TOSTRING======
     public String toString ()
     {
-        return super.toString() + " bambooAmount = " + bambooAmount + " bambooColor = " + bambooColor;
+        StringBuilder str = new StringBuilder();
 
+        str.append(super.toString());
+
+        for (Map.Entry<Color, Integer> entry : values.entrySet())
+        {
+            //noinspection StringConcatenationInsideStringBufferAppend -> blablablabla :D
+            str.append(" {color:" + entry.getKey() + ", amount:" + entry.getValue() + "} +");
+        }
+
+        str.deleteCharAt(str.length() - 1);
+
+        return str.toString();
     }
     //endregion
-
-
 }

@@ -7,7 +7,7 @@ import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Cell;
 import Oka.model.Enums;
-import Oka.model.Pond;
+import Oka.model.Enums.Color;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
@@ -19,7 +19,6 @@ import Oka.utils.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -72,7 +71,7 @@ public class AISimple extends AI
                                                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
 
         // todo: optimise based on proximity to completion
-        Enums.Color color = bambooGoals.get(0).bambooColor();
+        Color color = bambooGoals.get(0).getColor();  //.bambooColor();
         int maxBamboo = 4;
 
         for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
@@ -113,7 +112,7 @@ public class AISimple extends AI
                                                 .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
 
         //todo: optimise based on proximity to completion
-        Enums.Color color = bambooGoals.get(0).bambooColor();
+        Color color = bambooGoals.get(0).getColor();     //.bambooColor();
 
         for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
         {
@@ -133,12 +132,12 @@ public class AISimple extends AI
             }
         }
 
-                return false;
-        }
+        return false;
+    }
 
-        /**
-         place a plot tile
-         */
+    /**
+     place a plot tile
+     */
     public void placePlot ()
     {
         GameBoard board = GameBoard.getInstance();
@@ -178,7 +177,7 @@ public class AISimple extends AI
      @param color      Color, desired color of the tile
      @return true if the asked tile could be found, false otherwise
      */
-    private boolean moveEntity (Entity entity, int bambooSize, Enums.Color color)
+    private boolean moveEntity (Entity entity, int bambooSize, Color color)
     {
         GameBoard gameBoard = GameBoard.getInstance();
         HashMap<Point, Cell> grid = gameBoard.getGrid();
@@ -198,22 +197,28 @@ public class AISimple extends AI
 
         return false;
     }
-    boolean placePlotState(){
-        Enums.Color color = null;
+
+    boolean placePlotState ()
+    {
+        Color color = null;
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
-        switch (getPlotStates().get(0).getState()) {
+        switch (getPlotStates().get(0).getState())
+        {
             case Pond:
                 ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
-                        .stream()
-                        .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
-                        .map(g -> (BambooGoal) g)//we cast them as such
-                        .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+                                                        .stream()
+                                                        .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
+                                                        .map(g -> (BambooGoal) g)//we cast them as such
+                                                        .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
 
                 //todo: optimise based on proximity to completion
-                color = bambooGoals.get(0).bambooColor();
-                for(Cell cell: grid.values()) {
-                    if(cell instanceof Plot &&((Plot) cell).getColor().equals(color)){
-                        if(((Plot) cell).getBamboo().size()==0){
+                color = bambooGoals.get(0).getColor();   //.bambooColor();
+                for (Cell cell : grid.values())
+                {
+                    if (cell instanceof Plot && ((Plot) cell).getColor().equals(color))
+                    {
+                        if (((Plot) cell).getBamboo().size() == 0)
+                        {
                             ((Plot) cell).setState(getPlotStates().get(0));
                             getPlotStates().remove(0);
                             return true;
@@ -222,16 +227,19 @@ public class AISimple extends AI
                 }
             case Enclosure:
                 ArrayList<GardenerGoal> gardenerGoal = this.getGoalValidated(false)
-                        .stream()
-                        .filter(c -> c instanceof GardenerGoal)//we take only the bamboogoals
-                        .map(g -> (GardenerGoal) g)//we cast them as such
-                        .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+                                                           .stream()
+                                                           .filter(c -> c instanceof GardenerGoal)//we take only the bamboogoals
+                                                           .map(g -> (GardenerGoal) g)//we cast them as such
+                                                           .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
 
                 //todo: optimise based on proximity to completion
                 color = gardenerGoal.get(0).getColor();
-                for(Cell cell: grid.values()) {
-                    if(cell instanceof Plot && ((Plot) cell).getColor().equals(color)){
-                        if(((Plot) cell).getBamboo().size()==0){
+                for (Cell cell : grid.values())
+                {
+                    if (cell instanceof Plot && ((Plot) cell).getColor().equals(color))
+                    {
+                        if (((Plot) cell).getBamboo().size() == 0)
+                        {
                             ((Plot) cell).setState(getPlotStates().get(0));
                             getPlotStates().remove(0);
                             return true;
@@ -240,15 +248,20 @@ public class AISimple extends AI
                 }
             case Fertilizer:
                 ArrayList<Goal> goal = this.getGoalValidated(false);
-                    if(goal.get(0) instanceof BambooGoal){
-                        color = ((BambooGoal) goal.get(0)).getBambooColor();
-                    }
-                    else if(goal.get(0) instanceof GardenerGoal) {
-                        color = ((GardenerGoal) goal.get(0)).getColor();
-                    }
-                for(Cell cell: grid.values()) {
-                    if(cell instanceof Plot && ((Plot) cell).getColor().equals(color)){
-                        if(((Plot) cell).getBamboo().size()==0){
+                if (goal.get(0) instanceof BambooGoal)
+                {
+                    color = ((BambooGoal) goal.get(0)).getColor(); //.getBambooColor();
+                }
+                else if (goal.get(0) instanceof GardenerGoal)
+                {
+                    color = ((GardenerGoal) goal.get(0)).getColor();
+                }
+                for (Cell cell : grid.values())
+                {
+                    if (cell instanceof Plot && ((Plot) cell).getColor().equals(color))
+                    {
+                        if (((Plot) cell).getBamboo().size() == 0)
+                        {
                             ((Plot) cell).setState(getPlotStates().get(0));
                             getPlotStates().remove(0);
                             return true;
@@ -257,9 +270,8 @@ public class AISimple extends AI
                 }
 
 
-
         }
-        return(false);
+        return (false);
     }
 
     public void play ()
@@ -273,8 +285,10 @@ public class AISimple extends AI
                 addGoal(DrawStack.drawGoal(Enums.goalType.GardenGoal));
                 addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
             }
-            if (getPlotStates().size()>0){
-                if (placePlotState()) {
+            if (getPlotStates().size() > 0)
+            {
+                if (placePlotState())
+                {
                     actionsLeft--;
                 }
             }
