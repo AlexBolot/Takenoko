@@ -1,8 +1,10 @@
 package Oka.controler;
 
 import Oka.model.Cell;
+import Oka.model.Enums;
 import Oka.model.Pond;
 import Oka.model.plot.Plot;
+import Oka.utils.Cleaner;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +23,7 @@ public class GameBoardTest
     @Before
     public void init ()
     {
+        Cleaner.clearAll();
         pond = new Pond();
 
         emptyGrid = new HashMap<>();
@@ -29,22 +32,23 @@ public class GameBoardTest
         mediumGrid = new HashMap<>();
         mediumGrid.put(pond.getCoords(), pond);
 
-        Plot plot = new Plot(new Point(0, 1));
+        Plot plot = new Plot(new Point(0, 1), Enums.Color.PINK);
+
         mediumGrid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(1, 0));
+        plot = new Plot(new Point(1, 0), Enums.Color.GREEN);
         mediumGrid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(0, -1));
+        plot = new Plot(new Point(0, -1), Enums.Color.PINK);
         mediumGrid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(-1, 0));
+        plot = new Plot(new Point(-1, 0), Enums.Color.YELLOW);
         mediumGrid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(-1, 1));
+        plot = new Plot(new Point(-1, 1), Enums.Color.PINK);
         mediumGrid.put(plot.getCoords(), plot);
 
-        plot = new Plot(new Point(1, -1));
+        plot = new Plot(new Point(1, -1), Enums.Color.GREEN);
         mediumGrid.put(plot.getCoords(), plot);
 
     }
@@ -70,7 +74,7 @@ public class GameBoardTest
         GameBoard board = GameBoard.getInstance();
 
         board.setGrid(emptyGrid);
-        Plot plot = new Plot(new Point(1, 0));
+        Plot plot = new Plot(new Point(1, 0), Enums.Color.PINK);
 
         board.addCell(plot);
 

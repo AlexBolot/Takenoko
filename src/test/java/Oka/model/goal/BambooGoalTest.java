@@ -34,10 +34,15 @@ public class BambooGoalTest {
         assertFalse(bg4.isValidated());
     }
 
+    @Test(expected = NegativeArraySizeException.class)
+    public void validateBorderNegative() {
+        AI nAI = new AI("normal");
+        BambooGoal bg2 = new BambooGoal(1, -1, Enums.Color.PINK);
+        bg2.validate(nAI.getBamboos());
+    }
     @Test
     public void validateBorder() {
         BambooGoal bg1 = new BambooGoal(1, 1234, Enums.Color.GREEN);
-        BambooGoal bg2 = new BambooGoal(1, -1, Enums.Color.PINK);
         BambooGoal bg3 = new BambooGoal(1, 4, Enums.Color.PINK);
 
         AI nAI = new AI("normal");
@@ -57,12 +62,10 @@ public class BambooGoalTest {
         for (int i = 0; i < 1000; i++) {
             fullAi.addBamboo(colors[random.nextInt(colors.length)]);
         }
-        bg2.validate(nAI.getBamboos());
-        assertTrue(bg2.isValidated());
+
+
         bg3.validate(fullAi.getBamboos());
         assertTrue(bg3.isValidated());
-        bg2.validate(emptyAi.getBamboos());
-        assertTrue(bg2.isValidated());
         bg1.validate(nAI.getBamboos());
         assertFalse(bg1.isValidated());
         bg1.validate(fullAi.getBamboos());

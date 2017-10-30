@@ -15,11 +15,13 @@ package Oka.ai;
  .................................................................................................*/
 
 import Oka.controler.GameBoard;
+import Oka.controler.GameController;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.plot.Plot;
+import Oka.utils.Cleaner;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +38,7 @@ public class AISimpleTest
     @Before
     public void before ()
     {
+        Cleaner.clearAll();
         Plot plot1 = new Plot(p01, Enums.Color.PINK);
         plot1.addBamboo();
         GameBoard.getInstance().addCell(plot1);
@@ -51,6 +54,8 @@ public class AISimpleTest
 
         AISimple AI = new AISimple("Momo");
 
+        GameController.getInstance().setCurrentPlayer(AI);
+
         AI.addGoal(new BambooGoal(3, 1, Enums.Color.PINK));
         AI.movePanda();
         Assert.assertEquals(p01, Panda.getInstance().getCoords());
@@ -58,6 +63,8 @@ public class AISimpleTest
         Panda.getInstance().setCoords(new Point());
 
         AI = new AISimple("Momo");
+
+        GameController.getInstance().setCurrentPlayer(AI);
 
         AI.addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
         AI.movePanda();
