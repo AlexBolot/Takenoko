@@ -11,9 +11,8 @@ public class AI
     //region==========ATTRIBUTES===========
     protected int    actionsLeft;
     private   String name;
-    private BambooHolder    bambooHolder    = new BambooHolder();
-    private GoalHolder      goalHolder      = new GoalHolder();
-    private PlotStateHolder plotStateHolder = new PlotStateHolder();
+
+    private Inventory inventory = new Inventory();
     //endregion//
 
     //region==========CONSTRUCTORS=========
@@ -36,12 +35,12 @@ public class AI
 
     public BambooHolder getBamboos ()
     {
-        return bambooHolder;
+        return this.inventory.bambooHolder();
     }
 
     public ArrayList<Goal> getGoals ()
     {
-        return goalHolder;
+        return this.inventory.goalHolder();
     }
 
     public String getName ()
@@ -51,35 +50,34 @@ public class AI
 
     public PlotStateHolder getPlotStates ()
     {
-        return plotStateHolder;
+        return this.inventory.plotStates();
     }
     //endregion
 
     //region==========METHODS==============
     public void addBamboo (Enums.Color color)
     {
-        this.bambooHolder.addBamboo(color);
+        this.inventory.addBamboo(color);
     }
 
     public void addGoal (Goal goal)
     {
-        this.goalHolder.addGoal(goal);
+        this.inventory.addGoal(goal);
     }
 
     public void addPlotState (NeutralState plotState)
     {
-        plotStateHolder.add(plotState);
+        this.inventory.addPlotState(plotState);
     }
 
     public ArrayList<Goal> getGoalValidated (boolean validated)
     {
-        return new ArrayList<>(goalHolder.getGoalValidated(validated));
+        return new ArrayList<>(this.inventory.validatedGoals(validated));
     }
 
     public int checkGoal ()
     {
-        goalHolder.checkGoal(bambooHolder);
-        return goalHolder.getGoalValidated(true).size();
+        return this.inventory.checkGoals().size();
     }
     //endregion
 }

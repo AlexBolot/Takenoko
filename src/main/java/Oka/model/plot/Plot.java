@@ -115,7 +115,7 @@ public class Plot extends Cell
 
         return this.color.equals(plot.color) && this.getCoords().equals(plot.getCoords());
 
-        //TODO Vraiment trop compliqué pour ce dont on a besoin :D
+        //fixme Vraiment trop compliqué pour ce dont on a besoin :D
 
         /*boolean equality;
         equality = plot.bamboo.equals(this.bamboo);
