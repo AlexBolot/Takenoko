@@ -60,9 +60,11 @@ public class BambooGoal extends Goal
      */
     public Color getColor ()
     {
-        ArrayList<Color> colors = values.entrySet().stream().filter(entry -> entry.getValue() > 0).map(Map.Entry::getKey).collect(Collectors
-                                                                                                                                          .toCollection(
-                                                                                                                                                  ArrayList::new));
+        ArrayList<Color> colors = values.keySet()
+                                        .stream()
+                                        .filter(color -> values.get(color) > 0)
+                                        .collect(Collectors.toCollection(ArrayList::new));
+
         return colors.get(new Random().nextInt(colors.size()));
     }
 
