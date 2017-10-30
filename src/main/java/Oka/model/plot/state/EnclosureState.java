@@ -2,9 +2,9 @@ package Oka.model.plot.state;
 
 import Oka.model.Enums;
 
-public class PenState extends NeutralState
+public class EnclosureState extends NeutralState
 {
-    private static final Enums.State state = Enums.State.Pen;
+    private static final Enums.State state = Enums.State.Enclosure;
 
     public static Enums.State getState() {
         return state;

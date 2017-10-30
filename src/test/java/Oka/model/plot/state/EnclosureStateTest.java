@@ -5,14 +5,15 @@ import Oka.model.plot.Plot;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class PenStateTest {
+public class EnclosureStateTest
+{
     private Plot plot1;
 
     @Before
     public void init(){
-        plot1 = new Plot(Enums.Color.GREEN, new PenState());
+        plot1 = new Plot(Enums.Color.GREEN, new EnclosureState());
     }
 
     @Test

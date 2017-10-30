@@ -9,6 +9,9 @@ import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.plot.Plot;
+import Oka.model.plot.state.EnclosureState;
+import Oka.model.plot.state.FertilizerState;
+import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 
 import java.awt.*;
@@ -23,6 +26,23 @@ public class AISimple extends AI
     public AISimple (String name)
     {
         super(name);
+
+        Enums.State[] values = Enums.State.values();
+
+        switch (values[new Random().nextInt(values.length - 1) + 1])
+        {
+            case Pond:
+                this.addPlotState(new PondState());
+                break;
+
+            case Enclosure:
+                this.addPlotState(new EnclosureState());
+                break;
+
+            case Fertilizer:
+                this.addPlotState(new FertilizerState());
+                break;
+        }
     }
     //endregion
 

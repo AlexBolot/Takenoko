@@ -13,10 +13,13 @@ public class Enums {
         GREEN, YELLOW, PINK
     }
     public enum State {
-        Neutral, Pond, Pen, Fertilizer
+        Neutral,
+        Pond,
+        Enclosure,
+        Fertilizer
     }
     public enum DrawStack{
-        // NeutralState, PondState, PenState, FertilizerState
+        // NeutralState, PondState, EnclosureState, FertilizerState
        nbGreenPlot(new int[]{6,2,2,1}), nbYellowPlot(new int[]{6,1,1,1}), nbPinkPlot(new int[]{4,1,1,1});
 
         private int tabState[] = new int[4];
