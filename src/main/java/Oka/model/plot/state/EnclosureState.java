@@ -6,7 +6,8 @@ public class EnclosureState extends NeutralState
 {
     private static final Enums.State state = Enums.State.Enclosure;
 
-    public static Enums.State getState() {
+    @Override
+    public Enums.State getState() {
         return state;
     }
 

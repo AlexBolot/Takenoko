@@ -7,7 +7,10 @@ import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Cell;
 import Oka.model.Enums;
+import Oka.model.Pond;
 import Oka.model.goal.BambooGoal;
+import Oka.model.goal.GardenerGoal;
+import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
@@ -16,6 +19,7 @@ import Oka.utils.Logger;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -29,7 +33,7 @@ public class AISimple extends AI
 
         Enums.State[] values = Enums.State.values();
 
-        switch (values[new Random().nextInt(values.length - 1) + 1])
+        switch (values[2])
         {
             case Pond:
                 this.addPlotState(new PondState());
@@ -129,12 +133,12 @@ public class AISimple extends AI
             }
         }
 
-        return false;
-    }
+                return false;
+        }
 
-    /**
-     place a plot tile
-     */
+        /**
+         place a plot tile
+         */
     public void placePlot ()
     {
         GameBoard board = GameBoard.getInstance();
@@ -194,6 +198,69 @@ public class AISimple extends AI
 
         return false;
     }
+    boolean placePlotState(){
+        Enums.Color color = null;
+        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+        switch (getPlotStates().get(0).getState()) {
+            case Pond:
+                ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
+                        .stream()
+                        .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
+                        .map(g -> (BambooGoal) g)//we cast them as such
+                        .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+
+                //todo: optimise based on proximity to completion
+                color = bambooGoals.get(0).bambooColor();
+                for(Cell cell: grid.values()) {
+                    if(cell instanceof Plot &&((Plot) cell).getColor().equals(color)){
+                        if(((Plot) cell).getBamboo().size()==0){
+                            ((Plot) cell).setState(getPlotStates().get(0));
+                            getPlotStates().remove(0);
+                            return true;
+                        }
+                    }
+                }
+            case Enclosure:
+                ArrayList<GardenerGoal> gardenerGoal = this.getGoalValidated(false)
+                        .stream()
+                        .filter(c -> c instanceof GardenerGoal)//we take only the bamboogoals
+                        .map(g -> (GardenerGoal) g)//we cast them as such
+                        .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
+
+                //todo: optimise based on proximity to completion
+                color = gardenerGoal.get(0).getColor();
+                for(Cell cell: grid.values()) {
+                    if(cell instanceof Plot && ((Plot) cell).getColor().equals(color)){
+                        if(((Plot) cell).getBamboo().size()==0){
+                            ((Plot) cell).setState(getPlotStates().get(0));
+                            getPlotStates().remove(0);
+                            return true;
+                        }
+                    }
+                }
+            case Fertilizer:
+                ArrayList<Goal> goal = this.getGoalValidated(false);
+                    if(goal.get(0) instanceof BambooGoal){
+                        color = ((BambooGoal) goal.get(0)).getBambooColor();
+                    }
+                    else if(goal.get(0) instanceof GardenerGoal) {
+                        color = ((GardenerGoal) goal.get(0)).getColor();
+                    }
+                for(Cell cell: grid.values()) {
+                    if(cell instanceof Plot && ((Plot) cell).getColor().equals(color)){
+                        if(((Plot) cell).getBamboo().size()==0){
+                            ((Plot) cell).setState(getPlotStates().get(0));
+                            getPlotStates().remove(0);
+                            return true;
+                        }
+                    }
+                }
+
+
+
+        }
+        return(false);
+    }
 
     public void play ()
     {
@@ -205,6 +272,11 @@ public class AISimple extends AI
             {
                 addGoal(DrawStack.drawGoal(Enums.goalType.GardenGoal));
                 addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
+            }
+            if (getPlotStates().size()>0){
+                if (placePlotState()) {
+                    actionsLeft--;
+                }
             }
 
             Logger.printSeparator(getName());

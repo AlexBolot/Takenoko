@@ -6,7 +6,8 @@ public class PondState extends NeutralState
 {
     private static final Enums.State state = Enums.State.Pond;
 
-    public static Enums.State getState() {
+    @Override
+    public Enums.State getState() {
         return state;
     }
 

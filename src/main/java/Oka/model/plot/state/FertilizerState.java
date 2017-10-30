@@ -7,7 +7,8 @@ public class FertilizerState extends NeutralState
 
     private static final Enums.State state = Enums.State.Fertilizer;
 
-    public static Enums.State getState() {
+    @Override
+    public Enums.State getState() {
         return state;
     }
 

@@ -2,6 +2,7 @@ package Oka.model.plot;
 
 import Oka.model.Bamboo;
 import Oka.model.Cell;
+import Oka.model.Enums;
 import Oka.model.Enums.Color;
 import Oka.model.plot.state.NeutralState;
 
@@ -16,14 +17,6 @@ public class Plot extends Cell
     private boolean      isIrrigated;
     private NeutralState state;
     //endregion
-
-    public NeutralState getState() {
-        return state;
-    }
-
-    public boolean isIrrigated() {
-        return isIrrigated || state.getIsIrrigated();
-    }
 
     //region==========CONSTRUCTORS=========
     public Plot (Point coords)
@@ -75,10 +68,21 @@ public class Plot extends Cell
     {
         return color;
     }
+
+    public NeutralState getState() {
+        return state;
+    }
+
+    public boolean isIrrigated() {
+        return isIrrigated || state.getIsIrrigated();
+    }
+
+    public void setState(NeutralState state){
+        this.state=state;
+    }
     //endregion
 
     //region==========METHODS==============
-
 
     public void addBamboo ()
     {

@@ -5,7 +5,7 @@ import Oka.model.Enums.State;
 public class NeutralState {
     private static final State state = State.Neutral;
 
-    public static State getState() {
+    public State getState() {
         return state;
     }
 
