@@ -12,6 +12,11 @@ public class Enums {
     public enum Color {
         GREEN, YELLOW, PINK
     }
+
+    /* ORDRE IMPORTANT
+    * Les aménagements doivent etre dans le même ordre
+    * que dans le tabState[]
+    * */
     public enum State {
         Neutral,
         Pond,

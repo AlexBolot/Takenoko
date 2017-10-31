@@ -46,16 +46,17 @@ public class DrawStack
         ArrayList<Plot> listP =  new ArrayList<>();
         Plot plot;
         int totalPlotFree = Enums.DrawStack.getNbPlot(),
-                randInt;
+                randInt,
+                indexColorPlot;
 
         if(totalPlotFree > 3) {
             for (int i = 0; i < 3; i++) {
                 totalPlotFree = Enums.DrawStack.getNbPlot();
                 randInt = rand.nextInt(totalPlotFree);
 
-                int indexColorPlot = whereIsRandInt(randInt,Enums.DrawStack.values());
-                randInt = rand.nextInt(Enums.DrawStack.values()[indexColorPlot].getnbPlotByColor())+1;
-
+                indexColorPlot = whereIsRandInt(randInt,Enums.DrawStack.values());
+                System.out.println(Enums.DrawStack.values()[indexColorPlot].getnbPlotByColor()+1 + ' '+ indexColorPlot);
+                randInt = rand.nextInt(Enums.DrawStack.values()[indexColorPlot].getnbPlotByColor());
                 plot = setPlotState(indexColorPlot,randInt);
                 listP.add(plot);
             }
@@ -67,7 +68,7 @@ public class DrawStack
     private static int whereIsRandInt(int randInt, Enums.DrawStack tab[]){
         int index = 0,
                 total = tab[index].getnbPlotByColor();
-        while(randInt > total ){
+        while(randInt >= total ){
             index ++;
             total += tab[index].getnbPlotByColor();
         }
