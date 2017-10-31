@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static Oka.model.Enums.Color;
-import static Oka.model.Enums.goalType;
+import static Oka.model.Enums.GoalType;
 
 public class DrawStack
 {
@@ -23,7 +23,7 @@ public class DrawStack
     //endregion
 
     //region==========METHODS==============
-    public static Goal drawGoal (goalType goalType)
+    public static Goal drawGoal (GoalType goalType)
     {
         Random random = new Random();
         switch (goalType)
@@ -32,7 +32,8 @@ public class DrawStack
                 return new BambooGoal(2, random.nextInt(3) + 2, Color.PINK);
 
             case PlotGoal:
-                break;
+                //If AI picks a PlotGoal, returns GardenGoal (to avoid null for now)
+                // break;
 
             case GardenGoal:
                 return new GardenerGoal(2, random.nextInt(3) + 1, Color.PINK);

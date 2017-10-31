@@ -1,7 +1,8 @@
 package Oka.ai;
 
+import Oka.ai.inventory.GoalHolder;
+import Oka.ai.inventory.Inventory;
 import Oka.controler.GameBoard;
-import Oka.model.Bamboo;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
@@ -11,10 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class InventoryTest {
     GoalHolder goalHolder = new GoalHolder();

@@ -177,7 +177,7 @@ public class AISimple extends AI
      @param color      Color, desired color of the tile
      @return true if the asked tile could be found, false otherwise
      */
-    private boolean moveEntity (Entity entity, int bambooSize, Color color)
+    protected boolean moveEntity (Entity entity, int bambooSize, Color color)
     {
         GameBoard gameBoard = GameBoard.getInstance();
         HashMap<Point, Cell> grid = gameBoard.getGrid();
@@ -203,7 +203,7 @@ public class AISimple extends AI
         Color color = null;
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
-        switch (getPlotStates().get(0).getState())
+        switch (getInventory().plotStates().get(0).getState())
         {
             case Pond:
                 ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
@@ -242,11 +242,11 @@ public class AISimple extends AI
 
                 if (plot.getColor().equals(color) && plot.getBamboo().size() == 0)
                 {
-                    plot.setState(getPlotStates().get(0));
+                    plot.setState(getInventory().plotStates().get(0));
 
                     Logger.printLine(getName() + " upgraded : " + plot);
 
-                    getPlotStates().remove(0);
+                    getInventory().plotStates().remove(0);
                     return true;
                 }
             }
@@ -257,20 +257,20 @@ public class AISimple extends AI
 
     public void play ()
     {
-        setActionsLeft(2);
+        resetActions();
 
-        while (actionsLeft > 0)
+        while (hasActionsLeft())
         {
-            if (getGoals().size() == 0)
+            if (getInventory().goalHolder().size() == 0)
             {
-                addGoal(DrawStack.drawGoal(Enums.goalType.GardenGoal));
-                addGoal(DrawStack.drawGoal(Enums.goalType.BambooGoal));
+                getInventory().addGoal(DrawStack.drawGoal(Enums.GoalType.GardenGoal));
+                getInventory().addGoal(DrawStack.drawGoal(Enums.GoalType.BambooGoal));
             }
-            if (getPlotStates().size() > 0)
+            if (getInventory().plotStates().size() > 0)
             {
                 if (placePlotState())
                 {
-                    actionsLeft--;
+                    consumeAction();
                 }
             }
 
@@ -278,19 +278,20 @@ public class AISimple extends AI
             Logger.printLine(getName() + " - goal = " + getGoalValidated(false).toString());
 
             placePlot();
-            actionsLeft--;
+            consumeAction();
+
             if (new Random().nextBoolean())
             {
                 moveGardener();
-                actionsLeft--;
+                consumeAction();
             }
             else
             {
                 movePanda();
-                actionsLeft--;
+                consumeAction();
             }
 
-            Logger.printLine(getName() + " - bamboos = " + getBamboos().size());
+            Logger.printLine(getName() + " - bamboos = " + getInventory().bambooHolder().size());
         }
     }
     //endregion
