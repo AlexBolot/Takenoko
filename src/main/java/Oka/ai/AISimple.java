@@ -202,6 +202,7 @@ public class AISimple extends AI
     {
         Color color = null;
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+
         switch (getPlotStates().get(0).getState())
         {
             case Pond:
@@ -212,19 +213,9 @@ public class AISimple extends AI
                                                         .collect(Collectors.toCollection(ArrayList::new));//we get back a collection of them
 
                 //todo: optimise based on proximity to completion
-                color = bambooGoals.get(0).getColor();   //.bambooColor();
-                for (Cell cell : grid.values())
-                {
-                    if (cell instanceof Plot && ((Plot) cell).getColor().equals(color))
-                    {
-                        if (((Plot) cell).getBamboo().size() == 0)
-                        {
-                            ((Plot) cell).setState(getPlotStates().get(0));
-                            getPlotStates().remove(0);
-                            return true;
-                        }
-                    }
-                }
+                color = bambooGoals.get(0).getColor();
+                break;
+
             case Enclosure:
                 ArrayList<GardenerGoal> gardenerGoal = this.getGoalValidated(false)
                                                            .stream()
@@ -234,43 +225,30 @@ public class AISimple extends AI
 
                 //todo: optimise based on proximity to completion
                 color = gardenerGoal.get(0).getColor();
-                for (Cell cell : grid.values())
-                {
-                    if (cell instanceof Plot && ((Plot) cell).getColor().equals(color))
-                    {
-                        if (((Plot) cell).getBamboo().size() == 0)
-                        {
-                            ((Plot) cell).setState(getPlotStates().get(0));
-                            getPlotStates().remove(0);
-                            return true;
-                        }
-                    }
-                }
+                break;
+
             case Fertilizer:
-                ArrayList<Goal> goal = this.getGoalValidated(false);
-                if (goal.get(0) instanceof BambooGoal)
-                {
-                    color = ((BambooGoal) goal.get(0)).getColor(); //.getBambooColor();
-                }
-                else if (goal.get(0) instanceof GardenerGoal)
-                {
-                    color = ((GardenerGoal) goal.get(0)).getColor();
-                }
-                for (Cell cell : grid.values())
-                {
-                    if (cell instanceof Plot && ((Plot) cell).getColor().equals(color))
-                    {
-                        if (((Plot) cell).getBamboo().size() == 0)
-                        {
-                            ((Plot) cell).setState(getPlotStates().get(0));
-                            getPlotStates().remove(0);
-                            return true;
-                        }
-                    }
-                }
+                Goal goal = this.getGoalValidated(false).get(0);
 
-
+                if (goal instanceof BambooGoal) color = ((BambooGoal) goal).getColor();
+                if (goal instanceof GardenerGoal) color = ((GardenerGoal) goal).getColor();
         }
+
+        for (Cell cell : grid.values())
+        {
+            if (cell instanceof Plot)
+            {
+                Plot plot = (Plot) cell;
+
+                if (plot.getColor().equals(color) && plot.getBamboo().size() == 0)
+                {
+                    plot.setState(getPlotStates().get(0));
+                    getPlotStates().remove(0);
+                    return true;
+                }
+            }
+        }
+
         return (false);
     }
 
