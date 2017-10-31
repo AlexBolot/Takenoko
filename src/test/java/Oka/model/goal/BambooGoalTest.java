@@ -21,8 +21,8 @@ public class BambooGoalTest
 
         AISimple ai = new AISimple("Ma");
 
-        ai.addBamboo(Enums.Color.GREEN);
-        ai.addBamboo(Enums.Color.GREEN);
+        ai.getInventory().addBamboo(Enums.Color.GREEN);
+        ai.getInventory().addBamboo(Enums.Color.GREEN);
 
         bg1.validate(ai.getInventory().bambooHolder());
         assertTrue(bg1.isValidated());
@@ -61,15 +61,14 @@ public class BambooGoalTest
 
         Random random = new Random();
 
-        fullAi.addBamboo(Enums.Color.PINK);
-        fullAi.addBamboo(Enums.Color.GREEN);
-        fullAi.addBamboo(Enums.Color.PINK);
+        fullAi.getInventory().addBamboo(Enums.Color.PINK);
+        fullAi.getInventory().addBamboo(Enums.Color.GREEN);
+        fullAi.getInventory().addBamboo(Enums.Color.PINK);
 
         for (int i = 0; i < 1000; i++)
         {
-            fullAi.addBamboo(colors[random.nextInt(colors.length)]);
+            fullAi.getInventory().addBamboo(colors[random.nextInt(colors.length)]);
         }
-
 
         bg3.validate(fullAi.getInventory().bambooHolder());
         assertTrue(bg3.isValidated());

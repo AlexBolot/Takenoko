@@ -57,7 +57,7 @@ public class GameController
                 currentPlayer = ai;
                 ai.play();
 
-                int checkGoal = ai.checkGoal();
+                int checkGoal = ai.getInventory().checkGoals().size();
 
                 if (checkGoal > 0)
                 {

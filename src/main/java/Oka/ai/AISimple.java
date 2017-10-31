@@ -35,15 +35,15 @@ public class AISimple extends AI
         switch (values[2])
         {
             case Pond:
-                this.addPlotState(new PondState());
+                this.getInventory().addPlotState(new PondState());
                 break;
 
             case Enclosure:
-                this.addPlotState(new EnclosureState());
+                this.getInventory().addPlotState(new EnclosureState());
                 break;
 
             case Fertilizer:
-                this.addPlotState(new FertilizerState());
+                this.getInventory().addPlotState(new FertilizerState());
                 break;
         }
     }
@@ -64,7 +64,7 @@ public class AISimple extends AI
         Gardener gardener = Gardener.getInstance();
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
-        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
+        ArrayList<BambooGoal> bambooGoals = this.getInventory().validatedGoals(false)
                                                 .stream()
                                                 .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
                                                 .map(g -> (BambooGoal) g)//we cast them as such
@@ -105,7 +105,7 @@ public class AISimple extends AI
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
         int maxBamboo = 4;
-        ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
+        ArrayList<BambooGoal> bambooGoals = this.getInventory().validatedGoals(false)
                                                 .stream()
                                                 .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
                                                 .map(g -> (BambooGoal) g)//we cast them as such
@@ -207,7 +207,7 @@ public class AISimple extends AI
         switch (getInventory().plotStates().get(0).getState())
         {
             case Pond:
-                ArrayList<BambooGoal> bambooGoals = this.getGoalValidated(false)
+                ArrayList<BambooGoal> bambooGoals = this.getInventory().validatedGoals(false)
                                                         .stream()
                                                         .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
                                                         .map(g -> (BambooGoal) g)//we cast them as such
@@ -218,7 +218,7 @@ public class AISimple extends AI
                 break;
 
             case Enclosure:
-                ArrayList<GardenerGoal> gardenerGoal = this.getGoalValidated(false)
+                ArrayList<GardenerGoal> gardenerGoal = this.getInventory().validatedGoals(false)
                                                            .stream()
                                                            .filter(c -> c instanceof GardenerGoal)//we take only the bamboogoals
                                                            .map(g -> (GardenerGoal) g)//we cast them as such
@@ -229,7 +229,7 @@ public class AISimple extends AI
                 break;
 
             case Fertilizer:
-                Goal goal = this.getGoalValidated(false).get(0);
+                Goal goal = this.getInventory().validatedGoals(false).get(0);
 
                 if (goal instanceof BambooGoal) color = ((BambooGoal) goal).getColor();
                 if (goal instanceof GardenerGoal) color = ((GardenerGoal) goal).getColor();
@@ -276,7 +276,7 @@ public class AISimple extends AI
             }
 
             Logger.printSeparator(getName());
-            Logger.printLine(getName() + " - goal = " + getGoalValidated(false).toString());
+            Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
 
             if (placePlot()) consumeAction();
 
