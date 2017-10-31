@@ -138,35 +138,36 @@ public class AISimple extends AI
     /**
      place a plot tile
      */
-    public void placePlot ()
+    public boolean placePlot ()
     {
         GameBoard board = GameBoard.getInstance();
         Random rand = new Random();
         ArrayList<Plot> draw;
 
         // On pioche trois parcelles si possible
-        try
-        {
-            draw = DrawStack.giveTreePlot();
-            //tant qu'on nous renvois les même trois case
-            int randInt = rand.nextInt(3);
-            Plot plot = draw.get(randInt);
 
-            // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
-            draw.remove(randInt);
-            DrawStack.giveBackPlot(draw);
+        draw = DrawStack.giveTreePlot();
+        if(draw == null)
+            return false;
 
-            //todo: add a available slot function
-            ArrayList<Point> free = board.getAvailableSlots();
-            plot.setCoords(free.get(0));
-            board.addCell(plot);
+        //On choisit un carte aléatoire parmis les trois car ou moins envoyé par la pioche plot
+        int randInt;
+        if(draw.size()>=3)
+            randInt = rand.nextInt(3);
+        else
+            randInt = rand.nextInt(draw.size());
+        Plot plot = draw.get(randInt);
 
-            Logger.printLine(getName() + " placed : " + plot);
-        }
-        catch (NullPointerException e)
-        {
-            Logger.printLine("IL N'Y A PLUS DE CARTE DANS LA PIOCHE");
-        }
+        // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
+        draw.remove(randInt);
+        DrawStack.giveBackPlot(draw);
+
+        //todo: add a available slot function
+        ArrayList<Point> free = board.getAvailableSlots();
+        plot.setCoords(free.get(0));
+        board.addCell(plot);
+        Logger.printLine(getName() + " placed : " + plot);
+        return true;
     }
 
     /**
@@ -277,8 +278,10 @@ public class AISimple extends AI
             Logger.printSeparator(getName());
             Logger.printLine(getName() + " - goal = " + getGoalValidated(false).toString());
 
-            placePlot();
-            actionsLeft--;
+            Boolean succed = placePlot();
+            // S'il y avait assez de Plot dans la pioche on retire une action
+            if(succed)
+                actionsLeft--;
             if (new Random().nextBoolean())
             {
                 moveGardener();
