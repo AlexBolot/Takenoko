@@ -50,12 +50,12 @@ public class DrawStack
                 randInt,
                 indexColorPlot;
 
-        if(totalPlotFree > 3) {
-            for (int i = 0; i < 3; i++) {
-                totalPlotFree = Enums.DrawStack.getNbPlot();
+        if(totalPlotFree > 0) {
+            for (int i = 0; i < (totalPlotFree > 3 ? 3 : totalPlotFree) ; i++) {
                 randInt = rand.nextInt(totalPlotFree);
+                totalPlotFree = Enums.DrawStack.getNbPlot();
 
-                indexColorPlot = whereIsRandInt(randInt,Enums.DrawStack.values());
+                indexColorPlot = chooseColor(randInt,Enums.DrawStack.values());
                 randInt = rand.nextInt(Enums.DrawStack.values()[indexColorPlot].getnbPlotByColor());
                 plot = setPlotState(indexColorPlot,randInt);
                 listP.add(plot);
@@ -65,10 +65,11 @@ public class DrawStack
         return null;
     }
 
-    private static int whereIsRandInt(int randInt, Enums.DrawStack tab[]){
+    private static int chooseColor(int randInt, Enums.DrawStack tab[]){
         int index = 0,
-                total = tab[index].getnbPlotByColor();
-        while(randInt >= total ){
+            total = tab[index].getnbPlotByColor();
+
+        while(randInt >= total && tab[index].getnbPlotByColor() <= 0){
             index ++;
             total += tab[index].getnbPlotByColor();
         }
@@ -82,7 +83,7 @@ public class DrawStack
                 tabState[] = drawStack.getTabState(),
                 total = tabState[index];
 
-        while(randInt > total){
+        while(randInt >= total){
             index++;
             total += tabState[index];
         }
