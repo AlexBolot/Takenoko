@@ -55,7 +55,6 @@ public class DrawStack
                 randInt = rand.nextInt(totalPlotFree);
 
                 indexColorPlot = whereIsRandInt(randInt,Enums.DrawStack.values());
-                System.out.println(Enums.DrawStack.values()[indexColorPlot].getnbPlotByColor()+1 + ' '+ indexColorPlot);
                 randInt = rand.nextInt(Enums.DrawStack.values()[indexColorPlot].getnbPlotByColor());
                 plot = setPlotState(indexColorPlot,randInt);
                 listP.add(plot);

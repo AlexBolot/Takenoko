@@ -19,6 +19,7 @@ public class Vector
     }
     //endregion
 
+    //region==========METHODS==============
     /**
      returns if the destination is on a straight line from the orgine
 
@@ -56,7 +57,6 @@ public class Vector
         return null;
     }
 
-    //region==========METHODS==============
     public Point applyVector (Point point)
     {
         Point newPoint = (Point) point.clone();
