@@ -243,6 +243,9 @@ public class AISimple extends AI
                 if (plot.getColor().equals(color) && plot.getBamboo().size() == 0)
                 {
                     plot.setState(getPlotStates().get(0));
+
+                    Logger.printLine(getName() + " upgraded : " + plot);
+
                     getPlotStates().remove(0);
                     return true;
                 }
