@@ -17,4 +17,8 @@ public class FertilizerState extends NeutralState
     {
         return 2;
     }
+
+    public String toString(){
+        return this.state.toString();
+    }
 }

@@ -137,7 +137,7 @@ public class Plot extends Cell
     @Override
     public String toString ()
     {
-        return super.toString() + " " + color;
+        return super.toString() + " ->" + color +'-'+state.toString();
     }
     //endregion
 }

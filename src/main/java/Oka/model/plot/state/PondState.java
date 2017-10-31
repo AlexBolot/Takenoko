@@ -16,4 +16,8 @@ public class PondState extends NeutralState
     {
         return true;
     }
+
+    public String toString(){
+        return this.state.toString();
+    }
 }

@@ -20,4 +20,8 @@ public class NeutralState {
     public boolean getIsIrrigated(){
         return false;
     }
+
+    public String toString(){
+        return this.state.toString();
+    }
 }

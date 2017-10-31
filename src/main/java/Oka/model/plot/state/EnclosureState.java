@@ -16,4 +16,8 @@ public class EnclosureState extends NeutralState
     {
         return false;
     }
+
+    public String toString(){
+        return this.state.toString();
+    }
 }
