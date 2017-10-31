@@ -5,9 +5,9 @@ import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
+import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
 import Oka.model.plot.state.NeutralState;
-import Oka.model.plot.state.PenState;
 import Oka.model.plot.state.PondState;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class DrawStack
 
         if(index == 0) return new Plot(color,new NeutralState());
         else if(index == 1) return new Plot(color,new PondState());
-        else if(index == 2) return new Plot(color,new PenState());
+        else if(index == 2) return new Plot(color,new EnclosureState());
         else return new Plot(color,new FertilizerState());
     }
 
