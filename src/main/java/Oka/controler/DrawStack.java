@@ -26,13 +26,17 @@ public class DrawStack
     public static Goal drawGoal (GoalType goalType)
     {
         Random random = new Random();
+        Color colors[] = Color.values();
+
+        Color randomColor = colors[random.nextInt(colors.length)];
+
         switch (goalType)
         {
             case BambooGoal:
-                return new BambooGoal(2, random.nextInt(3) + 2, Color.PINK);
+                return new BambooGoal(2, random.nextInt(3) + 2, randomColor);
 
             case GardenGoal:
-                return new GardenerGoal(2, random.nextInt(3) + 1, Color.PINK);
+                return new GardenerGoal(2, random.nextInt(3) + 1, randomColor);
 
             default:
                 return drawGoal(GoalType.values()[random.nextInt(GoalType.values().length)]);
