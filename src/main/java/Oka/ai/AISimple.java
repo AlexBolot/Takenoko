@@ -56,10 +56,7 @@ public class AISimple extends AI
 
         while (hasActionsLeft())
         {
-            if (getInventory().goalHolder().size() == 0)
-            {
-                pickGoal();
-            }
+            if (getInventory().goalHolder().size() == 0) pickGoal();
 
             if (getInventory().plotStates().size() > 0)
             {
@@ -237,7 +234,7 @@ public class AISimple extends AI
         return false;
     }
 
-    boolean placePlotState ()
+    protected boolean placePlotState ()
     {
         Color color = null;
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
@@ -292,6 +289,27 @@ public class AISimple extends AI
         }
 
         return (false);
+    }
+
+    protected void pickGoal ()
+    {
+        Enums.GoalType[] values = Enums.GoalType.values();
+        Enums.GoalType goalType = values[new Random().nextInt(values.length)];
+
+        Goal goal = DrawStack.drawGoal(goalType);
+
+        getInventory().addGoal(goal);
+
+        consumeAction();
+    }
+
+    protected void pickGoal (Enums.GoalType goalType)
+    {
+        Goal goal = DrawStack.drawGoal(goalType);
+
+        getInventory().addGoal(goal);
+
+        consumeAction();
     }
 
     //endregion

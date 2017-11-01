@@ -57,22 +57,6 @@ public abstract class Playable
     {
         return inventory;
     }
-
-    /*protected BambooHolder getBamboos ()
-    {
-        return this.inventory.bambooHolder();
-    }
-
-    protected ArrayList<Goal> getGoals ()
-    {
-        return this.inventory.goalHolder();
-    }
-
-    protected PlotStateHolder getPlotStates ()
-    {
-        return this.inventory.plotStates();
-    }*/
-
     //endregion
 
     //region==========METHODS==============
@@ -87,27 +71,6 @@ public abstract class Playable
     }
 
     public abstract void play ();
-
-    protected void pickGoal ()
-    {
-        GoalType[] values = GoalType.values();
-        GoalType goalType = values[new Random().nextInt(values.length)];
-
-        Goal goal = DrawStack.drawGoal(goalType);
-
-        getInventory().addGoal(goal);
-
-        consumeAction();
-    }
-
-    protected void pickGoal (GoalType goalType)
-    {
-        Goal goal = DrawStack.drawGoal(goalType);
-
-        getInventory().addGoal(goal);
-
-        consumeAction();
-    }
 
     protected void resetActions ()
     {
