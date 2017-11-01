@@ -100,6 +100,15 @@ public abstract class Playable
         consumeAction();
     }
 
+    protected void pickGoal (GoalType goalType)
+    {
+        Goal goal = DrawStack.drawGoal(goalType);
+
+        getInventory().addGoal(goal);
+
+        consumeAction();
+    }
+
     protected void resetActions ()
     {
         actionsLeft = 2;

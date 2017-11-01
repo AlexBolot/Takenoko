@@ -50,6 +50,44 @@ public class AISimple extends AI
     //endregion
 
     //region==========METHODS==============
+    public void play ()
+    {
+        resetActions();
+
+        while (hasActionsLeft())
+        {
+            if (getInventory().goalHolder().size() == 0)
+            {
+                pickGoal();
+            }
+
+            if (getInventory().plotStates().size() > 0)
+            {
+                if (placePlotState())
+                {
+                    consumeAction();
+                }
+            }
+
+            Logger.printSeparator(getName());
+            Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
+
+            if (placePlot()) consumeAction();
+
+            if (new Random().nextBoolean())
+            {
+                moveGardener();
+                consumeAction();
+            }
+            else
+            {
+                movePanda();
+                consumeAction();
+            }
+
+            Logger.printLine(getName() + " - bamboos = " + getInventory().bambooHolder().size());
+        }
+    }
 
     /**
      moves the gardener to a desired spot
@@ -256,44 +294,6 @@ public class AISimple extends AI
         return (false);
     }
 
-    public void play ()
-    {
-        resetActions();
-
-        while (hasActionsLeft())
-        {
-            if (getInventory().goalHolder().size() == 0)
-            {
-                getInventory().addGoal(DrawStack.drawGoal(Enums.GoalType.GardenGoal));
-                getInventory().addGoal(DrawStack.drawGoal(Enums.GoalType.BambooGoal));
-            }
-            if (getInventory().plotStates().size() > 0)
-            {
-                if (placePlotState())
-                {
-                    consumeAction();
-                }
-            }
-
-            Logger.printSeparator(getName());
-            Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
-
-            if (placePlot()) consumeAction();
-
-            if (new Random().nextBoolean())
-            {
-                moveGardener();
-                consumeAction();
-            }
-            else
-            {
-                movePanda();
-                consumeAction();
-            }
-
-            Logger.printLine(getName() + " - bamboos = " + getInventory().bambooHolder().size());
-        }
-    }
     //endregion
 }
 
