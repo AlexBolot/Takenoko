@@ -82,6 +82,8 @@ public class BambooGoal extends Goal
         {
             bambooHolder.removeByColor(color, values.get(color));
         }
+
+        setValidated(true);
     }
     //endregion
 
