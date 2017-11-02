@@ -301,7 +301,7 @@ public class AISimple extends AI
     }
 
     /**
-     Picks a random goal from the DrawStack
+     Picks a random goal from the DrawStackPlot
 
      @return true if everything went right (should always return true)
      */
@@ -314,14 +314,14 @@ public class AISimple extends AI
     }
 
     /**
-     Picks a goal of [param: goalType] from DrawStack
+     Picks a goal of [param: goalType] from DrawStackPlot
 
      @param goalType The desired GoalType
      @return true if everything went right (should always return true)
      */
     protected boolean pickGoal (Enums.GoalType goalType)
     {
-        Goal goal = DrawStack.drawGoal(goalType);
+        Goal goal = DrawStack.getInstance().drawGoal(goalType);
 
         getInventory().addGoal(goal);
 

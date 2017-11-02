@@ -40,7 +40,7 @@ public abstract class Playable
             GoalType[] values = GoalType.values();
             GoalType goalType = values[new Random().nextInt(values.length)];
 
-            Goal goal = DrawStack.drawGoal(goalType);
+            Goal goal = DrawStack.getInstance().drawGoal(goalType);
             getInventory().addGoal(goal);
             Logger.printLine(getName() + " picked : " + goal);
         }
@@ -84,5 +84,6 @@ public abstract class Playable
     {
         return getName();
     }
+
     //endregion
 }
