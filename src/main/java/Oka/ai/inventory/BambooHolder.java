@@ -39,7 +39,7 @@ public class BambooHolder extends ArrayList<Bamboo>
             else tabIndex[i] = 0;
         }
         int compt = 0;
-        for(int index = 0; index < tabIndex.length; index++){
+        for(int index =  tabIndex.length-1; index >=0; index--){
             if(tabIndex[index] == 1 && compt < n) {
                 compt++;
                 this.remove(index);
