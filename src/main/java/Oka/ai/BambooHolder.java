@@ -16,11 +16,20 @@ public class BambooHolder extends ArrayList<Bamboo>
 
     public void removeByColor (Color color, int n)
     {
-        int tabIndex[] = new int[n];
-        for (int i = 0; i < this.size() && tabIndex.length < n; i++)
+        //this.stream().filter(b -> b.getColor().equals(color)).forEach(b -> this.remove(b));
+        int tabIndex[] = new int[this.size()];
+        for (int i = 0; i < this.size(); i++)
         {
             Bamboo bamboo = this.get(i);
-            if (bamboo.getColor().equals(color)) tabIndex[tabIndex.length - 1] = i;
+            if (bamboo.getColor().equals(color)) tabIndex[i] = 1;
+            else tabIndex[i] = 0;
+        }
+        int compt = 0;
+        for(int index = 0; index < tabIndex.length; index++){
+            if(tabIndex[index] == 1 && compt < n) {
+                compt++;
+                this.remove(index);
+            }
         }
     }
 
