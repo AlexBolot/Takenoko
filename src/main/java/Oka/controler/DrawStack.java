@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static Oka.model.Enums.Color;
-import static Oka.model.Enums.goalType;
+import static Oka.model.Enums.GoalType;
 
 public class DrawStack
 {
@@ -23,40 +23,44 @@ public class DrawStack
     //endregion
 
     //region==========METHODS==============
-    public static Goal drawGoal (goalType goalType)
+    public static Goal drawGoal (GoalType goalType)
     {
         Random random = new Random();
+        Color colors[] = Color.values();
+
+        Color randomColor = colors[random.nextInt(colors.length)];
+
         switch (goalType)
         {
             case BambooGoal:
-                return new BambooGoal(2, random.nextInt(3) + 2, Color.PINK);
-
-            case PlotGoal:
-                break;
+                return new BambooGoal(2, random.nextInt(3) + 2, randomColor);
 
             case GardenGoal:
-                return new GardenerGoal(2, random.nextInt(3) + 1, Color.PINK);
+                return new GardenerGoal(2, random.nextInt(3) + 1, randomColor);
+
+            default:
+                return drawGoal(GoalType.values()[random.nextInt(GoalType.values().length)]);
 
         }
-        return null;
     }
 
-    public static ArrayList<Plot> giveTreePlot() {
+    public static ArrayList<Plot> giveTreePlot ()
+    {
         Random rand = new Random();
-        ArrayList<Plot> listP =  new ArrayList<>();
+        ArrayList<Plot> listP = new ArrayList<>();
         Plot plot;
-        int totalPlotFree = Enums.DrawStack.getNbPlot(),
-                randInt,
-                indexColorPlot;
+        int totalPlotFree = Enums.DrawStack.getNbPlot(), randInt, indexColorPlot;
 
-        if(totalPlotFree > 0) {
-            for (int i = 0; i < (totalPlotFree > 3 ? 3 : totalPlotFree) ; i++) {
+        if (totalPlotFree > 0)
+        {
+            for (int i = 0; i < (totalPlotFree > 3 ? 3 : totalPlotFree); i++)
+            {
                 randInt = rand.nextInt(totalPlotFree);
                 totalPlotFree = Enums.DrawStack.getNbPlot();
 
-                indexColorPlot = chooseColor(randInt,Enums.DrawStack.values());
+                indexColorPlot = chooseColor(randInt, Enums.DrawStack.values());
                 randInt = rand.nextInt(Enums.DrawStack.values()[indexColorPlot].getnbPlotByColor());
-                plot = setPlotState(indexColorPlot,randInt);
+                plot = setPlotState(indexColorPlot, randInt);
                 listP.add(plot);
             }
             return listP;
@@ -64,48 +68,53 @@ public class DrawStack
         return null;
     }
 
-    private static int chooseColor(int randInt, Enums.DrawStack tab[]){
-        int index = 0,
-            total = tab[index].getnbPlotByColor();
+    private static int chooseColor (int randInt, Enums.DrawStack tab[])
+    {
+        int index = 0, total = tab[index].getnbPlotByColor();
 
-        while(randInt >= total && tab[index].getnbPlotByColor() <= 0){
-            index ++;
+        while (randInt >= total && tab[index].getnbPlotByColor() <= 0)
+        {
+            index++;
             total += tab[index].getnbPlotByColor();
         }
         return index;
     }
 
-    private static Plot setPlotState(int indexColor, int randInt){
+    private static Plot setPlotState (int indexColor, int randInt)
+    {
         Enums.DrawStack drawStack = Enums.DrawStack.values()[indexColor];
         Enums.Color color = Enums.Color.values()[indexColor];
-        int index = 0,
-                tabState[] = drawStack.getTabState(),
-                total = tabState[index];
+        int index = 0, tabState[] = drawStack.getTabState(), total = tabState[index];
 
-        while(randInt >= total){
+        while (randInt >= total)
+        {
             index++;
             total += tabState[index];
         }
         tabState[index]--;
         drawStack.setTabState(tabState);
 
-        if(index == 0) return new Plot(color,new NeutralState());
-        else if(index == 1) return new Plot(color,new PondState());
-        else if(index == 2) return new Plot(color,new EnclosureState());
-        else return new Plot(color,new FertilizerState());
+        if (index == 0) return new Plot(color, new NeutralState());
+        else if (index == 1) return new Plot(color, new PondState());
+        else if (index == 2) return new Plot(color, new EnclosureState());
+        else return new Plot(color, new FertilizerState());
     }
 
-    public static void giveBackPlot(ArrayList<Plot> listP) {
+    public static void giveBackPlot (ArrayList<Plot> listP)
+    {
         Enums.Color colorPlot;
         int index = 0;
-        for (int i = 0; i < listP.size(); i++) {
+        for (int i = 0; i < listP.size(); i++)
+        {
             colorPlot = listP.get(i).getColor();
-            while(colorPlot.equals(Enums.Color.values()[index])){
+            while (colorPlot.equals(Enums.Color.values()[index]))
+            {
                 index++;
             }
-            setNbState(Enums.DrawStack.values()[index],listP.get(i));
+            setNbState(Enums.DrawStack.values()[index], listP.get(i));
         }
     }
+
     private static void setNbState (Enums.DrawStack nbColorPlot, Plot plot)
     {
         int tab[] = nbColorPlot.getTabState(), index = 0;

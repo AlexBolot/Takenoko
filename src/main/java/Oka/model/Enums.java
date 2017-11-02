@@ -3,7 +3,8 @@ package Oka.model;
 
 public class Enums {
 
-    public enum goalType{
+    public enum GoalType
+    {
         BambooGoal, PlotGoal, GardenGoal;
     }
     public enum Axis {

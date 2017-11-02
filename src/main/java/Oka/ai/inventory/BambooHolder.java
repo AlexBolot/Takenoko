@@ -1,10 +1,24 @@
-package Oka.ai;
+package Oka.ai.inventory;
 
 import Oka.model.Bamboo;
 
 import java.util.ArrayList;
 
 import static Oka.model.Enums.Color;
+
+/*..................................................................................................
+ . Copyright (c)
+ .
+ . The BambooHolder	 Class was Coded by : Team_A
+ .
+ . Members :
+ . -> Alexandre Bolot
+ . -> Mathieu Paillart
+ . -> Grégoire Peltier
+ . -> Théos Mariani
+ .
+ . Last Modified : 29/10/17 16:40
+ .................................................................................................*/
 
 public class BambooHolder extends ArrayList<Bamboo>
 {

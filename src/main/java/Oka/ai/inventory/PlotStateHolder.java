@@ -1,4 +1,8 @@
-package Oka.ai;
+package Oka.ai.inventory;
+
+import Oka.model.plot.state.NeutralState;
+
+import java.util.ArrayList;
 
 /*..................................................................................................
  . Copyright (c)
@@ -11,12 +15,8 @@ package Oka.ai;
  . -> Grégoire Peltier
  . -> Théos Mariani
  .
- . Last Modified : 30/10/17 14:00
+ . Last Modified : 30/10/17 14:05
  .................................................................................................*/
-
-import Oka.model.plot.state.NeutralState;
-
-import java.util.ArrayList;
 
 public class PlotStateHolder extends ArrayList<NeutralState>
 {

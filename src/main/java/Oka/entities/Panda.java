@@ -37,7 +37,7 @@ public class Panda extends Entity
 
             if (bamboo == null) return;
 
-            GameController.getInstance().getCurrentPlayer().addBamboo(bamboo.getColor());
+            GameController.getInstance().getCurrentPlayer().getInventory().addBamboo(bamboo.getColor());
         }
     }
     //endregion

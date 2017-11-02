@@ -56,7 +56,7 @@ public class AISimpleTest
 
         GameController.getInstance().setCurrentPlayer(AI);
 
-        AI.addGoal(new BambooGoal(3, 1, Enums.Color.PINK));
+        AI.getInventory().addGoal(new BambooGoal(3, 1, Enums.Color.PINK));
         AI.movePanda();
         Assert.assertEquals(p01, Panda.getInstance().getCoords());
 
@@ -66,7 +66,7 @@ public class AISimpleTest
 
         GameController.getInstance().setCurrentPlayer(AI);
 
-        AI.addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
+        AI.getInventory().addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
         AI.movePanda();
         Assert.assertEquals(p10, Panda.getInstance().getCoords());
     }
@@ -78,14 +78,14 @@ public class AISimpleTest
 
         AISimple AI = new AISimple("Momo");
 
-        AI.addGoal(new BambooGoal(3, 1, Enums.Color.PINK));
+        AI.getInventory().addGoal(new BambooGoal(3, 1, Enums.Color.PINK));
         AI.moveGardener();
         Assert.assertEquals(p01, Gardener.getInstance().getCoords());
         Gardener.getInstance().setCoords(new Point());
 
         AI = new AISimple("Momo");
 
-        AI.addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
+        AI.getInventory().addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
         AI.moveGardener();
         Assert.assertEquals(p10, Gardener.getInstance().getCoords());
 

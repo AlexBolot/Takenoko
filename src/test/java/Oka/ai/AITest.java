@@ -1,22 +1,15 @@
 package Oka.ai;
 
-import Oka.model.Bamboo;
-import Oka.model.Enums;
-import Oka.model.goal.BambooGoal;
-import Oka.model.goal.Goal;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import java.awt.*;
-import java.util.ArrayList;
-
-import static org.junit.Assert.assertEquals;
 
 public class AITest
 {
+    @Ignore ("This test is no longer required, move it somewhere else")
     @Test
     public void checkGoal () throws Exception
     {
-
+        /*
         ArrayList<Goal> goals = new ArrayList<>();
         goals.add(new BambooGoal(3, 1, Enums.Color.GREEN));
         goals.add(new BambooGoal(3, 2, Enums.Color.GREEN));
@@ -40,6 +33,6 @@ public class AITest
 
         assertEquals(5, AI.getGoals().size());
         assertEquals(2, AI.getGoalValidated(true).size());
-        assertEquals(3, AI.getGoalValidated(false).size());
+        assertEquals(3, AI.getGoalValidated(false).size());*/
     }
 }

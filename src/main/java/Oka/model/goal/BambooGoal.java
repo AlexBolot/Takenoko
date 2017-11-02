@@ -14,7 +14,7 @@ package Oka.model.goal;
  . Last Modified : 16/10/17 14:11
  .................................................................................................*/
 
-import Oka.ai.BambooHolder;
+import Oka.ai.inventory.BambooHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,6 +82,8 @@ public class BambooGoal extends Goal
         {
             bambooHolder.removeByColor(color, values.get(color));
         }
+
+        setValidated(true);
     }
     //endregion
 

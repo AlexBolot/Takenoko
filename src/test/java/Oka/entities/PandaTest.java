@@ -55,7 +55,7 @@ public class PandaTest
         assertEquals(1, plot3.getBamboo().size());
 
         //There is no bamboo yet in aiSimple's inventory (current Player)
-        assertEquals(aiSimple.getBamboos().size(), 0);
+        assertEquals(aiSimple.getInventory().bambooHolder().size(), 0);
 
         panda.move(point1);
 
@@ -68,10 +68,10 @@ public class PandaTest
 
         //There is now a bamboo in aiSimple's inventory and it has the same color
         //as the plot it was harvested on.
-        assertEquals(aiSimple.getBamboos().size(), 1);
-        assertEquals(aiSimple.getBamboos().countBamboo(PINK), 1);
-        assertEquals(aiSimple.getBamboos().countBamboo(YELLOW), 0);
-        assertEquals(aiSimple.getBamboos().countBamboo(GREEN), 0);
+        assertEquals(aiSimple.getInventory().bambooHolder().size(), 1);
+        assertEquals(aiSimple.getInventory().bambooHolder().countBamboo(PINK), 1);
+        assertEquals(aiSimple.getInventory().bambooHolder().countBamboo(YELLOW), 0);
+        assertEquals(aiSimple.getInventory().bambooHolder().countBamboo(GREEN), 0);
     }
 
     @Test

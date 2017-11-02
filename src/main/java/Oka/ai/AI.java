@@ -1,84 +1,29 @@
 package Oka.ai;
 
+import Oka.entities.Entity;
 import Oka.model.Enums;
-import Oka.model.goal.Goal;
-import Oka.model.plot.state.NeutralState;
 
-import java.util.ArrayList;
-
-public class AI
+public abstract class AI extends Playable
 {
-    //region==========ATTRIBUTES===========
-    protected int    actionsLeft;
-    private   String name;
-
-    private Inventory inventory = new Inventory();
-    //endregion//
-
     //region==========CONSTRUCTORS=========
     public AI (String name)
     {
-        this.name = name;
+        super(name);
     }
     //endregion
 
-    //region==========GETTER/SETTER========
-    public int getActionsLeft ()
-    {
-        return actionsLeft;
-    }
+    //region==========ABSTRACT METHODS=====
+    @Override
+    public abstract void play ();
 
-    public void setActionsLeft (int actionsLeft)
-    {
-        this.actionsLeft = actionsLeft;
-    }
+    protected abstract boolean moveGardener ();
 
-    public BambooHolder getBamboos ()
-    {
-        return this.inventory.bambooHolder();
-    }
+    protected abstract boolean movePanda ();
 
-    public ArrayList<Goal> getGoals ()
-    {
-        return this.inventory.goalHolder();
-    }
+    protected abstract boolean placePlot ();
 
-    public String getName ()
-    {
-        return name;
-    }
+    protected abstract boolean moveEntity (Entity entity, int bambooSize, Enums.Color color);
 
-    public PlotStateHolder getPlotStates ()
-    {
-        return this.inventory.plotStates();
-    }
-    //endregion
-
-    //region==========METHODS==============
-    public void addBamboo (Enums.Color color)
-    {
-        this.inventory.addBamboo(color);
-    }
-
-    public void addGoal (Goal goal)
-    {
-        this.inventory.addGoal(goal);
-    }
-
-    public void addPlotState (NeutralState plotState)
-    {
-        this.inventory.addPlotState(plotState);
-    }
-
-    public ArrayList<Goal> getGoalValidated (boolean validated)
-    {
-        return new ArrayList<>(this.inventory.validatedGoals(validated));
-    }
-
-    public int checkGoal ()
-    {
-        return this.inventory.checkGoals().size();
-    }
     //endregion
 }
 
