@@ -1,4 +1,4 @@
-package Oka.ai;
+package Oka.ai.inventory;
 
 import Oka.model.Bamboo;
 import Oka.model.Enums;
