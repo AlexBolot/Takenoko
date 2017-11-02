@@ -8,6 +8,7 @@ import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
+import Oka.model.plot.state.NeutralState;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -54,7 +55,7 @@ public class InventoryTest {
         i.addBamboo(Enums.Color.GREEN);
         i.addBamboo(Enums.Color.GREEN);
 
-        GardenerGoal gardenerGoal = new GardenerGoal(3, 3, Enums.Color.GREEN);
+        GardenerGoal gardenerGoal = new GardenerGoal(3, 3, Enums.Color.GREEN, new NeutralState());
 
         GameBoard board = GameBoard.getInstance();
         Plot plot = new Plot(new Point(1, 0), Enums.Color.GREEN);

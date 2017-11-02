@@ -24,13 +24,13 @@ public class Enums {
         Enclosure,
         Fertilizer
     }
-    public enum DrawStack{
+    public enum DrawStackPlot {
         // NeutralState, PondState, EnclosureState, FertilizerState
        nbGreenPlot(new int[]{6,2,2,1}), nbYellowPlot(new int[]{6,1,1,1}), nbPinkPlot(new int[]{4,1,1,1});
 
         private int tabState[] = new int[4];
 
-        DrawStack(int tab[]){
+        DrawStackPlot(int tab[]){
             this.tabState = tab;
         }
         public int[] getTabState() {
@@ -50,6 +50,9 @@ public class Enums {
         public static int getNbPlot(){
             return nbGreenPlot.getnbPlotByColor() + nbYellowPlot.getnbPlotByColor() + nbPinkPlot.getnbPlotByColor();
         }
+    }
+    public enum DrawStackGoal{
+
     }
 
 }

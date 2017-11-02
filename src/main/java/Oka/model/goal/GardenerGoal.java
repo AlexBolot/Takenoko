@@ -4,6 +4,7 @@ import Oka.controler.GameBoard;
 import Oka.model.Cell;
 import Oka.model.Enums.Color;
 import Oka.model.plot.Plot;
+import Oka.model.plot.state.NeutralState;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -13,10 +14,11 @@ public class GardenerGoal extends Goal
     //region==========ATTRIBUTES===========
     private Color color;
     private int   bambooAmount;
+    private NeutralState state;
     //endregion
 
     //region==========CONSTRUCTORS=========
-    public GardenerGoal (int value, int bambooAmount, Color color)
+    public GardenerGoal (int value, int bambooAmount, Color color, NeutralState State)
     {
         super(value);
         this.bambooAmount = bambooAmount;
