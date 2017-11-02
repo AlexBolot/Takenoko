@@ -38,7 +38,7 @@ public class Gardener extends Entity
 
             arrivalPlot.addBamboo();
 
-            for (Cell c : board.getExistingNeihboors(this.getCoords()))
+            for (Cell c : board.getExistingNeighboors(this.getCoords()))
             {
                 if (c instanceof Plot)
                 {
