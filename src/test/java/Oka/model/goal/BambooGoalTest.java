@@ -2,27 +2,39 @@ package Oka.model.goal;
 
 import Oka.ai.AISimple;
 import Oka.model.Enums;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Random;
 
+import static Oka.model.Enums.Color.GREEN;
+import static Oka.model.Enums.Color.PINK;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BambooGoalTest
 {
+    private BambooGoal bg1;
+    private BambooGoal bg2;
+    private BambooGoal bg3;
+    private BambooGoal bg4;
+
+    @Before
+    public void setUp () throws Exception
+    {
+        bg1 = new BambooGoal(3, 1, GREEN);
+        bg2 = new BambooGoal(3, 2, PINK);
+        bg3 = new BambooGoal(3, 3, GREEN);
+        bg4 = new BambooGoal(3, 3, GREEN);
+    }
+
     @Test
     public void validateRIGHT () throws Exception
     {
-        BambooGoal bg1 = new BambooGoal(3, 1, Enums.Color.GREEN);
-        BambooGoal bg2 = new BambooGoal(3, 2, Enums.Color.PINK);
-        BambooGoal bg3 = new BambooGoal(3, 3, Enums.Color.GREEN);
-        BambooGoal bg4 = new BambooGoal(3, 3, Enums.Color.GREEN);
-
         AISimple ai = new AISimple("Ma");
 
-        ai.getInventory().addBamboo(Enums.Color.GREEN);
-        ai.getInventory().addBamboo(Enums.Color.GREEN);
+        ai.getInventory().addBamboo(GREEN);
+        ai.getInventory().addBamboo(GREEN);
 
         bg1.validate(ai.getInventory().bambooHolder());
         assertTrue(bg1.isValidated());
@@ -41,29 +53,31 @@ public class BambooGoalTest
     public void validateBorderNegative ()
     {
         AISimple nAI = new AISimple("normal");
-        BambooGoal bg2 = new BambooGoal(1, -1, Enums.Color.PINK);
+
+        bg2 = new BambooGoal(1, -1, PINK);
+
         bg2.validate(nAI.getInventory().bambooHolder());
     }
 
     @Test
     public void validateBorder ()
     {
-        BambooGoal bg1 = new BambooGoal(1, 1234, Enums.Color.GREEN);
-        BambooGoal bg3 = new BambooGoal(1, 4, Enums.Color.PINK);
+        bg1 = new BambooGoal(1, 1234, GREEN);
+        bg3 = new BambooGoal(1, 4, PINK);
 
         AISimple nAI = new AISimple("normal");
         AISimple emptyAi = new AISimple("empty");
         AISimple fullAi = new AISimple("Full");
         Enums.Color[] colors = new Enums.Color[3];
-        colors[0] = Enums.Color.GREEN;
-        colors[1] = Enums.Color.PINK;
-        colors[2] = Enums.Color.PINK;
+        colors[0] = GREEN;
+        colors[1] = PINK;
+        colors[2] = PINK;
 
         Random random = new Random();
 
-        fullAi.getInventory().addBamboo(Enums.Color.PINK);
-        fullAi.getInventory().addBamboo(Enums.Color.GREEN);
-        fullAi.getInventory().addBamboo(Enums.Color.PINK);
+        fullAi.getInventory().addBamboo(PINK);
+        fullAi.getInventory().addBamboo(GREEN);
+        fullAi.getInventory().addBamboo(PINK);
 
         for (int i = 0; i < 1000; i++)
         {
@@ -84,8 +98,7 @@ public class BambooGoalTest
     @Test (expected = NullPointerException.class)
     public void validateNull ()
     {
-
-        BambooGoal b = new BambooGoal(1, 1, Enums.Color.GREEN);
-        b.validate(null);
+        bg1 = new BambooGoal(1, 1, GREEN);
+        bg1.validate(null);
     }
 }

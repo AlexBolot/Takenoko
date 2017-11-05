@@ -2,7 +2,7 @@ package Oka.model;
 
 import java.awt.*;
 
-public class Cell
+public abstract class Cell
 {
     //region==========ATTRIBUTES===========
     private Point coords;

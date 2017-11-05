@@ -21,4 +21,16 @@ public class Bamboo
         return color;
     }
     //endregion
+
+    //region==========EQUALS/TOSTRING======
+    @Override
+    public boolean equals (Object obj)
+    {
+        if (obj == null || !(obj instanceof Bamboo)) return false;
+
+        Bamboo comp = (Bamboo) obj;
+
+        return this.color.equals(comp.color);
+    }
+    //endregion
 }

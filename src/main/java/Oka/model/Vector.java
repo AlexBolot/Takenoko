@@ -42,6 +42,8 @@ public class Vector
      */
     public static Vector findStraightVector (Point point, Point point1)
     {
+        if (point == null || point1 == null) throw new IllegalArgumentException("Parameter is null !");
+
         if (point.getX() != point1.getX() && point.getY() == point1.getY())
         {
             return new Vector(Axis.x, (int) Math.abs(point1.getX() - point.getX()));
@@ -59,6 +61,8 @@ public class Vector
 
     public Point applyVector (Point point)
     {
+        if (point == null) throw new IllegalArgumentException("Param is null !");
+
         Point newPoint = (Point) point.clone();
 
         switch (axis)

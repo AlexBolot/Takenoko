@@ -12,15 +12,20 @@ public class EnclosureStateTest
     private Plot plot1;
 
     @Before
-    public void init(){
+    public void init ()
+    {
         plot1 = new Plot(Enums.Color.GREEN, new EnclosureState());
     }
 
     @Test
-    public void testState(){
+    public void testState ()
+    {
         plot1.addBamboo();
-        assertEquals(1,plot1.getBamboo().size());
+
+        assertEquals(1, plot1.getBamboo().size());
+
         plot1.giveBamboo();
-        assertEquals(1,plot1.getBamboo().size());
+
+        assertEquals(1, plot1.getBamboo().size());
     }
 }

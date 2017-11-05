@@ -2,23 +2,26 @@ package Oka.model;
 
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
-import junit.framework.TestCase;
+import org.junit.Before;
 
 import java.awt.*;
 
-public class CellTest extends TestCase {
-    Cell center;
-    Cell side;
+public class CellTest
+{
+    private Cell center;
+    private Cell side;
 
-    public void setUp() throws Exception {
+    @Before
+    public void setUp ()
+    {
         Panda panda = Panda.getInstance();
         panda.setCoords(new Point(0, 0));
         Gardener gardener = Gardener.getInstance();
         gardener.setCoords(new Point(0, 0));
 
-        center = new Cell(new Point(0, 0));
-        side = new Cell(new Point(1, 1));
-        super.setUp();
+        // center = new Pond(new Point(0, 0));
+        //side = new Cell(new Point(1, 1));
     }
+
 
 }
