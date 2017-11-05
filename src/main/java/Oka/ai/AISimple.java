@@ -8,6 +8,7 @@ import Oka.entities.Panda;
 import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Enums.Color;
+import Oka.model.Irrigation;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
@@ -16,7 +17,9 @@ import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
 import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -62,7 +65,7 @@ public class AISimple extends AI
             if (getInventory().validatedGoals(false).size() == 0)
             {
                 /* For now we pick a random goal
-                Action is consumed only if plotState could be placed */
+                Action is consumed only if pickGoal could be achieved*/
                 if (pickGoal()) consumeAction();
             }
 
@@ -76,7 +79,20 @@ public class AISimple extends AI
             //Action is consumed only if plotState could be placed
             if (placePlot()) consumeAction();
 
-            //We randomly either move Gardener or Panda
+            //We Randomly chose to either move the gardener, the panda, or place an irrigation
+            switch (new Random().nextInt(3)) {
+                case 0:
+                    if (moveGardener()) consumeAction();
+                    break;
+                case 1:
+                    if (movePanda()) consumeAction();
+                    break;
+                case 2:
+                    if (drawChannel()) {
+                        placeChannel();
+                        consumeAction();
+                    }
+            }
             if (new Random().nextBoolean())
             {
                 if (moveGardener()) consumeAction();
@@ -89,6 +105,59 @@ public class AISimple extends AI
 
         Logger.printLine(getName() + " - bamboos = " + getInventory().bambooHolder().size());
     }
+
+    protected boolean drawChannel() {
+        Optional<Irrigation> irrigation = DrawStack.getInstance().drawChannel();
+        if (!irrigation.isPresent()) return false;
+        getInventory().addChannel();
+        return true;
+    }
+
+    /**
+     * Place the channel in a random manner, mainly to the first available spots it detects
+     *
+     * @return true if a channel have been placed
+     */
+    protected boolean placeChannel() {
+        if (!getInventory().hasChannel()) return false;
+
+        GameBoard board = GameBoard.getInstance();
+        Set<Irrigation> irrigations = board.getAvailableChannelSlots();
+        Optional<Color> color = findInterestingColor(this.getInventory().goalHolder());
+
+        if (color.isPresent()) {
+            Color c = color.get();
+            Set<Irrigation> interestingIrg = irrigations.
+                    stream()
+                    .filter(irrigation ->
+                            (irrigation.getPlot1().getColor().equals(c) || irrigation.getPlot2().getColor().equals(c)))
+                    .collect(Collectors.toSet());
+            if (interestingIrg.size() != 0) {
+                Irrigation irg = (Irrigation) interestingIrg.toArray()[0];
+                try {
+                    board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords());
+                    getInventory().removeChannel();
+                    return true;
+                } catch (InvalidArgumentException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        Irrigation irg = (Irrigation) irrigations.toArray()[0];
+        try {
+            board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords());
+            getInventory().removeChannel();
+            return true;
+        } catch (InvalidArgumentException e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
+    }
+
+
 
     /**
      moves the gardener to a desired spot

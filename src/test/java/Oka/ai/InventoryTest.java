@@ -9,6 +9,7 @@ import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.NeutralState;
+import Oka.utils.Cleaner;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +26,7 @@ public class InventoryTest {
 
     @Before
     public void setUp() throws Exception {
+        Cleaner.clearAll();
         goalHolder.addGoal(new BambooGoal(3, 3, Enums.Color.GREEN));
 
     }

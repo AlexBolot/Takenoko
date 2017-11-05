@@ -102,6 +102,7 @@ public class GameBoard {
         if (verifIrrigation(point1, point2)) return false;
         ArrayList<Cell> neightBoors = getCommonNeighboors(point1, point2);
         Boolean can = neightBoors.contains(grid.get(new Point()));
+
         for (Cell neightboor :
                 neightBoors) {
             can |= verifIrrigation(neightboor.getCoords(), point1);
@@ -290,24 +291,43 @@ public class GameBoard {
         return Vector.areAligned(entity.getCoords(), point) && entity.move(point);
     }
 
-    public HashMap<Point, ArrayList<Point>> getAvailableChannelSlots() {
-        /*
-        ArrayList<Cell> neightboors =  getExistingNeighboors(new Point());
-        for (int i = 1; i < neightboors.size() ; i++) {
-            Point coordsI = neightboors.get(i).getCoords();
-            Point coordsNextI = neightboors.get(i % neightboors.size()).getCoords();
-            Point coordsPrevI = neightboors.get((i - 1)).getCoords();
-            if (canPlaceIrigation(coordsI, coordsNextI)) {
+    /**
+     * Computes the available irigation slots
+     *
+     * @return Set of available irrigations
+     */
+    public Set<Irrigation> getAvailableChannelSlots() {
 
-            }
+        Set<Irrigation> availableIrrigations = new HashSet<Irrigation>();
 
-            if (canPlaceIrigation(coordsI, coordsPrevI)) {
-                getInventory().removeChannel();
-                board.addIrrigation(coordsI, coordsPrevI);
-                return true;
-            }
-        }*/
-        return null;
+        ArrayList<Cell> neightboors;
+
+        neightboors = getExistingNeighboors(new Point());
+
+        neightboors.forEach(cell -> {
+            ArrayList<Cell> touching = getCommonNeighboors(cell.getCoords(), new Point());
+            touching.stream().filter(t -> !verifIrrigation(cell.getCoords(), t.getCoords())).forEach(t -> availableIrrigations.add(new Irrigation(t.getCoords(), cell.getCoords())));
+        });
+
+        for (Irrigation irg :
+                irrigation) {
+
+            neightboors = getCommonNeighboors(irg.getPlot1().getCoords(), irg.getPlot2().getCoords());
+
+            neightboors.stream()
+                    .filter(cell -> !cell.getCoords().equals(new Point()))
+                    .forEach(plot -> {
+
+                        if (!verifIrrigation(plot.getCoords(), irg.getPlot1().getCoords()))
+                            availableIrrigations.add(new Irrigation(plot.getCoords(), irg.getPlot1().getCoords()));
+
+                        if (!verifIrrigation(plot.getCoords(), irg.getPlot2().getCoords()))
+                            availableIrrigations.add(new Irrigation(plot.getCoords(), irg.getPlot2().getCoords()));
+
+                    });
+        }
+        availableIrrigations.removeAll(irrigation);
+        return availableIrrigations;
     }
     //endregion
 }

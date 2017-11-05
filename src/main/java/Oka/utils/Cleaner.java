@@ -14,6 +14,7 @@ package Oka.utils;
  . Last Modified : 26/10/17 09:04
  .................................................................................................*/
 
+import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
 import Oka.controler.GameController;
 import Oka.entities.Gardener;
@@ -42,7 +43,7 @@ public class Cleaner
         //Clear the lists
         gameBoard.getGrid().clear();
         gameBoard.getAvailableSlots().clear();
-
+        gameBoard.getIrrigation().clear();
         //Adding Pond's coords to the available slots.
         gameBoard.getAvailableSlots().add(new Point());
 
@@ -55,12 +56,16 @@ public class Cleaner
         GameController.getInstance().setCurrentPlayer(null);
     }
 
+    public static void cleanDrawStack() {
+        DrawStack.resetDrawStack();
+    }
     public static void clearAll ()
     {
         cleanPanda();
         cleanGardener();
         cleanGameBoard();
         cleanGameController();
+        cleanDrawStack();
     }
     //endregion
 }
