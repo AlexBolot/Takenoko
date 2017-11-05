@@ -1,27 +1,28 @@
 package Oka.controler;
 
 import Oka.entities.Entity;
-import Oka.model.Cell;
-import Oka.model.Enums;
-import Oka.model.Pond;
-import Oka.model.Vector;
+import Oka.model.*;
 import Oka.model.plot.Plot;
 import Oka.utils.Logger;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GameBoard {
     //region==========ATTRIBUTES===========
     private static GameBoard ourInstance = new GameBoard();
     private HashMap<Point, Cell> grid = new HashMap<>();
     private ArrayList<Point> availableSlots = new ArrayList<>();
-    private HashMap<Point, ArrayList<Point>> irrigation = new HashMap<>();
+
+    private Set<Irrigation> irrigation = new HashSet<>();
     //endregion
 
     //region==========CONSTRUCTORS=========
-    private GameBoard () {
+    private GameBoard() {
         availableSlots.add(new Point());
 
         addCell(new Pond());
@@ -29,15 +30,15 @@ public class GameBoard {
     //endregion
 
     //region==========GETTER/SETTER========
-    public static GameBoard getInstance () {
+    public static GameBoard getInstance() {
         return ourInstance;
     }
 
-    public HashMap<Point, Cell> getGrid () {
+    public HashMap<Point, Cell> getGrid() {
         return grid;
     }
 
-    public void setGrid (HashMap<Point, Cell> grid) {
+    public void setGrid(HashMap<Point, Cell> grid) {
         this.grid = grid;
     }
 
@@ -47,25 +48,25 @@ public class GameBoard {
      *
      * @return ArrayList
      */
-    public ArrayList<Point> getAvailableSlots () {
+    public ArrayList<Point> getAvailableSlots() {
         return availableSlots;
     }
 
-    public void setAvailableSlots (ArrayList<Point> availableSlots) {
+    public void setAvailableSlots(ArrayList<Point> availableSlots) {
         this.availableSlots = availableSlots;
     }
 
-    public HashMap<Point, ArrayList<Point>> getIrrigation () {
+    public Set<Irrigation> getIrrigation() {
         return irrigation;
     }
 
-    public void setIrrigation (HashMap<Point, ArrayList<Point>> irrigation) {
+    public void setIrrigation(Set<Irrigation> irrigation) {
         this.irrigation = irrigation;
     }
     //endregion
 
     //region==========METHODS==============
-    public void addCell (Cell cell) {
+    public void addCell(Cell cell) {
         assertNotOnGrid(cell.getCoords());
         assertIsAvailable(cell.getCoords());
 
@@ -75,59 +76,50 @@ public class GameBoard {
         refreshAvailableSlots(cell);
     }
 
-    public void addIrrigation (Point point1, Point point2) {
-        if (grid.containsKey(point1) && grid.containsKey(point2)) {
-            if (irrigation.containsKey(point1))
-            {
-                if (irrigation.get(point1).contains(point2))
-                {
-                    Logger.printLine("Déjà irrigation");
-                }
-                else
-                {
-                    irrigation.get(point1).add(point2);
-                }
-            }
-            else
-            {
-                irrigation.put(point1, new ArrayList<>());
-                irrigation.get(point1).add(point2);
-            }
-            if (irrigation.containsKey(point2))
-            {
-                if (irrigation.get(point2).contains(point1))
-                {
-                    Logger.printLine("Déjà irrigation");
-                } else
-                {
-                    irrigation.get(point2).add(point1);
-                }
-            }
-            else
-            {
-                irrigation.put(point2, new ArrayList<>());
-                irrigation.get(point2).add(point1);
-            }
-        }
-        if (isConnected(point1, point2, new ArrayList<>())) {
-            if (grid.get(point1) instanceof Plot) {
-                ((Plot) grid.get(point1)).setIsIrrigated(true);
-            }
-            if (grid.get(point2) instanceof Plot) {
-                ((Plot) grid.get(point2)).setIsIrrigated(true);
-            }
+    public void addIrrigation(Point point1, Point point2) throws InvalidArgumentException {
+        if (!canPlaceIrigation(point1, point2))
+            throw new InvalidArgumentException(new String[]{"The two specified points must be a valid position for a channel"});
+        if (point1.equals(new Point()) || point2.equals(new Point())) return;
 
+
+        Irrigation irg = new Irrigation(point1, point2);
+
+        if (this.irrigation.contains(irg)) Logger.printLine("Déjà irrigué");
+
+        else this.irrigation.add(irg);
+
+        if (grid.get(point1) instanceof Plot) {
+            ((Plot) grid.get(point1)).setIsIrrigated(true);
         }
+        if (grid.get(point2) instanceof Plot) {
+            ((Plot) grid.get(point2)).setIsIrrigated(true);
+        }
+
+
     }
 
-    public boolean verifIrrigation (Point point1, Point point2) {
-        if (irrigation.containsKey(point1)) {
-            return (irrigation.get(point1).contains(point2));
+    public boolean canPlaceIrigation(Point point1, Point point2) {
+        if (verifIrrigation(point1, point2)) return false;
+        ArrayList<Cell> neightBoors = getCommonNeighboors(point1, point2);
+        Boolean can = neightBoors.contains(grid.get(new Point()));
+        for (Cell neightboor :
+                neightBoors) {
+            can |= verifIrrigation(neightboor.getCoords(), point1);
+            can |= verifIrrigation(neightboor.getCoords(), point2);
         }
-        return false;
+        return can;
     }
 
-    public ArrayList<Point> getEveryNeighboors (Point point) {
+    public boolean verifIrrigation(Point point1, Point point2) {
+        if (point1.equals(new Point()) || point2.equals(new Point())) return false;
+
+        Irrigation irg = new Irrigation(point1, point2);
+
+        return this.irrigation.contains(irg);
+
+    }
+
+    public ArrayList<Point> getEveryNeighboors(Point point) {
         Vector[] vectors = new Vector[6];
         vectors[0] = new Vector(Enums.Axis.x, 1);
         vectors[1] = new Vector(Enums.Axis.x, -1);
@@ -145,7 +137,7 @@ public class GameBoard {
         return neightbours;
     }
 
-    public ArrayList<Cell> getExistingNeighboors (Point point) {
+    public ArrayList<Cell> getExistingNeighboors(Point point) {
         Vector[] vectors = new Vector[6];
         vectors[0] = new Vector(Enums.Axis.x, 1);
         vectors[1] = new Vector(Enums.Axis.x, -1);
@@ -163,7 +155,7 @@ public class GameBoard {
         return neightbours;
     }
 
-    public ArrayList<Cell> getCommonNeighboors (Point point1, Point point2) {
+    public ArrayList<Cell> getCommonNeighboors(Point point1, Point point2) {
         ArrayList<Cell> neighboorspoint1 = getExistingNeighboors(point1);
         ArrayList<Cell> neighboorspoint2 = getExistingNeighboors(point2);
         ArrayList<Cell> neighboorsintersection = new ArrayList<>();
@@ -175,7 +167,7 @@ public class GameBoard {
         return neighboorsintersection;
     }
 
-    public boolean isConnected (Point point1, Point point2, ArrayList<Point[]> visited) {
+    public boolean isConnected(Point point1, Point point2, ArrayList<Point[]> visited) {
 
         if (verifIrrigation(point1, point2)) {
             visited.add(new Point[]{point1, point2});
@@ -185,30 +177,28 @@ public class GameBoard {
         }
         ArrayList<Cell> commonNeighboors = getCommonNeighboors(point1, point2);
         Point n1 = commonNeighboors.size() > 0 ? commonNeighboors.get(0).getCoords() : null;
-        Point n2 = commonNeighboors.size() > 1 ?  commonNeighboors.get(1).getCoords() : null;
+        Point n2 = commonNeighboors.size() > 1 ? commonNeighboors.get(1).getCoords() : null;
         int pd1 = distanceToPond(point1);
         int pd2 = distanceToPond(point2);
-        int pdn1 = n1!=null ? distanceToPond(n1) : 0;
-        int pdn2 = n2!=null ? distanceToPond(n2) : 0;
+        int pdn1 = n1 != null ? distanceToPond(n1) : 0;
+        int pdn2 = n2 != null ? distanceToPond(n2) : 0;
 
         ArrayList<Point[]> tab2 = new ArrayList<>();
 
         if (visited.contains(new Point[]{n1, n2}))
             return false;
 
-        if(n1 != null && n1.equals(new Point())) return true;
+        if (n1 != null && n1.equals(new Point())) return true;
 
-        if(n2 != null && n2.equals(new Point())) return true;
+        if (n2 != null && n2.equals(new Point())) return true;
 
         if (pd1 > pd2) {
             if (pdn1 > pdn2) {
-                if(n1 != null)
-            {
-                tab2.add(0, new Point[]{point1, n1});
-                tab2.add(2, new Point[]{point2, n1});
-            }
-                if(n2 != null)
-                {
+                if (n1 != null) {
+                    tab2.add(0, new Point[]{point1, n1});
+                    tab2.add(2, new Point[]{point2, n1});
+                }
+                if (n2 != null) {
                     tab2.add(1, new Point[]{point1, n2});
                     tab2.add(3, new Point[]{point2, n2});
                 }
@@ -217,13 +207,11 @@ public class GameBoard {
                 tab[2] = new Point[]{point2, n1};
                 tab[3] = new Point[]{point2, n2}; */
             } else {
-                if(n2 != null)
-                {
+                if (n2 != null) {
                     tab2.add(0, new Point[]{point1, n2});
                     tab2.add(2, new Point[]{point2, n2});
                 }
-                if(n1 != null)
-                {
+                if (n1 != null) {
                     tab2.add(1, new Point[]{point1, n1});
                     tab2.add(3, new Point[]{point2, n1});
                 }
@@ -234,13 +222,11 @@ public class GameBoard {
             }
         } else {
             if (pdn1 > pdn2) {
-                if(n1 != null)
-            {
-                tab2.add(0, new Point[]{point2, n1});
-                tab2.add(2, new Point[]{point1, n1});
-            }
-                if(n2 != null)
-                {
+                if (n1 != null) {
+                    tab2.add(0, new Point[]{point2, n1});
+                    tab2.add(2, new Point[]{point1, n1});
+                }
+                if (n2 != null) {
                     tab2.add(1, new Point[]{point2, n2});
                     tab2.add(3, new Point[]{point1, n2});
                 }
@@ -249,13 +235,11 @@ public class GameBoard {
                 tab[2] = new Point[]{point1, n1};
                 tab[3] = new Point[]{point1, n2};*/
             } else {
-                if(n2 != null)
-                {
+                if (n2 != null) {
                     tab2.add(0, new Point[]{point2, n2});
                     tab2.add(2, new Point[]{point1, n2});
                 }
-                if(n1 != null)
-                {
+                if (n1 != null) {
                     tab2.add(1, new Point[]{point2, n1});
                     tab2.add(3, new Point[]{point1, n1});
                 }
@@ -276,34 +260,54 @@ public class GameBoard {
         return false;
     }
 
-    int distanceToPond (Point point1) {
+    int distanceToPond(Point point1) {
         int z = -point1.x - point1.y;
         return Math.max(Math.abs(point1.x), Math.max(Math.abs(point1.y), Math.abs(z)));
     }
 
 
-    private void assertNotOnGrid (Point point) {
+    private void assertNotOnGrid(Point point) {
         if (point == null) throw new IllegalArgumentException("Point is null");
         if (grid.containsKey(point)) throw new IllegalArgumentException("The cell is already on the grid");
     }
 
-    private void assertIsAvailable (Point point) throws IllegalArgumentException {
+    private void assertIsAvailable(Point point) throws IllegalArgumentException {
         if (point == null) throw new IllegalArgumentException("Point is null");
         if (!availableSlots.contains(point)) throw new IllegalArgumentException("The slot is not available");
     }
 
-    private void refreshAvailableSlots (Cell cell) {
+    private void refreshAvailableSlots(Cell cell) {
         for (Point point : getEveryNeighboors(cell.getCoords())) {
             if (!grid.containsKey(point) && !availableSlots.contains(point)) availableSlots.add(point);
         }
     }
 
-    public boolean moveEntity (Entity entity, Point point) {
+    public boolean moveEntity(Entity entity, Point point) {
         if (entity == null) throw new IllegalArgumentException("Entity is null");
         if (point == null) throw new IllegalArgumentException("Point is null");
         if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
 
         return Vector.areAligned(entity.getCoords(), point) && entity.move(point);
+    }
+
+    public HashMap<Point, ArrayList<Point>> getAvailableChannelSlots() {
+        /*
+        ArrayList<Cell> neightboors =  getExistingNeighboors(new Point());
+        for (int i = 1; i < neightboors.size() ; i++) {
+            Point coordsI = neightboors.get(i).getCoords();
+            Point coordsNextI = neightboors.get(i % neightboors.size()).getCoords();
+            Point coordsPrevI = neightboors.get((i - 1)).getCoords();
+            if (canPlaceIrigation(coordsI, coordsNextI)) {
+
+            }
+
+            if (canPlaceIrigation(coordsI, coordsPrevI)) {
+                getInventory().removeChannel();
+                board.addIrrigation(coordsI, coordsPrevI);
+                return true;
+            }
+        }*/
+        return null;
     }
     //endregion
 }
