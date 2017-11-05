@@ -1,6 +1,7 @@
 package Oka.controler;
 
 import Oka.model.Enums;
+import Oka.model.Irrigation;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.GardenerGoalMultiPlot;
@@ -13,6 +14,7 @@ import Oka.model.plot.state.PondState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Random;
 
 import static Oka.model.Enums.Color;
@@ -26,6 +28,7 @@ public class DrawStack
     private static DrawStack ourInstance    = new DrawStack();
     private ArrayList<BambooGoal> listBambooGoal = new ArrayList<>();
     private ArrayList<GardenerGoal> listGardenerGoal = new ArrayList<>();
+    private int remainingChannels = 20;
     //endregion
 
     public DrawStack(){
@@ -113,6 +116,16 @@ public class DrawStack
         return null;
     }
 
+    /**
+     * returns an optional irrigation channel if one can be drawn from the stack
+     *
+     * @return Optional irrigation
+     */
+    public Optional<Irrigation> drawChannel() {
+        if (remainingChannels < 1) return Optional.empty();
+        remainingChannels--;
+        return Optional.of(new Irrigation());
+    }
     private static int chooseColor (int randInt, Enums.DrawStackPlot tab[])
     {
         int index = 0, total = tab[index].getnbPlotByColor();
@@ -170,4 +183,5 @@ public class DrawStack
         tab[index]++;
         nbColorPlot.setTabState(tab);
     }
+
 }

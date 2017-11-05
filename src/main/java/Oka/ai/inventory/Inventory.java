@@ -26,7 +26,7 @@ public class Inventory
     private BambooHolder    bambooHolder    = new BambooHolder();
     private GoalHolder      goalHolder      = new GoalHolder();
     private PlotStateHolder plotStateHolder = new PlotStateHolder();
-
+    private int channels = 0;
     //============ Active functions ============
 
     /**
@@ -57,6 +57,9 @@ public class Inventory
         this.plotStateHolder.add(plotState);
     }
 
+    public void addChannel() {
+        channels++;
+    }
     //=============== Getters =================
     public BambooHolder bambooHolder ()
     {
@@ -76,5 +79,13 @@ public class Inventory
     public PlotStateHolder plotStates ()
     {
         return this.plotStateHolder;
+    }
+
+    public boolean hasChannel() {
+        return channels > 0;
+    }
+
+    public void removeChannel() {
+        channels--;
     }
 }
