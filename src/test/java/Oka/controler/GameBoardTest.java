@@ -6,16 +6,15 @@ import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Irrigation;
 import Oka.model.Pond;
+import Oka.model.goal.BambooGoal;
 import Oka.model.plot.Plot;
 import Oka.utils.Cleaner;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import static Oka.model.Enums.Color.GREEN;
 import static org.junit.Assert.*;
@@ -156,6 +155,74 @@ public class GameBoardTest {
 
         assertTrue(board.canPlaceIrigation(p01, p11));
         assertTrue(board.canPlaceIrigation(p10, p11));
+
+    }
+
+    @Test
+    public void availableChannelsSlotSmallGrid() throws InvalidArgumentException {
+        Cleaner.clearAll();
+        Plot plot10G = new Plot(new Point(1, 0), Enums.Color.GREEN);
+        Plot plot01P = new Plot(new Point(0, 1), Enums.Color.PINK);
+        Plot plot11Y = new Plot(new Point(1, 1), Enums.Color.YELLOW);
+        Plot plot02P = new Plot(new Point(0, 2), Enums.Color.PINK);
+        GameBoard board = GameBoard.getInstance();
+
+        board.addCell(plot01P);
+        board.addCell(plot10G);
+        board.addCell(plot11Y);
+        board.addCell(plot02P);
+
+
+        board.addIrrigation(new Point(0, 1), new Point(1, 0));
+        board.addIrrigation(new Point(1, 1), new Point(1, 0));
+
+        Set<Irrigation> expected = new HashSet<>();
+        expected.add(new Irrigation(new Point(0, 1), new Point(1, 1)));
+        assertEquals(expected, board.getAvailableChannelSlots());
+
+    }
+
+    @Test
+    public void availableChannelsSlotsMediumGrid() throws Exception {
+        Cleaner.clearAll();
+
+        GameBoard board = GameBoard.getInstance();
+        mediumGrid.forEach((point, cell) -> {
+            if (!point.equals(new Point())) board.addCell(cell);
+        });
+        Set<Irrigation> expected = new HashSet<>();
+        Irrigation irg;
+        irg = new Irrigation(new Point(0, 1), new Point(1, 0));
+        expected.add(irg);
+        irg = new Irrigation(new Point(0, 1), new Point(-1, 1));
+        expected.add(irg);
+        irg = new Irrigation(new Point(-1, 0), new Point(-1, 1));
+        expected.add(irg);
+        irg = new Irrigation(new Point(-1, 0), new Point(0, -1));
+        expected.add(irg);
+        irg = new Irrigation(new Point(1, -1), new Point(0, -1));
+        expected.add(irg);
+        irg = new Irrigation(new Point(1, -1), new Point(1, 0));
+        expected.add(irg);
+
+
+        assertEquals(expected, board.getAvailableChannelSlots());
+
+        board.addCell(new Plot(new Point(1, 1), Enums.Color.GREEN));
+
+        board.addIrrigation(new Point(0, 1), new Point(1, 0));
+
+
+        expected.remove(new Irrigation(new Point(0, 1), new Point(1, 0)));
+        expected.add(new Irrigation(new Point(0, 1), new Point(1, 1)));
+        expected.add(new Irrigation(new Point(1, 0), new Point(1, 1)));
+        assertEquals(expected, board.getAvailableChannelSlots());
+
+        board.addIrrigation(new Point(0, 1), new Point(1, 1));
+
+        expected.remove(new Irrigation(new Point(0, 1), new Point(1, 1)));
+
+        assertEquals(expected, board.getAvailableChannelSlots());
 
     }
 }

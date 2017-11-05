@@ -22,6 +22,10 @@ public abstract class AI extends Playable
 
     protected abstract boolean placePlot ();
 
+    protected abstract boolean drawChannel();
+
+    protected abstract boolean placeChannel();
+
     protected abstract boolean moveEntity (Entity entity, int bambooSize, Enums.Color color);
 
     //endregion
