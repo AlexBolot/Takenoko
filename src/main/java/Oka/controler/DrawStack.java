@@ -184,4 +184,7 @@ public class DrawStack
         nbColorPlot.setTabState(tab);
     }
 
+    public static void resetDrawStack() {
+        ourInstance = new DrawStack();
+    }
 }
