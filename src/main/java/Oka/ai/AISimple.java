@@ -123,6 +123,8 @@ public class AISimple extends AI
 
         GameBoard board = GameBoard.getInstance();
         Set<Irrigation> irrigations = board.getAvailableChannelSlots();
+        if(irrigations.size()==0)
+            return false;
         Optional<Color> color = findInterestingColor(this.getInventory().goalHolder());
 
         if (color.isPresent()) {
@@ -137,16 +139,17 @@ public class AISimple extends AI
                 try {
                     board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords());
                     getInventory().removeChannel();
+                    Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " +irg.getPlot1().getCoords().toString() +' '+ irg.getPlot2().getCoords().toString());
                     return true;
                 } catch (InvalidArgumentException e) {
                     e.printStackTrace();
                 }
             }
-
         }
         Irrigation irg = (Irrigation) irrigations.toArray()[0];
         try {
             board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords());
+            Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : "+irg.getPlot1().getCoords().toString() +' '+ irg.getPlot2().getCoords().toString());
             getInventory().removeChannel();
             return true;
         } catch (InvalidArgumentException e) {

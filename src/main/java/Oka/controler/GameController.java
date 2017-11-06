@@ -52,6 +52,7 @@ public class GameController
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
 
+
             for (AISimple ai : playable)
             {
                 currentPlayer = ai;
