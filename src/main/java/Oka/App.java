@@ -55,23 +55,18 @@ public class App
         {
             for (int i = 0; i < answer; i++)
             {
-                try
-                {
-                    Cleaner.clearAll();
+                Cleaner.clearAll();
 
-                    GameController gc = GameController.getInstance();
+                GameController gc = GameController.getInstance();
 
-                    AISimple Al = new AISimple("Alexandre");
-                    AISimple Ma = new AISimple("Mathieu");
+                AISimple Al = new AISimple("Alexandre");
+                AISimple Ma = new AISimple("Mathieu");
 
-                    ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(Al, Ma));
+                ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(Al, Ma));
 
-                    gc.play(Playable);
-                }
-                catch (ArrayIndexOutOfBoundsException ignored)
-                {
+                gc.play(Playable);
 
-                }
+                System.out.println("ended game " + (i + 1));
             }
 
             HashMap<String, Integer> stats = Logger.getStats();
