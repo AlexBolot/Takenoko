@@ -19,7 +19,6 @@ import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 
-import javax.swing.text.html.Option;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -34,7 +33,7 @@ public class AISimple extends AI
 
         Enums.State[] values = Enums.State.values();
 
-        switch (values[2])
+        switch (values[new Random().nextInt(values.length)])
         {
             case Pond:
                 this.getInventory().addPlotState(new PondState());
@@ -161,8 +160,6 @@ public class AISimple extends AI
         return false;
     }
 
-
-
     /**
      moves the gardener to a desired spot
      chooses the spot based on the current bamboo objective
@@ -197,6 +194,17 @@ public class AISimple extends AI
                 return true;
             }
         }
+
+        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
+        {
+            if (moveEntity(gardener, bambooSize, Color.NONE))
+            {
+                Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
+
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -227,6 +235,15 @@ public class AISimple extends AI
         for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
         {
             if (moveEntity(panda, bambooSize, lookedForColor.get()))
+            {
+                Logger.printLine(getName() + " moved panda : " + panda.getCoords());
+
+                return true;
+            }
+        }
+        for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
+        {
+            if (moveEntity(panda, bambooSize, Color.NONE))
             {
                 Logger.printLine(getName() + " moved panda : " + panda.getCoords());
 
@@ -289,7 +306,9 @@ public class AISimple extends AI
 
             Plot plot = (Plot) grid.get(point);
 
-            if (plot.getBamboo().size() == bambooSize && plot.getColor().equals(color) && gameBoard.moveEntity(entity, point))
+            boolean checkColor = (color.equals(plot.getColor()) || color.equals(Color.NONE));
+
+            if (plot.getBamboo().size() == bambooSize && checkColor && gameBoard.moveEntity(entity, point))
             {
                 return true;
             }

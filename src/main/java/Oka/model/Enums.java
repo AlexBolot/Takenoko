@@ -11,7 +11,10 @@ public class Enums {
         x, y, z
     }
     public enum Color {
-        GREEN, YELLOW, PINK
+        GREEN,
+        YELLOW,
+        PINK,
+        NONE
     }
 
     /* ORDRE IMPORTANT
