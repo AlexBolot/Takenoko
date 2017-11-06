@@ -1,12 +1,18 @@
 package Oka.utils;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 
 public class Logger
 {
     //region==========ATTRIBUTES===========
     private static PrintStream printStream = System.out;
     private static int         indent      = 1;
+
+    //1 = detailed loggs, superieur = simple stats
+    private static int loggerMode = 0;
+
+    private static HashMap<String, Integer> stats = new HashMap<>();
     //endregion
 
     //region==========GETTER/SETTER========
@@ -14,11 +20,18 @@ public class Logger
     {
         Logger.printStream = printStream;
     }
+
+    public static HashMap<String, Integer> getStats ()
+    {
+        return stats;
+    }
     //endregion
 
     //region==========METHODS==============
     public static void printLine (String string)
     {
+        if (loggerMode != 1) return;
+
         StringBuilder str = new StringBuilder();
 
         for (int i = 0; i < indent; i++)
@@ -35,11 +48,15 @@ public class Logger
 
     public static void printTitle (String string)
     {
+        if (loggerMode != 1) return;
+
         printStream.println(string);
     }
 
     public static void printSeparator (String playerName)
     {
+        if (loggerMode != 1) return;
+
         StringBuilder str = new StringBuilder();
 
         for (int i = 0; i < indent - 1; i++)
@@ -65,23 +82,20 @@ public class Logger
 
     public static void printWin (String playerName)
     {
-        StringBuilder str = new StringBuilder();
-
-        str.append("\n");
-
-        for (int i = 0; i < indent - 1; i++)
+        if (loggerMode != 1)
         {
-            str.append(" ");
+            if (stats.containsKey(playerName)) stats.replace(playerName, stats.get(playerName) + 1);
+            else stats.put(playerName, 1);
         }
-
-        for (int i = 0; i < 12; i++)
+        else
         {
-            str.append(" ");
+            printStream.println("\n" + playerName + " WINS !!!");
         }
+    }
 
-        str.append(" ").append(playerName).append(" ");
-
-        printStream.println(str.toString());
+    public static void setLoggerMode (int i)
+    {
+        loggerMode = i;
     }
     //endregion
 }

@@ -62,7 +62,7 @@ public class GameController
 
                 if (checkGoal > 0)
                 {
-                    Logger.printWin(ai.getName() + " WINS !!!");
+                    Logger.printWin(ai.getName());
                     return;
                 }
             }
