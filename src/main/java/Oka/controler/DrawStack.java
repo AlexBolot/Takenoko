@@ -64,6 +64,10 @@ public class DrawStack
         listGardenerGoal.add(new GardenerGoal(6,4,Color.PINK, new EnclosureState()));
         listGardenerGoal.add(new GardenerGoal(7,4,Color.PINK, new NeutralState()));
         listGardenerGoal.add(new GardenerGoal(3,4,Color.GREEN, new FertilizerState()));
+
+        Enums.DrawStackPlot.nbGreenPlot.setTabState(new int[]{6,2,2,1});
+        Enums.DrawStackPlot.nbPinkPlot.setTabState(new int[]{6,1,1,1});
+        Enums.DrawStackPlot.nbYellowPlot.setTabState(new int[]{4,1,1,1});
     }
     //region==========METHODS==============
 
@@ -92,7 +96,7 @@ public class DrawStack
         }
     }
 
-    public static ArrayList<Plot> giveTreePlot ()
+    public ArrayList<Plot> giveTreePlot ()
     {
         Random rand = new Random();
         ArrayList<Plot> listP = new ArrayList<>();
@@ -158,7 +162,7 @@ public class DrawStack
         else return new Plot(color, new FertilizerState());
     }
 
-    public static void giveBackPlot (ArrayList<Plot> listP)
+    public void giveBackPlot (ArrayList<Plot> listP)
     {
         Enums.Color colorPlot;
         int index = 0;

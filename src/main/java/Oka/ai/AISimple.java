@@ -79,6 +79,7 @@ public class AISimple extends AI
             //Action is consumed only if plotState could be placed
             if (placePlot()) consumeAction();
 
+
             //We Randomly chose to either move the gardener, the panda, or place an irrigation
             switch (new Random().nextInt(3)) {
                 case 0:
@@ -247,7 +248,7 @@ public class AISimple extends AI
 
         // On pioche trois parcelles si possible
 
-        draw = DrawStack.giveTreePlot();
+        draw = DrawStack.getInstance().giveTreePlot();
         if (draw == null) return false;
 
         //On choisit un carte aléatoire parmis les trois car ou moins envoyé par la pioche plot
@@ -258,7 +259,7 @@ public class AISimple extends AI
 
         // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
         draw.remove(randInt);
-        DrawStack.giveBackPlot(draw);
+        DrawStack.getInstance().giveBackPlot(draw);
 
         //todo: add a available slot function
         ArrayList<Point> free = board.getAvailableSlots();
