@@ -8,7 +8,7 @@ import Oka.utils.Logger;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class App
@@ -35,7 +35,6 @@ public class App
             }
 
         } while (answer == 0);
-        long pp = System.currentTimeMillis();
 
         Logger.setLoggerMode(answer);
 
@@ -54,6 +53,8 @@ public class App
 
         else
         {
+            long start = System.currentTimeMillis();
+
             for (int i = 0; i < answer; i++)
             {
                 Cleaner.clearAll();
@@ -68,11 +69,13 @@ public class App
                 gc.play(Playable);
             }
 
-            HashMap<String, Integer> stats = Logger.getStats();
+            for (Map.Entry<String, Integer> entry : Logger.getStats().entrySet())
+            {
+                System.out.printf("\n%s : %.2f %% de victoire", entry.getKey(), (float) (entry.getValue() * 100) / (float) answer);
+            }
 
-            int finalAnswer = answer;
-            stats.forEach((key, value) -> System.out.println(key + " : " + value * 100 / finalAnswer + "% de victoire"));
-            System.out.println(System.currentTimeMillis()-pp);
+            System.out.println();
+            System.out.println(System.currentTimeMillis() - start);
         }
     }
 }
