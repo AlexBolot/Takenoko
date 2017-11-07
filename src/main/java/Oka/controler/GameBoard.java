@@ -27,6 +27,14 @@ public class GameBoard
     {
         availableSlots.add(new Point());
 
+        // On initialise les cases disponibles.
+        availableSlots.add(new Point(0,1));
+        availableSlots.add(new Point(0,-1));
+        availableSlots.add(new Point(1,0));
+        availableSlots.add(new Point(-1,0));
+        availableSlots.add(new Point(1,-1));
+        availableSlots.add(new Point(-1,1));
+
         addCell(new Pond());
     }
     //endregion
@@ -337,7 +345,11 @@ public class GameBoard
     {
         for (Point point : getEveryNeighboors(cell.getCoords()))
         {
-            if (!grid.containsKey(point) && !availableSlots.contains(point)) availableSlots.add(point);
+            if (!grid.containsKey(point) &&
+                    !availableSlots.contains(point) &&
+                    getCommonNeighboors(point,cell.getCoords()).size()>0){
+                availableSlots.add(point);
+            }
         }
     }
 
@@ -390,4 +402,8 @@ public class GameBoard
         return availableIrrigations;
     }
     //endregion
+
+    public static void resetGameBoard() {
+        ourInstance = new GameBoard();
+    }
 }

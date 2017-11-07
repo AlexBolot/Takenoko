@@ -37,17 +37,7 @@ public class Cleaner
 
     public static void cleanGameBoard ()
     {
-        GameBoard gameBoard = GameBoard.getInstance();
-
-        //Clear the lists
-        gameBoard.getGrid().clear();
-        gameBoard.getAvailableSlots().clear();
-        gameBoard.getIrrigation().clear();
-        //Adding Pond's coords to the available slots.
-        gameBoard.getAvailableSlots().add(new Point());
-
-        //Adding the Pond to the grid.
-        gameBoard.addCell(new Pond());
+        GameBoard.resetGameBoard();
     }
 
     public static void cleanGameController ()
