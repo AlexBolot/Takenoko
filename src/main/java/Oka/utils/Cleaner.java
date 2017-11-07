@@ -1,7 +1,6 @@
 package Oka.utils;
 
 /*..................................................................................................
- . Copyright (c)
  .
  . The Cleaner	 Class was Coded by : Team_A
  .

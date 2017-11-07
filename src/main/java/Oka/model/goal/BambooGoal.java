@@ -15,6 +15,7 @@ package Oka.model.goal;
  .................................................................................................*/
 
 import Oka.ai.inventory.BambooHolder;
+import Oka.model.Bamboo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,6 +104,16 @@ public class BambooGoal extends Goal
         str.deleteCharAt(str.length() - 1);
 
         return str.toString();
+    }
+    @Override
+    public boolean equals (Object obj){
+
+        if (obj == null || !(obj instanceof BambooGoal)) return false;
+
+        BambooGoal c = (BambooGoal) obj;
+
+        return ((BambooGoal) obj).getColor().equals(this.getColor())
+                && this.getAmountByColor(this.getColor())==((BambooGoal) obj).getAmountByColor(((BambooGoal) obj).getColor());
     }
     //endregion
 }

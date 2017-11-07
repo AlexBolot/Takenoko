@@ -35,5 +35,13 @@ public class GoalHolderTest {
         assertEquals(2,goalHolder.getGoalValidated(true).size());
     }
 
+    @Test
+    public void addGoal() throws Exception {
+        assertEquals(goalHolder.get(0),new BambooGoal(5,1,Enums.Color.GREEN));
+        assertEquals(goalHolder.get(1),new BambooGoal(5,2,Enums.Color.PINK));
+        assertEquals(goalHolder.get(2),new BambooGoal(5,3,Enums.Color.YELLOW));
+
+
+    }
 
 }

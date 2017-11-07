@@ -35,6 +35,7 @@ public class App
             }
 
         } while (answer == 0);
+        long pp = System.currentTimeMillis();
 
         Logger.setLoggerMode(answer);
 
@@ -65,14 +66,13 @@ public class App
                 ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(Al, Ma));
 
                 gc.play(Playable);
-
-                System.out.println("ended game " + (i + 1));
             }
 
             HashMap<String, Integer> stats = Logger.getStats();
 
             int finalAnswer = answer;
             stats.forEach((key, value) -> System.out.println(key + " : " + value * 100 / finalAnswer + "% de victoire"));
+            System.out.println(System.currentTimeMillis()-pp);
         }
     }
 }

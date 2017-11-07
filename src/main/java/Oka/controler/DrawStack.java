@@ -95,7 +95,6 @@ public class DrawStack
 
         }
     }
-
     public ArrayList<Plot> giveTreePlot ()
     {
         Random rand = new Random();
