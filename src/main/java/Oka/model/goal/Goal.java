@@ -50,7 +50,7 @@ public abstract class Goal
     //region==========EQUALS/TOSTRING======
     public String toString ()
     {
-        return "value = " + value;
+        return getClass().getSimpleName();
     }
     //endregion
 }

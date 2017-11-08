@@ -103,7 +103,11 @@ public class AISimple extends AI
             }
         }
 
-        Logger.printLine(getName() + " - bamboos = " + getInventory().bambooHolder().size());
+        Logger.printLine(getName() + " - bamboos : {GREEN :" + getInventory().bambooHolder().countBamboo(Color.GREEN) +"} " +
+                 "{YELLOW :" + getInventory().bambooHolder().countBamboo(Color.YELLOW) +"} "
+        + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
+;
+
     }
 
     protected boolean drawChannel() {
@@ -452,25 +456,6 @@ public class AISimple extends AI
 
     //endregion
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /* Release 5 dés switch (dés.draw()){
             case 1:setActionsLeft(3);

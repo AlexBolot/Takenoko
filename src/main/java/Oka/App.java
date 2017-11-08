@@ -43,17 +43,16 @@ public class App
 
             GameController gc = GameController.getInstance();
 
-            AISimple Al = new AISimple("Alexandre");
-            AISimple Ma = new AISimple("Mathieu");
+            AISimple AM = new AISimple("A.M Pinna");
+            AISimple IL = new AISimple("I.Litovksy");
 
-            ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(Al, Ma));
+            ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
             gc.play(Playable);
         }
 
         else
         {
-            long start = System.currentTimeMillis();
 
             for (int i = 0; i < answer; i++)
             {
@@ -61,10 +60,10 @@ public class App
 
                 GameController gc = GameController.getInstance();
 
-                AISimple Al = new AISimple("Alexandre");
-                AISimple Ma = new AISimple("Mathieu");
+                AISimple AM = new AISimple("A.M Pinna");
+                AISimple IL = new AISimple("I.Litovksy");
 
-                ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(Al, Ma));
+                ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
                 gc.play(Playable);
             }
@@ -75,7 +74,6 @@ public class App
             }
 
             System.out.println();
-            System.out.println(System.currentTimeMillis() - start);
         }
     }
 }
