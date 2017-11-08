@@ -189,7 +189,8 @@ public class AISimple extends AI
         {
             if (moveEntity(gardener, bambooSize, lookedForColor.get()))
             {
-                Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
+                //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
+                Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
 
                 return true;
             }
@@ -199,7 +200,8 @@ public class AISimple extends AI
         {
             if (moveEntity(gardener, bambooSize, Color.NONE))
             {
-                Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
+                //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
+                Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
 
                 return true;
             }
@@ -236,7 +238,8 @@ public class AISimple extends AI
         {
             if (moveEntity(panda, bambooSize, lookedForColor.get()))
             {
-                Logger.printLine(getName() + " moved panda : " + panda.getCoords());
+              //  Logger.printLine(getName() + " moved panda : " + panda.getCoords());
+                Logger.printLine(getName() + " a déplacé le panda en : " + panda.getCoords());
 
                 return true;
             }
@@ -245,7 +248,8 @@ public class AISimple extends AI
         {
             if (moveEntity(panda, bambooSize, Color.NONE))
             {
-                Logger.printLine(getName() + " moved panda : " + panda.getCoords());
+             //   Logger.printLine(getName() + " moved panda : " + panda.getCoords());
+                Logger.printLine(getName() + " a déplacé le panda en : " + panda.getCoords());
 
                 return true;
             }
@@ -282,7 +286,8 @@ public class AISimple extends AI
         ArrayList<Point> free = board.getAvailableSlots();
         plot.setCoords(free.get(0));
         board.addCell(plot);
-        Logger.printLine(getName() + " placed : " + plot);
+        //Logger.printLine(getName() + " placed : " + plot);
+        Logger.printLine(getName() + " a placé : " + plot);
         return true;
     }
 
@@ -381,7 +386,8 @@ public class AISimple extends AI
                 {
                     plot.setState(getInventory().plotStates().get(0));
 
-                    Logger.printLine(getName() + " upgraded : " + plot);
+                    //Logger.printLine(getName() + " upgraded : " + plot);
+                    Logger.printLine(getName() + " a placé l'aménagement sur : " + plot);
 
                     getInventory().plotStates().remove(0);
                     return true;

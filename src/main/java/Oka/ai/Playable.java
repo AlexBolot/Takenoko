@@ -42,7 +42,7 @@ public abstract class Playable
 
             Goal goal = DrawStack.getInstance().drawGoal(goalType);
             getInventory().addGoal(goal);
-            Logger.printLine(getName() + " picked : " + goal);
+            Logger.printLine(getName() + " a pioché : " + goal);
         }
     }
     //endregion

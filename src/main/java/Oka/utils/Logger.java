@@ -89,7 +89,8 @@ public class Logger
         }
         else
         {
-            printStream.println("\n" + playerName + " WINS !!!");
+           // printStream.println("\n" + playerName + " WINS !!!");
+            printStream.println("\n" + playerName + " A GAGNÉ !!!");
         }
     }
 
