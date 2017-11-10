@@ -76,6 +76,11 @@ public abstract class Playable
     {
         actionsLeft = 2;
     }
+    protected void sunWeather ()
+    {
+        actionsLeft = 3;
+    }
+
     //endregion
 
     //region==========EQUALS/TOSTRING======

@@ -1,5 +1,6 @@
 package Oka.ai;
 
+import Oka.ai.inventory.PlotStateHolder;
 import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
 import Oka.entities.Entity;
@@ -55,7 +56,9 @@ public class AISimple extends AI
     {
         resetActions();
 
+
         Logger.printSeparator(getName());
+
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
 
         while (hasActionsLeft())
@@ -72,34 +75,34 @@ public class AISimple extends AI
             if (getInventory().plotStates().size() > 0)
             {
                 //Action is consumed only if plotState could be placed
-                if (placePlotState()) consumeAction();
+                placePlotState();
             }
 
             //Action is consumed only if plotState could be placed
             if (placePlot()) consumeAction();
 
-
-            //We Randomly chose to either move the gardener, the panda, or place an irrigation
-            switch (new Random().nextInt(3)) {
-                case 0:
+            if (hasActionsLeft()) {
+                //We Randomly chose to either move the gardener, the panda, or place an irrigation
+                switch (new Random().nextInt(3)) {
+                    case 0:
+                        if (moveGardener()) consumeAction();
+                        break;
+                    case 1:
+                        if (movePanda()) consumeAction();
+                        break;
+                    case 2:
+                        if (drawChannel()) {
+                            placeChannel();
+                            consumeAction();
+                        }
+                }
+                if (hasActionsLeft()){
+                if (new Random().nextBoolean()) {
                     if (moveGardener()) consumeAction();
-                    break;
-                case 1:
+                } else {
                     if (movePanda()) consumeAction();
-                    break;
-                case 2:
-                    if (drawChannel()) {
-                        placeChannel();
-                        consumeAction();
-                    }
-            }
-            if (new Random().nextBoolean())
-            {
-                if (moveGardener()) consumeAction();
-            }
-            else
-            {
-                if (movePanda()) consumeAction();
+
+                }}
             }
         }
 
@@ -108,6 +111,48 @@ public class AISimple extends AI
         + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
 ;
 
+    }
+
+    private void weatherPick () {
+        Enums.State[] values = Enums.State.values();
+        Random random = new Random();
+        switch (random.nextInt(5)+1){
+            case 1 :
+                Logger.printLine("Sunny");
+                sunWeather();
+            break;
+            case 2 :
+                Logger.printLine("Windy");
+                break;
+            case 3 :
+                Logger.printLine("Rainy");
+                placeBambooOnPlot();
+            break;
+            case 4 :
+                if (movePanda()) Logger.printLine("Lighting");
+
+            break;
+            case 5 : switch (values[new Random().nextInt(values.length)])
+            {
+                case Pond:
+                    this.getInventory().addPlotState(new PondState());
+                    break;
+
+                case Enclosure:
+                    this.getInventory().addPlotState(new EnclosureState());
+                    break;
+
+                case Fertilizer:
+                    this.getInventory().addPlotState(new FertilizerState());
+                    break;
+            }
+            Logger.printLine("Cloudy");
+            Logger.printLine(getName() + " a pioché aménagement grâce au dé météo : " + getInventory().plotStates());
+            break;
+            case 6 : break;
+            //TODO A améliorer en fonction des objectifs de l'IA, je n'ai rien mis dans case 6 actuellement, et le dé
+            //TODO va de 1 à 5 pour l'instant.
+        }
     }
 
     protected boolean drawChannel() {
@@ -265,6 +310,35 @@ public class AISimple extends AI
     /**
      place a plot tile
      */
+    public void placeBambooOnPlot()
+    {
+        List<Goal> goals = getInventory().validatedGoals(false)
+                .stream()
+                .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)
+                .collect(Collectors.toList());
+
+        Optional<Color> lookedForColor = findInterestingColor(goals);
+        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+
+        if (lookedForColor.isPresent()){
+            for (Cell cell : grid.values())
+            {
+                if (cell instanceof Plot)
+                {
+                    Plot plot = (Plot) cell;
+
+                    if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0)
+                    {
+                        plot.addBamboo();
+                        Logger.printLine(getName() + " a placé un bamboo sur un plot#météo");
+                        return;
+
+                    }
+                }
+            }
+        }
+    }
+
     public boolean placePlot ()
     {
         GameBoard board = GameBoard.getInstance();
@@ -438,10 +512,8 @@ public class AISimple extends AI
      @param goals list of goals to be looked at
      @return The most interseting color if found, otherwise returns Optional.empty()
      */
-    private Optional<Color> findInterestingColor (List<Goal> goals)
-    {
-        for (Goal goal : goals)
-        {
+    private Optional<Color> findInterestingColor (List<Goal> goals) {
+        for (Goal goal : goals) {
             /* If goal is Bamboo or Gadener type (= has a color)
             it becomes the color we look for, else keep searching */
 
@@ -453,21 +525,7 @@ public class AISimple extends AI
 
         return Optional.empty();
     }
-
     //endregion
-}
 
-    /* Release 5 dés switch (dés.draw()){
-            case 1:setActionsLeft(3);
-                break;
-            case 2: .
-                break;
-            case 3: moveGardener();
-                break;
-            case 4: movePanda();
-                break;
-            case 5: DrawAmenagement();
-                break;
-            case 6:
-                IA.Choosedés();
-                break;} */
+
+}
