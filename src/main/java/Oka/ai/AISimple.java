@@ -58,7 +58,7 @@ public class AISimple extends AI
 
 
         Logger.printSeparator(getName());
-
+        weatherPick();
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
 
         while (hasActionsLeft())
