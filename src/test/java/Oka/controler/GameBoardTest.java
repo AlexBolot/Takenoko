@@ -158,8 +158,8 @@ public class GameBoardTest
 
         assertFalse(board.canPlaceIrigation(p10, p11));
 
-        Plot plot01 = new Plot(p01, Enums.Color.GREEN);
-        Plot plot10 = new Plot(p10, Enums.Color.GREEN);
+        Plot plot01 = (Plot) board.getGrid().get(p01);
+        Plot plot10 = (Plot) board.getGrid().get(p10);
 
         Irrigation irg1001 = new Irrigation(plot01, plot10);
         board.setIrrigation(new HashSet<>(Collections.singletonList(irg1001)));
@@ -168,4 +168,43 @@ public class GameBoardTest
         assertTrue(board.canPlaceIrigation(p10, p11));
 
     }
+
+    @Test
+    public void verifIrrigationTest() {
+        Cleaner.clearAll();
+
+        GameBoard board = GameBoard.getInstance();
+        mediumGrid.forEach((point, cell) -> {
+            if (!point.equals(new Point())) board.addCell(cell);
+        });
+        Point p10 = new Point(1, 0);
+        Point p01 = new Point(0, 1);
+        Point p11 = new Point(1, 1);
+
+        assertFalse(board.verifIrrigation(p01, p10));
+        assertFalse(board.verifIrrigation(p10, p01));
+
+        Irrigation irg = new Irrigation((Plot) board.getGrid().get(p01), (Plot) board.getGrid().get(p10));
+        board.getIrrigation().add(irg);
+
+        assertTrue(board.verifIrrigation(p01, p10));
+        assertTrue(board.verifIrrigation(p10, p01));
+
+        Plot plot11 = new Plot(p11, Enums.Color.GREEN);
+
+        board.addCell(plot11);
+
+        assertFalse(board.verifIrrigation(p01, p11));
+        assertFalse(board.verifIrrigation(p10, p11));
+
+        irg = new Irrigation((Plot) board.getGrid().get(p01), (Plot) board.getGrid().get(p11));
+        board.getIrrigation().add(irg);
+        irg = new Irrigation((Plot) board.getGrid().get(p10), (Plot) board.getGrid().get(p11));
+        board.getIrrigation().add(irg);
+
+        assertTrue(board.verifIrrigation(p01, p11));
+        assertTrue(board.verifIrrigation(p10, p11));
+
+    }
+
 }

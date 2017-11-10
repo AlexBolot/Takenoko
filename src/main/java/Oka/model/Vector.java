@@ -94,5 +94,11 @@ public class Vector
 
         return v.axis.equals(this.axis) && v.length == this.length;
     }
+
+    @Override
+    public String toString() {
+        return axis + " " + String.valueOf(this.length);
+    }
     //endregion
+
 }

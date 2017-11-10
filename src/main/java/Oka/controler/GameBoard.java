@@ -119,6 +119,7 @@ public class GameBoard
     public boolean canPlaceIrigation (Point point1, Point point2)
     {
         if (verifIrrigation(point1, point2)) return false;
+
         ArrayList<Cell> neightBoors = getCommonNeighboors(point1, point2);
         Boolean can = neightBoors.contains(grid.get(new Point()));
 
