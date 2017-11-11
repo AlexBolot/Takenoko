@@ -20,6 +20,7 @@ import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -34,20 +35,6 @@ public class AISimple extends AI
 
         Enums.State[] values = Enums.State.values();
 
-        switch (values[new Random().nextInt(values.length)])
-        {
-            case Pond:
-                this.getInventory().addPlotState(new PondState());
-                break;
-
-            case Enclosure:
-                this.getInventory().addPlotState(new EnclosureState());
-                break;
-
-            case Fertilizer:
-                this.getInventory().addPlotState(new FertilizerState());
-                break;
-        }
     }
     //endregion
 
@@ -109,7 +96,6 @@ public class AISimple extends AI
         Logger.printLine(getName() + " - bamboos : {GREEN :" + getInventory().bambooHolder().countBamboo(Color.GREEN) +"} " +
                  "{YELLOW :" + getInventory().bambooHolder().countBamboo(Color.YELLOW) +"} "
         + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
-;
 
     }
 
@@ -132,23 +118,31 @@ public class AISimple extends AI
                 if (movePanda()) Logger.printLine("Lighting");
 
             break;
-            case 5 : switch (values[new Random().nextInt(values.length)])
+            case 5:
+                Boolean draw = true;
+                switch (values[new Random().nextInt(values.length)])
             {
                 case Pond:
-                    this.getInventory().addPlotState(new PondState());
+                    Optional<PondState> optPond = DrawStack.getInstance().drawPondState();
+                    optPond.ifPresent(pondState -> this.getInventory().addPlotState(pondState));
+                    draw = optPond.isPresent();
                     break;
 
                 case Enclosure:
-                    this.getInventory().addPlotState(new EnclosureState());
+                    Optional<EnclosureState> optEnclosure = DrawStack.getInstance().drawEnclosureState();
+                    optPond.ifPresent(enclosureState -> this.getInventory().addPlotState(enclosureState));
+                    draw = optPond.isPresent();
                     break;
 
                 case Fertilizer:
-                    this.getInventory().addPlotState(new FertilizerState());
+                    Optional<FertilizerState> optFertilizer = DrawStack.getInstance().drawFertilizerState();
+                    optFertilizer.ifPresent(fertilizerState -> this.getInventory().addPlotState(fertilizerState));
+                    draw = optFertilizer.isPresent();
                     break;
             }
             Logger.printLine("Cloudy");
             Logger.printLine(getName() + " a pioché aménagement grâce au dé météo : " + getInventory().plotStates());
-            break;
+                if (draw) break;
             case 6 : break;
             //TODO A améliorer en fonction des objectifs de l'IA, je n'ai rien mis dans case 6 actuellement, et le dé
             //TODO va de 1 à 5 pour l'instant.

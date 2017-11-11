@@ -29,6 +29,9 @@ public class DrawStack
     private ArrayList<BambooGoal> listBambooGoal = new ArrayList<>();
     private ArrayList<GardenerGoal> listGardenerGoal = new ArrayList<>();
     private int remainingChannels = 20;
+    private int fertilizerStates = 3;
+    private int pondStates = 3;
+    private int enclosureStates = 3;
     //endregion
 
     public DrawStack(){
@@ -129,6 +132,34 @@ public class DrawStack
         remainingChannels--;
         return Optional.of(new Irrigation());
     }
+
+    public Optional<FertilizerState> drawFertilizerState() {
+        if (fertilizerStates == 0) {
+            return Optional.empty();
+        }
+        fertilizerStates--;
+        return Optional.of(new FertilizerState());
+
+    }
+
+    public Optional<PondState> drawPondState() {
+        if (pondStates == 0) {
+            return Optional.empty();
+        }
+        pondStates--;
+        return Optional.of(new PondState());
+
+    }
+
+    public Optional<EnclosureState> drawEnclosureState() {
+        if (enclosureStates == 0) {
+            return Optional.empty();
+        }
+        enclosureStates--;
+        return Optional.of(new EnclosureState());
+
+    }
+
     private static int chooseColor (int randInt, Enums.DrawStackPlot tab[])
     {
         int index = 0, total = tab[index].getnbPlotByColor();
@@ -140,6 +171,7 @@ public class DrawStack
         }
         return index;
     }
+
 
     private static Plot setPlotState (int indexColor, int randInt)
     {
