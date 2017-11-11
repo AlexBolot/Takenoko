@@ -22,6 +22,17 @@ public class NeutralState {
     }
 
     public String toString(){
-        return this.state.toString();
+        return state.toString();
+    }
+
+    /**
+     * Two State are equals if they are the same kind of state
+     *
+     * @param obj Other State
+     * @return Boolean True if state are of same kind.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof NeutralState && this.getState() == ((NeutralState) obj).getState();
     }
 }
