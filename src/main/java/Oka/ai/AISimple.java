@@ -321,7 +321,7 @@ public class AISimple extends AI
                 {
                     Plot plot = (Plot) cell;
 
-                    if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0)
+                    if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0 && plot.isIrrigated())
                     {
                         plot.addBamboo();
                         Logger.printLine(getName() + " a placé un bamboo sur un plot#météo");
