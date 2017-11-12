@@ -14,12 +14,9 @@ public class ActionHolder extends HashMap<Enums.Action,Integer>
         }
 
     }
+
     public int getActionLeft () {
         return actionLeft;
-    }
-
-    public void setActionLeft (int actionLeft) {
-        this.actionLeft = actionLeft;
     }
 
     public boolean hasActionsLeft ()
@@ -33,9 +30,15 @@ public class ActionHolder extends HashMap<Enums.Action,Integer>
 
     public void consumeAction (Enums.Action action)
     {
-        this.actionLeft--;
-        this.replace(action,this.get(action)-1);
+        Integer oldAmount = this.get(action);
+
+        if (oldAmount > 0)
+        {
+            this.replace(action, oldAmount - 1);
+            actionLeft--;
+        }
     }
+
     public void sunWeather ()
     {
         this.actionLeft = 3;

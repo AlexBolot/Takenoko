@@ -1,7 +1,5 @@
 package Oka.ai;
 
-import Oka.ai.inventory.ActionHolder;
-import Oka.ai.inventory.PlotStateHolder;
 import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
 import Oka.entities.Entity;
@@ -15,14 +13,9 @@ import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
-import Oka.model.plot.state.EnclosureState;
-import Oka.model.plot.state.FertilizerState;
-import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 import com.sun.javaws.exceptions.InvalidArgumentException;
-import sun.rmi.runtime.Log;
 
-import javax.swing.text.html.Option;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -34,20 +27,21 @@ public class AISimple extends AI
     public AISimple (String name)
     {
         super(name);
-
-        Enums.State[] values = Enums.State.values();
-
     }
     //endregion
 
     //region==========METHODS==============
     public void play ()
     {
-        getInventory().resetActionHolder();
         Logger.printSeparator(getName());
+
+        getInventory().resetActionHolder();
+
         Dice.rollDice(this);
+
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
         Logger.printLine(""+getInventory().getActionHolder().getActionLeft());
+
         while (getInventory().getActionHolder().hasActionsLeft())
         {
             //Pick a new goal if has no more unvalidated goals
@@ -96,6 +90,7 @@ public class AISimple extends AI
         if (!irrigation.isPresent()) return false;
         getInventory().addChannel();
         getInventory().getActionHolder().consumeAction(Enums.Action.drawChannel);
+        Logger.printLine(getName() + " à pioché une irrigation !");
         return true;
     }
 
