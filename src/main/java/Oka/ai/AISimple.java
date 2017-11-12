@@ -126,12 +126,12 @@ public class AISimple extends AI
                     Optional<PondState> optPond = DrawStack.getInstance().drawPondState();
                     optPond.ifPresent(pondState -> this.getInventory().addPlotState(pondState));
                     draw = optPond.isPresent();
-                    break;
+                break;
 
                 case Enclosure:
                     Optional<EnclosureState> optEnclosure = DrawStack.getInstance().drawEnclosureState();
-                    optPond.ifPresent(enclosureState -> this.getInventory().addPlotState(enclosureState));
-                    draw = optPond.isPresent();
+                    optEnclosure.ifPresent(enclosureState -> this.getInventory().addPlotState(enclosureState));
+                    draw = optEnclosure.isPresent();
                     break;
 
                 case Fertilizer:
@@ -144,9 +144,9 @@ public class AISimple extends AI
             Logger.printLine(getName() + " a pioché aménagement grâce au dé météo : " + getInventory().plotStates());
                 if (draw) break;
             case 6 : break;
-            //TODO A améliorer en fonction des objectifs de l'IA, je n'ai rien mis dans case 6 actuellement, et le dé
-            //TODO va de 1 à 5 pour l'instant.
-        }
+        //TODO A améliorer en fonction des objectifs de l'IA, je n'ai rien mis dans case 6 actuellement, et le dé
+        //TODO va de 1 à 5 pour l'instant.
+    }
     }
 
     protected boolean drawChannel() {
