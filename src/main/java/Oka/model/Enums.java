@@ -27,6 +27,10 @@ public class Enums {
         Enclosure,
         Fertilizer
     }
+    public enum Action {
+        movePanda,moveGardener,drawChannel,drawPlotState,drawGoal,placePlot
+
+    }
     public enum DrawStackPlot {
         // NeutralState, PondState, EnclosureState, FertilizerState
        nbGreenPlot(), nbYellowPlot(), nbPinkPlot();

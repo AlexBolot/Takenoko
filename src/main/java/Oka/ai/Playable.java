@@ -27,7 +27,6 @@ public abstract class Playable
     //region==========ATTRIBUTES===========
     private Inventory inventory = new Inventory();
     private String name;
-    private int actionsLeft = 2;
     //endregion
 
     //region==========CONSTRUCTORS=========
@@ -60,26 +59,9 @@ public abstract class Playable
     //endregion
 
     //region==========METHODS==============
-    protected boolean hasActionsLeft ()
-    {
-        return actionsLeft > 0;
-    }
-
-    protected void consumeAction ()
-    {
-        this.actionsLeft--;
-    }
 
     public abstract void play ();
 
-    protected void resetActions ()
-    {
-        actionsLeft = 2;
-    }
-    protected void sunWeather ()
-    {
-        actionsLeft = 3;
-    }
 
     //endregion
 

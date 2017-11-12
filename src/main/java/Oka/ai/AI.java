@@ -28,6 +28,8 @@ public abstract class AI extends Playable
 
     protected abstract boolean moveEntity (Entity entity, int bambooSize, Enums.Color color);
 
+    protected abstract void placeBambooOnPlot();
+
     //endregion
 }
 

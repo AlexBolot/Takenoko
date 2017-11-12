@@ -1,5 +1,6 @@
 package Oka.ai;
 
+import Oka.ai.inventory.ActionHolder;
 import Oka.ai.inventory.PlotStateHolder;
 import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
@@ -19,6 +20,7 @@ import Oka.model.plot.state.FertilizerState;
 import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 import com.sun.javaws.exceptions.InvalidArgumentException;
+import sun.rmi.runtime.Log;
 
 import javax.swing.text.html.Option;
 import java.awt.*;
@@ -41,21 +43,19 @@ public class AISimple extends AI
     //region==========METHODS==============
     public void play ()
     {
-        resetActions();
-
-
+        getInventory().resetActionHolder();
         Logger.printSeparator(getName());
-        weatherPick();
+        Dice.rollDice(this);
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
-
-        while (hasActionsLeft())
+        Logger.printLine(""+getInventory().getActionHolder().getActionLeft());
+        while (getInventory().getActionHolder().hasActionsLeft())
         {
             //Pick a new goal if has no more unvalidated goals
             if (getInventory().validatedGoals(false).size() == 0)
             {
                 /* For now we pick a random goal
                 Action is consumed only if pickGoal could be achieved*/
-                if (pickGoal()) consumeAction();
+                if(pickGoal()) continue;
             }
 
             //Plays its plotstates if has some
@@ -64,95 +64,38 @@ public class AISimple extends AI
                 //Action is consumed only if plotState could be placed
                 placePlotState();
             }
-
-            //Action is consumed only if plotState could be placed
-            if (placePlot()) consumeAction();
-
-            if (hasActionsLeft()) {
-                //We Randomly chose to either move the gardener, the panda, or place an irrigation
-                switch (new Random().nextInt(3)) {
+                //We Randomly chose to either move the gardener, the panda, or place an irrigation or placePlot1
+                switch (new Random().nextInt(4)) {
                     case 0:
-                        if (moveGardener()) consumeAction();
-                        break;
+                        moveGardener();
+                        continue;
                     case 1:
-                        if (movePanda()) consumeAction();
-                        break;
+                        movePanda();
+                        continue;
                     case 2:
                         if (drawChannel()) {
                             placeChannel();
-                            consumeAction();
                         }
+                        continue;
+                    case 3:
+                        placePlot();
+
                 }
-                if (hasActionsLeft()){
-                if (new Random().nextBoolean()) {
-                    if (moveGardener()) consumeAction();
-                } else {
-                    if (movePanda()) consumeAction();
 
-                }}
-            }
+
         }
-
         Logger.printLine(getName() + " - bamboos : {GREEN :" + getInventory().bambooHolder().countBamboo(Color.GREEN) +"} " +
                  "{YELLOW :" + getInventory().bambooHolder().countBamboo(Color.YELLOW) +"} "
         + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
 
     }
 
-    private void weatherPick () {
-        Enums.State[] values = Enums.State.values();
-        Random random = new Random();
-        switch (random.nextInt(5)+1){
-            case 1 :
-                Logger.printLine("Sunny");
-                sunWeather();
-            break;
-            case 2 :
-                Logger.printLine("Windy");
-                break;
-            case 3 :
-                Logger.printLine("Rainy");
-                placeBambooOnPlot();
-            break;
-            case 4 :
-                if (movePanda()) Logger.printLine("Lighting");
-
-            break;
-            case 5:
-                Boolean draw = true;
-                switch (values[new Random().nextInt(values.length)])
-            {
-                case Pond:
-                    Optional<PondState> optPond = DrawStack.getInstance().drawPondState();
-                    optPond.ifPresent(pondState -> this.getInventory().addPlotState(pondState));
-                    draw = optPond.isPresent();
-                break;
-
-                case Enclosure:
-                    Optional<EnclosureState> optEnclosure = DrawStack.getInstance().drawEnclosureState();
-                    optEnclosure.ifPresent(enclosureState -> this.getInventory().addPlotState(enclosureState));
-                    draw = optEnclosure.isPresent();
-                    break;
-
-                case Fertilizer:
-                    Optional<FertilizerState> optFertilizer = DrawStack.getInstance().drawFertilizerState();
-                    optFertilizer.ifPresent(fertilizerState -> this.getInventory().addPlotState(fertilizerState));
-                    draw = optFertilizer.isPresent();
-                    break;
-            }
-            Logger.printLine("Cloudy");
-            Logger.printLine(getName() + " a pioché aménagement grâce au dé météo : " + getInventory().plotStates());
-                if (draw) break;
-            case 6 : break;
-        //TODO A améliorer en fonction des objectifs de l'IA, je n'ai rien mis dans case 6 actuellement, et le dé
-        //TODO va de 1 à 5 pour l'instant.
-    }
-    }
-
     protected boolean drawChannel() {
+        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawChannel)) return false;
         Optional<Irrigation> irrigation = DrawStack.getInstance().drawChannel();
         if (!irrigation.isPresent()) return false;
         getInventory().addChannel();
+        getInventory().getActionHolder().consumeAction(Enums.Action.drawChannel);
         return true;
     }
 
@@ -212,7 +155,7 @@ public class AISimple extends AI
     public boolean moveGardener ()
     {
         // TODO: optimise based on proximity to completion
-
+        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.moveGardener)) return false;
         List<Goal> goals = getInventory().validatedGoals(false)
                                          .stream()
                                          .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)
@@ -234,7 +177,7 @@ public class AISimple extends AI
             {
                 //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
                 Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
-
+                getInventory().getActionHolder().consumeAction(Enums.Action.moveGardener);
                 return true;
             }
         }
@@ -245,7 +188,7 @@ public class AISimple extends AI
             {
                 //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
                 Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
-
+                getInventory().getActionHolder().consumeAction(Enums.Action.moveGardener);
                 return true;
             }
         }
@@ -261,7 +204,7 @@ public class AISimple extends AI
     public boolean movePanda ()
     {
         // TODO: optimise based on proximity to completion
-
+        if  (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.movePanda)) return false;
         List<Goal> goals = getInventory().validatedGoals(false)
                                          .stream()
                                          .filter(goal -> goal instanceof BambooGoal)
@@ -283,7 +226,7 @@ public class AISimple extends AI
             {
               //  Logger.printLine(getName() + " moved panda : " + panda.getCoords());
                 Logger.printLine(getName() + " a déplacé le panda en : " + panda.getCoords());
-
+                getInventory().getActionHolder().consumeAction(Enums.Action.movePanda);
                 return true;
             }
         }
@@ -293,7 +236,7 @@ public class AISimple extends AI
             {
              //   Logger.printLine(getName() + " moved panda : " + panda.getCoords());
                 Logger.printLine(getName() + " a déplacé le panda en : " + panda.getCoords());
-
+                getInventory().getActionHolder().consumeAction(Enums.Action.movePanda);
                 return true;
             }
         }
@@ -304,7 +247,7 @@ public class AISimple extends AI
     /**
      place a plot tile
      */
-    public void placeBambooOnPlot()
+     protected void placeBambooOnPlot()
     {
         List<Goal> goals = getInventory().validatedGoals(false)
                 .stream()
@@ -324,17 +267,19 @@ public class AISimple extends AI
                     if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0 && plot.isIrrigated())
                     {
                         plot.addBamboo();
-                        Logger.printLine(getName() + " a placé un bamboo sur un plot#météo");
+                        Logger.printLine(getName() + " a placé un bamboo sur : " + plot);
                         return;
-
                     }
                 }
             }
+
         }
+
     }
 
     public boolean placePlot ()
     {
+        if  (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.placePlot)) return false;
         GameBoard board = GameBoard.getInstance();
         Random rand = new Random();
         ArrayList<Plot> draw;
@@ -360,6 +305,7 @@ public class AISimple extends AI
         board.addCell(plot);
         //Logger.printLine(getName() + " placed : " + plot);
         Logger.printLine(getName() + " a placé : " + plot);
+        getInventory().getActionHolder().consumeAction(Enums.Action.placePlot);
         return true;
     }
 
@@ -477,9 +423,10 @@ public class AISimple extends AI
      */
     protected boolean pickGoal ()
     {
+        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawGoal)) return false;
         Enums.GoalType[] values = Enums.GoalType.values();
         Enums.GoalType goalType = values[new Random().nextInt(values.length)];
-
+        getInventory().getActionHolder().consumeAction(Enums.Action.drawGoal);
         return pickGoal(goalType);
     }
 

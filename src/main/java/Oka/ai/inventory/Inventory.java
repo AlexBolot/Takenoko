@@ -27,6 +27,8 @@ public class Inventory
     private GoalHolder      goalHolder      = new GoalHolder();
     private PlotStateHolder plotStateHolder = new PlotStateHolder();
     private int channels = 0;
+    private ActionHolder actionHolder = new ActionHolder();
+
     //============ Active functions ============
 
     /**
@@ -87,5 +89,11 @@ public class Inventory
 
     public void removeChannel() {
         channels--;
+    }
+    public void resetActionHolder(){
+        actionHolder = new ActionHolder();
+    }
+    public ActionHolder getActionHolder () {
+        return actionHolder;
     }
 }
