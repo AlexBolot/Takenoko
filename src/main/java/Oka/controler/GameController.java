@@ -15,6 +15,8 @@ package Oka.controler;
  .................................................................................................*/
 
 import Oka.ai.AISimple;
+import Oka.ai.inventory.Inventory;
+import Oka.model.goal.Goal;
 import Oka.utils.Logger;
 
 import java.util.ArrayList;
@@ -62,6 +64,8 @@ public class GameController
 
                 if (checkGoal > 0)
                 {
+                    // on rajoute l'objectif empereur
+                    ai.getInventory().addGoal(new Goal(2, true));
                     Logger.printWin(ai.getName());
                     return;
                 }

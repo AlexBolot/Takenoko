@@ -14,7 +14,7 @@ package Oka.model.goal;
  . Last Modified : 14/10/17 22:27
  .................................................................................................*/
 
-public abstract class Goal
+public class Goal
 {
     //region==========ATTRIBUTES===========
     private final int     value;
@@ -25,6 +25,11 @@ public abstract class Goal
     public Goal (int value)
     {
         this.value = value;
+    }
+    public Goal (int value, boolean validated)
+    {
+        this.value = value;
+        this.validated = validated;
     }
     //endregion
 
