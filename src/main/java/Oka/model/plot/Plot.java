@@ -56,6 +56,7 @@ public class Plot extends Cell
 
     public void setIsIrrigated (boolean bool)
     {
+        if (bool) this.addBamboo();
         this.isIrrigated = bool;
     }
 

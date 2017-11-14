@@ -79,5 +79,18 @@ public class PlotTest
         assertNull(plot1.giveBamboo());
     }
 
+    @Test
+    public void setIrrigationTest() {
+        Plot p = new Plot(new Point(0, 1), GREEN);
+        assertFalse(p.isIrrigated());
+        assertEquals(0, p.getBamboo().size());
+
+        p.setIsIrrigated(true);
+
+        assertTrue(p.isIrrigated());
+        assertEquals(1, p.getBamboo().size());
+
+    }
+
 
 }
