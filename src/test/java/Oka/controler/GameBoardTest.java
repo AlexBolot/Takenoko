@@ -8,6 +8,7 @@ import Oka.model.Irrigation;
 import Oka.model.Pond;
 import Oka.model.plot.Plot;
 import Oka.utils.Cleaner;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -206,5 +207,59 @@ public class GameBoardTest
         assertTrue(board.verifIrrigation(p10, p11));
 
     }
+
+    @Test
+    public void bambooOnIrrigated() throws InvalidArgumentException {
+
+        GameBoard board = GameBoard.getInstance();
+        Cleaner.cleanGameBoard();
+
+
+        Point p01 = new Point(0, 1);
+        Point p10 = new Point(1, 0);
+        Point p11 = new Point(1, 1);
+
+        Plot plot01 = new Plot(p01, GREEN);
+
+        assertEquals(0, plot01.getBamboo().size());
+
+        board.addCell(plot01);
+        assertEquals(1, plot01.getBamboo().size());
+
+        Cleaner.cleanGameBoard();
+        board = GameBoard.getInstance();
+
+        mediumGrid.values().stream().filter(cell -> !(cell instanceof Pond))
+                .forEach(board::addCell);
+
+        board.addIrrigation(p01, p10);
+        Plot plot11 = new Plot(p11, GREEN);
+        board.addCell(plot11);
+
+        assertEquals(0, plot11.getBamboo().size());
+
+        board.addIrrigation(p01, p11);
+
+        assertEquals(1, plot11.getBamboo().size());
+
+
+    }
+
+    @Test
+    public void distanceToPondTest() {
+        GameBoard board = GameBoard.getInstance();
+
+        assertEquals(0, board.distanceToPond(new Point()));
+
+        assertEquals(1, board.distanceToPond(new Point(1, 0)));
+        assertEquals(1, board.distanceToPond(new Point(0, 1)));
+        assertEquals(1, board.distanceToPond(new Point(-1, 0)));
+        assertEquals(1, board.distanceToPond(new Point(0, -1)));
+        assertEquals(1, board.distanceToPond(new Point(1, -1)));
+        assertEquals(1, board.distanceToPond(new Point(-1, 1)));
+
+
+    }
+
 
 }

@@ -90,7 +90,9 @@ public class GameBoard
 
         grid.put(cell.getCoords(), cell);
         availableSlots.remove(cell.getCoords());
-
+        if (distanceToPond(cell.getCoords()) == 1) {
+            ((Plot) cell).setIsIrrigated(true);
+        }
         refreshAvailableSlots(cell);
     }
 
