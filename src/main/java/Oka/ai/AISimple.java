@@ -1,5 +1,7 @@
 package Oka.ai;
 
+import Oka.ai.inventory.ActionHolder;
+import Oka.ai.inventory.PlotStateHolder;
 import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
 import Oka.entities.Entity;
@@ -13,9 +15,14 @@ import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
+import Oka.model.plot.state.EnclosureState;
+import Oka.model.plot.state.FertilizerState;
+import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 import com.sun.javaws.exceptions.InvalidArgumentException;
+import sun.rmi.runtime.Log;
 
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -23,27 +30,28 @@ import java.util.stream.Collectors;
 
 public class AISimple extends AI
 {
+    private int compteur =0;
     //region==========CONSTRUCTORS=========
     public AISimple (String name)
     {
         super(name);
+
+        Enums.State[] values = Enums.State.values();
+
     }
     //endregion
 
     //region==========METHODS==============
     public void play ()
     {
-        Logger.printSeparator(getName());
-
         getInventory().resetActionHolder();
-
-        Dice.rollDice(this);
-
+        Logger.printSeparator(getName());
+        if (compteur++!=0)  Dice.rollDice(this);
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
-        Logger.printLine(""+getInventory().getActionHolder().getActionLeft());
-
+        int turn=0;
         while (getInventory().getActionHolder().hasActionsLeft())
         {
+            turn++;
             //Pick a new goal if has no more unvalidated goals
             if (getInventory().validatedGoals(false).size() == 0)
             {
@@ -58,29 +66,26 @@ public class AISimple extends AI
                 //Action is consumed only if plotState could be placed
                 placePlotState();
             }
-                //We Randomly chose to either move the gardener, the panda, or place an irrigation or placePlot1
-                switch (new Random().nextInt(4)) {
-                    case 0:
-                        moveGardener();
-                        continue;
-                    case 1:
-                        movePanda();
-                        continue;
-                    case 2:
-                        if (drawChannel()) {
-                            placeChannel();
-                        }
-                        continue;
-                    case 3:
-                        placePlot();
-
-                }
-
-
+            //We Randomly chose to either move the gardener, the panda, or place an irrigation or placePlot1
+            switch (new Random().nextInt(4)) {
+                case 0:
+                    moveGardener();
+                    continue;
+                case 1:
+                    movePanda();
+                    continue;
+                case 2:
+                    if (drawChannel()) {
+                        placeChannel();
+                    }
+                    continue;
+                case 3:
+                    placePlot();
+            }
         }
         Logger.printLine(getName() + " - bamboos : {GREEN :" + getInventory().bambooHolder().countBamboo(Color.GREEN) +"} " +
-                 "{YELLOW :" + getInventory().bambooHolder().countBamboo(Color.YELLOW) +"} "
-        + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
+                "{YELLOW :" + getInventory().bambooHolder().countBamboo(Color.YELLOW) +"} "
+                + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
 
     }
 
@@ -90,7 +95,6 @@ public class AISimple extends AI
         if (!irrigation.isPresent()) return false;
         getInventory().addChannel();
         getInventory().getActionHolder().consumeAction(Enums.Action.drawChannel);
-        Logger.printLine(getName() + " à pioché une irrigation !");
         return true;
     }
 

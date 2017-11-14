@@ -50,7 +50,7 @@ public class GameController
     public void play (ArrayList<AISimple> playable)
     {
         int turn = 0;
-        while (turn < 30)
+        while (true)
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
 

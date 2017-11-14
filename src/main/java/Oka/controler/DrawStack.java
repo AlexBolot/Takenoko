@@ -1,5 +1,6 @@
 package Oka.controler;
 
+import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Irrigation;
 import Oka.model.goal.BambooGoal;
@@ -28,6 +29,7 @@ public class DrawStack
     private static DrawStack ourInstance    = new DrawStack();
     private ArrayList<BambooGoal> listBambooGoal = new ArrayList<>();
     private ArrayList<GardenerGoal> listGardenerGoal = new ArrayList<>();
+    private ArrayList<Plot> listPlot = new ArrayList<>();
     private int remainingChannels = 20;
     private int fertilizerStates = 3;
     private int pondStates = 3;
@@ -67,6 +69,26 @@ public class DrawStack
         listGardenerGoal.add(new GardenerGoal(6,4,Color.PINK, new EnclosureState()));
         listGardenerGoal.add(new GardenerGoal(7,4,Color.PINK, new NeutralState()));
         listGardenerGoal.add(new GardenerGoal(3,4,Color.GREEN, new FertilizerState()));
+        for(int i=0; i<6;i++) {
+            listPlot.add(new Plot(Color.GREEN,new NeutralState()));
+        }
+        for(int i=0;i<4;i++){
+            listPlot.add(new Plot(Color.PINK, new NeutralState()));
+        }
+        for (int i=0;i<6;i++){
+            listPlot.add(new Plot(Color.YELLOW,new NeutralState()));
+        }
+        listPlot.add(new Plot(Color.GREEN,new PondState()));
+        listPlot.add(new Plot(Color.GREEN,new PondState()));
+        listPlot.add(new Plot(Color.YELLOW,new PondState()));
+        listPlot.add(new Plot(Color.PINK,new PondState()));
+        listPlot.add(new Plot(Color.PINK,new FertilizerState()));
+        listPlot.add(new Plot(Color.GREEN,new FertilizerState()));
+        listPlot.add(new Plot(Color.YELLOW,new FertilizerState()));
+        listPlot.add(new Plot(Color.PINK,new EnclosureState()));
+        listPlot.add(new Plot(Color.YELLOW,new EnclosureState()));
+        listPlot.add(new Plot(Color.GREEN,new EnclosureState()));
+        listPlot.add(new Plot(Color.GREEN,new EnclosureState()));
 
         Enums.DrawStackPlot.nbGreenPlot.setTabState(new int[]{6,2,2,1});
         Enums.DrawStackPlot.nbPinkPlot.setTabState(new int[]{6,1,1,1});
@@ -100,7 +122,7 @@ public class DrawStack
     }
     public ArrayList<Plot> giveTreePlot ()
     {
-        Random rand = new Random();
+       /* Random rand = new Random();
         ArrayList<Plot> listP = new ArrayList<>();
         Plot plot;
         int totalPlotFree = Enums.DrawStackPlot.getNbPlot(), randInt, indexColorPlot;
@@ -118,6 +140,22 @@ public class DrawStack
                 listP.add(plot);
             }
             return listP;
+        }
+        return null;*/
+
+        ArrayList<Plot> list = new ArrayList<>();
+        if (listPlot.size()>3) {
+            list.add(listPlot.remove(0));
+            list.add(listPlot.remove(0));
+            list.add(listPlot.remove(0));
+            return list;
+        }
+        else if (listPlot.size()==2){
+            list.add(listPlot.remove(0));
+            list.add(listPlot.remove(0));
+        }
+        else if(listPlot.size()==1){
+            list.add(listPlot.remove(0));
         }
         return null;
     }

@@ -24,7 +24,7 @@ public class Plot extends Cell
         state = new NeutralState();
     }
 
-    public Plot (Color color)
+    public Plot ()
     {
         super(new Point());
         this.color = color;
