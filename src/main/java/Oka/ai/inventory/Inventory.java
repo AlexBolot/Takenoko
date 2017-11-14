@@ -59,16 +59,18 @@ public class Inventory
         this.plotStateHolder.add(plotState);
     }
 
-    public void addChannel() {
+    public void addChannel ()
+    {
         channels++;
     }
+
     //=============== Getters =================
     public BambooHolder bambooHolder ()
     {
         return this.bambooHolder;
     }
 
-    public ArrayList<Goal> goalHolder ()
+    public GoalHolder goalHolder ()
     {
         return this.goalHolder;
     }
@@ -83,11 +85,18 @@ public class Inventory
         return this.plotStateHolder;
     }
 
-    public boolean hasChannel() {
+    public int getChannelAmount ()
+    {
+        return channels;
+    }
+
+    public boolean hasChannel ()
+    {
         return channels > 0;
     }
 
-    public void removeChannel() {
+    public void removeChannel ()
+    {
         channels--;
     }
     public void resetActionHolder(){
