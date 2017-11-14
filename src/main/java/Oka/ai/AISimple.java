@@ -51,7 +51,7 @@ public class AISimple extends AI
         int turn=0;
         while (getInventory().getActionHolder().hasActionsLeft())
         {
-            turn++;
+            if(turn++>30) break;
             //Pick a new goal if has no more unvalidated goals
             if (getInventory().validatedGoals(false).size() == 0)
             {
