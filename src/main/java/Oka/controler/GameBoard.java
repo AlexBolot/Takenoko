@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GameBoard
 {
@@ -79,6 +80,11 @@ public class GameBoard
     public void setIrrigation (Set<Irrigation> irrigation)
     {
         this.irrigation = irrigation;
+    }
+
+    public java.util.List<Plot> getPlots ()
+    {
+        return grid.values().stream().filter(Plot.class::isInstance).map(Plot.class::cast).collect(Collectors.toList());
     }
     //endregion
 
