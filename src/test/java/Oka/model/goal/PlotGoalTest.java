@@ -11,7 +11,8 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class PlotGoalTest {
     @Test
@@ -47,6 +48,11 @@ public class PlotGoalTest {
         board.addCell(new Plot(new Point(1, 0), Enums.Color.PINK));
         board.addCell(new Plot(new Point(1, 1), Enums.Color.PINK));
         board.addCell(new Plot(new Point(0, 2), Enums.Color.PINK));
+        assertFalse(pg4.validate(Optional.empty()));
+
+        board.addIrrigation(new Point(1, 0), new Point(0, 1));
+        board.addIrrigation(new Point(1, 1), new Point(0, 1));
+        board.addIrrigation(new Point(1, 1), new Point(0, 2));
         assertTrue(pg4.validate(Optional.empty()));
 
     }

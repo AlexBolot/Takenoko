@@ -18,6 +18,6 @@ public class EnclosureState extends NeutralState
     }
 
     public String toString(){
-        return this.state.toString();
+        return state.toString();
     }
 }

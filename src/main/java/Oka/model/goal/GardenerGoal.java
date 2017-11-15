@@ -1,13 +1,10 @@
 package Oka.model.goal;
 
 import Oka.controler.GameBoard;
-import Oka.model.Cell;
 import Oka.model.Enums.Color;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.NeutralState;
 
-import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
 
 public class GardenerGoal extends Goal
@@ -28,10 +25,11 @@ public class GardenerGoal extends Goal
     //endregion
 
     //region==========GETTER/SETTER========
-    int getBambooAmount()
+    public int getBambooAmount()
     {
         return bambooAmount;
     }
+
 
     public void setBambooAmount (int bambooAmount)
     {

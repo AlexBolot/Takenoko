@@ -37,6 +37,7 @@ public class PlotGoal extends Goal
 
             return !(cell == null) && !cell.getCoords().equals(new Point()) &&
                     ((Plot) cell).getColor().equals(this.color) &&
+                    ((Plot) cell).isIrrigated() &&
                     linkedGoals.entrySet()
                             .stream()
                             .allMatch(
