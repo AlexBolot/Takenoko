@@ -86,7 +86,7 @@ public class AISimple extends AI
         Logger.printLine(getName() + " - bamboos : {GREEN :" + getInventory().bambooHolder().countBamboo(Color.GREEN) +"} " +
                 "{YELLOW :" + getInventory().bambooHolder().countBamboo(Color.YELLOW) +"} "
                 + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
-
+//lol
     }
 
     protected boolean drawChannel() {
