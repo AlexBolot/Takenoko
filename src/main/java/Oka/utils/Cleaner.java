@@ -20,34 +20,63 @@ import Oka.entities.Gardener;
 import Oka.entities.Panda;
 import Oka.model.Pond;
 
-import java.awt.*;
-
 public class Cleaner
 {
     //region==========METHODS==============
+
+    /**
+     <hr>
+     <h3>Resets the coordinates of the Panda to the Pond's location</h3>
+     */
     public static void cleanPanda ()
     {
         Panda.getInstance().setCoords(new Pond().getCoords());
     }
 
+    /**
+     <hr>
+     <h3>Reset the coordinates of the Gardener to the Pond's location</h3>
+     */
     public static void cleanGardener ()
     {
         Gardener.getInstance().setCoords(new Pond().getCoords());
     }
 
+    /**
+     <hr>
+     <h3>Calls the reset method of the GameBoard.<br>
+     See {@link GameBoard#resetGameBoard()}
+     </h3>
+     */
     public static void cleanGameBoard ()
     {
         GameBoard.resetGameBoard();
     }
 
+    /**
+     <hr>
+     <h3>Puts the currentPlayer of the GameController as null</h3>
+     */
     public static void cleanGameController ()
     {
         GameController.getInstance().setCurrentPlayer(null);
     }
 
-    public static void cleanDrawStack() {
+    /**
+     <hr>
+     <h3>Calls the reset method of the GameBoard.<br>
+     See {@link DrawStack#resetDrawStack()}
+     </h3>
+     */
+    public static void cleanDrawStack ()
+    {
         DrawStack.resetDrawStack();
     }
+
+    /**
+     <hr>
+     <h3>Calls all the other clean methods of the Cleaner class</h3>
+     */
     public static void clearAll ()
     {
         cleanPanda();

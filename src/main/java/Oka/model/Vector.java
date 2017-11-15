@@ -20,12 +20,16 @@ public class Vector
     //endregion
 
     //region==========METHODS==============
-    /**
-     returns if the destination is on a straight line from the orgine
 
-     @param origin Point origin point
-     @param dest   Point destination point
-     @return boolean true if the destination is aligned
+    /**
+     <hr>
+     <h3>Checks if the origin and the destination are ligned, according to the axis defined in Enums.Axis
+     </h3>
+     <hr>
+
+     @param origin Origin point
+     @param dest   Destination point
+     @return True if the 2 points are aligned, false otherwise
      */
     public static boolean areAligned (Point origin, Point dest)
     {
@@ -33,32 +37,43 @@ public class Vector
     }
 
     /**
-     tries to find a vector linking the two points in a straight line
-     return null if impossible
+     <hr>
+     <h3>Tries to find a vector connecting the 2 points, if they are in a straight line.
+     </h3>
+     <hr>
 
-     @param point  Point origin of the vector
-     @param point1 Point destination of the vector
-     @return Vector | null
+     @param origin Origin point
+     @param dest   Destination point
+     @return A new Vector(axis, length) if found, null otherwise
      */
-    public static Vector findStraightVector (Point point, Point point1)
+    public static Vector findStraightVector (Point origin, Point dest)
     {
-        if (point == null || point1 == null) throw new IllegalArgumentException("Parameter is null !");
+        if (origin == null || dest == null) throw new IllegalArgumentException("Parameter is null !");
 
-        if (point.getX() != point1.getX() && point.getY() == point1.getY())
+        if (origin.getX() != dest.getX() && origin.getY() == dest.getY())
         {
-            return new Vector(Axis.x, (int) Math.abs(point1.getX() - point.getX()));
+            return new Vector(Axis.x, (int) Math.abs(dest.getX() - origin.getX()));
         }
-        if (point.getX() == point1.getX() && point.getY() != point1.getY())
+        if (origin.getX() == dest.getX() && origin.getY() != dest.getY())
         {
-            return new Vector(Axis.y, (int) Math.abs(point1.getY() - point.getY()));
+            return new Vector(Axis.y, (int) Math.abs(dest.getY() - origin.getY()));
         }
-        if (point.getX() - point1.getX() == -(point.getY() - point1.getY()))
+        if (origin.getX() - dest.getX() == -(origin.getY() - dest.getY()))
         {
-            return new Vector(Axis.z, (int) Math.abs(point1.getX() - point.getX()));
+            return new Vector(Axis.z, (int) Math.abs(dest.getX() - origin.getX()));
         }
         return null;
     }
 
+    /**
+     <hr>
+     <h3>Applies this vector on the point given as parameter.
+     </h3>
+     <hr>
+
+     @param point Origin point to apply the vector on
+     @return A new Point, which coord's are the parameter's one, translated with this vector
+     */
     public Point applyVector (Point point)
     {
         if (point == null) throw new IllegalArgumentException("Param is null !");
@@ -92,12 +107,13 @@ public class Vector
 
         Vector v = (Vector) obj;
 
-        return v.axis.equals(this.axis) && v.length == this.length;
+        return axis.equals(v.axis) && length == v.length;
     }
 
     @Override
-    public String toString() {
-        return axis + " " + String.valueOf(this.length);
+    public String toString ()
+    {
+        return axis + " " + String.valueOf(length);
     }
     //endregion
 
