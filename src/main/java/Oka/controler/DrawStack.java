@@ -103,7 +103,6 @@ public class DrawStack
         }
         fertilizerStates--;
         return Optional.of(new FertilizerState());
-
     }
 
     public Optional<PondState> drawPondState() {
