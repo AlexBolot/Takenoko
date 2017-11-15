@@ -38,8 +38,11 @@ public class PlotGoalTest {
 
         board.addCell(new Plot(new Point(0, 1), Enums.Color.PINK));
         assertTrue(pg1.validate(Optional.empty()));
+        assertTrue(pg1.isValidated());
         assertTrue(pg2.validate(Optional.empty()));
+        assertTrue(pg2.isValidated());
         assertTrue(pg3.validate(Optional.empty()));
+        assertTrue(pg3.isValidated());
 
         board.addCell(new Plot(new Point(1, 0), Enums.Color.PINK));
         board.addCell(new Plot(new Point(1, 1), Enums.Color.PINK));

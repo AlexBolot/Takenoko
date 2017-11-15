@@ -44,8 +44,10 @@ public class PlotGoal extends Goal
                                             .validate(Optional.of(entry.getKey().applyVector(coords.get())))
                             );
         }
+        boolean b = grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
+        setValidated(b);
+        return b;
 
-        return grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
     }
 
     @Override
