@@ -49,7 +49,7 @@ public class BambooGoalTest
         assertFalse(bg4.isValidated());
     }
 
-    @Test (expected = NegativeArraySizeException.class)
+    @Test
     public void validateBorderNegative ()
     {
         AISimple nAI = new AISimple("normal");
@@ -57,6 +57,7 @@ public class BambooGoalTest
         bg2 = new BambooGoal(1, -1, PINK);
 
         bg2.validate(nAI.getInventory().bambooHolder());
+        assertTrue(bg2.isValidated());
     }
 
     @Test

@@ -19,6 +19,7 @@ import Oka.controler.GameBoard;
 import Oka.controler.GameController;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
+import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
@@ -35,16 +36,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class AISimpleTest
-{
+public class AISimpleTest {
 
 
     private Point p01 = new Point(0, 1);
     private Point p10 = new Point(1, 0);
 
     @Before
-    public void before ()
-    {
+    public void before() {
         Cleaner.clearAll();
         Plot plot1 = new Plot(p01, Enums.Color.PINK);
         plot1.addBamboo();
@@ -55,9 +54,11 @@ public class AISimpleTest
     }
 
     @Test
-    public void movePanda () throws Exception
-    {
+    public void movePanda() throws Exception {
         Panda.getInstance().setCoords(new Point());
+
+        GameBoard board = GameBoard.getInstance();
+        Cell plot10 = board.getGrid().remove(p10);
 
         AISimple AI = new AISimple("Momo");
 
@@ -69,6 +70,9 @@ public class AISimpleTest
 
         Panda.getInstance().setCoords(new Point());
 
+        board.getGrid().remove(p01);
+        board.getGrid().put(p10, plot10);
+
         AI = new AISimple("Momo");
 
         GameController.getInstance().setCurrentPlayer(AI);
@@ -79,8 +83,12 @@ public class AISimpleTest
     }
 
     @Test
-    public void moveGardener () throws Exception
-    {
+    public void moveGardener() throws Exception {
+
+        GameBoard board = GameBoard.getInstance();
+
+        Cell plot10 = board.getGrid().remove(p10);
+
         Panda.getInstance().setCoords(new Point());
 
         AISimple AI = new AISimple("Momo");
@@ -90,6 +98,8 @@ public class AISimpleTest
         assertEquals(p01, Gardener.getInstance().getCoords());
         Gardener.getInstance().setCoords(new Point());
 
+        board.getGrid().remove(p01);
+        board.getGrid().put(p10, plot10);
         AI = new AISimple("Momo");
 
         AI.getInventory().addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
@@ -152,7 +162,9 @@ public class AISimpleTest
         AISimple roger = new AISimple("Roger");
 
         roger.drawChannel();
+        roger.getInventory().resetActionHolder();
         roger.drawChannel();
+
 
         BambooGoal bg = new BambooGoal(3, 3, Enums.Color.YELLOW);
         board.addIrrigation(new Point(0, 1), new Point(1, 0));
@@ -165,9 +177,6 @@ public class AISimpleTest
         assertTrue(board.verifIrrigation(new Point(1, 1), new Point(0, 2)));
 
     }
-
-
-
 
 
 }

@@ -42,8 +42,8 @@ public class GardenerGoalTest
     {
         Cleaner.clearAll();
 
-        gg1 = new GardenerGoal(3, 2, YELLOW, new NeutralState());
-        gg2 = new GardenerGoal(3, 2, GREEN, new FertilizerState());
+        gg1 = new GardenerGoal(3, 3, YELLOW, new NeutralState());
+        gg2 = new GardenerGoal(3, 4, GREEN, new FertilizerState());
         gg3 = new GardenerGoal(3, 2, PINK, new PondState());
         gg4 = new GardenerGoal(3, 2, PINK, new EnclosureState());
 

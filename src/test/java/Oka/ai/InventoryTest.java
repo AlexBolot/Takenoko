@@ -50,6 +50,7 @@ public class InventoryTest {
     public void checkMultipleGoals() {
         Inventory i = new Inventory();
         BambooGoal bambooGoal = new BambooGoal(3, 3, Enums.Color.GREEN);
+        GardenerGoal gardenerGoal = new GardenerGoal(3, 3, Enums.Color.GREEN, new NeutralState());
 
         i.addGoal(bambooGoal);
 
@@ -57,10 +58,10 @@ public class InventoryTest {
         i.addBamboo(Enums.Color.GREEN);
         i.addBamboo(Enums.Color.GREEN);
 
-        GardenerGoal gardenerGoal = new GardenerGoal(3, 3, Enums.Color.GREEN, new NeutralState());
 
         GameBoard board = GameBoard.getInstance();
         Plot plot = new Plot(new Point(1, 0), Enums.Color.GREEN);
+        plot.addBamboo();
         plot.addBamboo();
         plot.addBamboo();
         board.addCell(plot);
