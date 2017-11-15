@@ -58,8 +58,6 @@ public class GameBoard
 
     /**
      should return all the possible slots where a tile may be layed
-     todo : implement
-
      @return ArrayList
      */
     public ArrayList<Point> getAvailableSlots ()
@@ -102,15 +100,16 @@ public class GameBoard
         refreshAvailableSlots(cell);
     }
 
-    public void addIrrigation (Point point1, Point point2) throws InvalidArgumentException
+    public boolean addIrrigation(Point point1, Point point2)
     {
         assertIsOnGrid(point1);
         assertIsOnGrid(point2);
 
-        if (!canPlaceIrigation(point1, point2)) throw new IllegalArgumentException(
-                "The two specified points must be a valid position for an irrigation");
+        if (!canPlaceIrigation(point1, point2)) {
+            return false;
+        }
 
-        if (point1.equals(new Pond().getCoords()) || point2.equals(new Pond().getCoords())) return;
+        if (point1.equals(new Pond().getCoords()) || point2.equals(new Pond().getCoords())) return false;
 
         Plot plot1 = (Plot) grid.get(point1);
         Plot plot2 = (Plot) grid.get(point2);
@@ -122,6 +121,7 @@ public class GameBoard
 
         plot1.setIsIrrigated(true);
         plot2.setIsIrrigated(true);
+        return true;
     }
 
     public boolean canPlaceIrigation (Point point1, Point point2)

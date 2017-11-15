@@ -89,11 +89,6 @@ public class GameBoardTest
         assertEquals(plot, board.getGrid().get(new Point(1, 0)));
     }
 
-    @Test
-    public void testGivePlot () throws Exception
-    {
-        //todo right
-    }
 
     @Test
     public void moveEntityForbidenAxis ()
@@ -125,11 +120,11 @@ public class GameBoardTest
         GameBoard.getInstance().addCell(plot1);
         GameBoard.getInstance().addCell(plot2);
 
-        GameBoard.getInstance().addIrrigation(point, point1);
+        assertTrue(GameBoard.getInstance().addIrrigation(point, point1));
         assertEquals(1, GameBoard.getInstance().getIrrigation().size());
-        GameBoard.getInstance().addIrrigation(point1, point2);
+        assertTrue(GameBoard.getInstance().addIrrigation(point1, point2));
         assertEquals(2, GameBoard.getInstance().getIrrigation().size());
-        GameBoard.getInstance().addIrrigation(point, point2);
+        assertTrue(GameBoard.getInstance().addIrrigation(point, point2));
         assertEquals(3, GameBoard.getInstance().getIrrigation().size());
 
         // JE VOULAIS METTRE DES IRRIGATIONS ET DES CELLULES ET TESTER SI LA Méthode ajoute bien l'irrigation qu'on veut
