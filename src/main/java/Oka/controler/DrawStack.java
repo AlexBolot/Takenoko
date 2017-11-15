@@ -86,6 +86,7 @@ public class DrawStack
         }
         else return null;
     }
+
     /**
      * returns an optional irrigation channel if one can be drawn from the stack
      *
@@ -121,6 +122,7 @@ public class DrawStack
         }
         enclosureStates--;
         return Optional.of(new EnclosureState());
+
     }
 
     public void giveBackPlot (ArrayList<Plot> listP)

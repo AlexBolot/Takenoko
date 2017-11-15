@@ -8,6 +8,7 @@ import Oka.model.plot.state.NeutralState;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 
 public class GardenerGoal extends Goal
 {
@@ -27,7 +28,7 @@ public class GardenerGoal extends Goal
     //endregion
 
     //region==========GETTER/SETTER========
-    public int getBambooAmount ()
+    int getBambooAmount()
     {
         return bambooAmount;
     }
@@ -51,14 +52,11 @@ public class GardenerGoal extends Goal
     //region==========METHODS==============
     public boolean validate ()
     {
-        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
-        for (Cell cell : grid.values())
-        {
-            if ((cell instanceof Plot) && ((Plot) cell).getColor().equals(getColor()) && (((Plot) cell).getBamboo()
-                                                                                                       .size() == (getBambooAmount())))
-                setValidated(true);
-        }
-        return false;
+        List<Plot> plots = GameBoard.getInstance().getPlots();
+        boolean valid = plots.stream().anyMatch(plot -> plot.getColor().equals(getColor()) && plot.getBamboo().size() == getBambooAmount());
+        setValidated(valid);
+        return valid;
+
     }
     //endregion
 
