@@ -5,7 +5,7 @@ public class Enums {
 
     public enum GoalType
     {
-        BambooGoal, PlotGoal, GardenGoal;
+        BambooGoal, PlotGoal, GardenGoal
     }
     public enum Axis {
         x, y, z
@@ -29,34 +29,6 @@ public class Enums {
     }
     public enum Action {
         movePanda,moveGardener,drawChannel,drawPlotState,drawGoal,placePlot
-
-    }
-    public enum DrawStackPlot {
-        // NeutralState, PondState, EnclosureState, FertilizerState
-       nbGreenPlot(), nbYellowPlot(), nbPinkPlot();
-
-        private int tabState[] = new int[4];
-
-        DrawStackPlot(){ }
-        public int[] getTabState() {
-            return this.tabState;
-        }
-        public void setTabState(int tabState[]){
-             this.tabState = tabState;
-        }
-
-        public int getnbPlotByColor(){
-            int total = 0;
-            for(int i : tabState){
-                total += i;
-            }
-            return total;
-        }
-        public static int getNbPlot(){
-            return nbGreenPlot.getnbPlotByColor() + nbYellowPlot.getnbPlotByColor() + nbPinkPlot.getnbPlotByColor();
-        }
-    }
-    public enum DrawStackGoal{
 
     }
 
