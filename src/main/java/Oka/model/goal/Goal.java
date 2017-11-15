@@ -55,7 +55,7 @@ public class Goal
     //region==========EQUALS/TOSTRING======
     public String toString ()
     {
-        return getClass().getSimpleName();
+        return "EmperorGoal";
     }
     //endregion
 }

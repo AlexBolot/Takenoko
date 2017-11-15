@@ -105,4 +105,11 @@ public class Inventory
     public ActionHolder getActionHolder () {
         return actionHolder;
     }
+    public int getValueOfGoalHolder(GoalHolder goalholder){
+        int s=0;
+        for (Goal goall : goalholder.getGoalValidated(true)){
+            s=s+goall.getValue();
+        }
+        return(s);
+    }
 }

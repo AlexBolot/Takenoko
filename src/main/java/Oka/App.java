@@ -66,7 +66,7 @@ public class App
                 ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
                 gc.play(Playable);
-                if(i%100==0) System.out.println("Tour:" + i);
+                System.out.println("Tour:" + i);
             }
 
             for (Map.Entry<String, Integer> entry : Logger.getStats().entrySet())

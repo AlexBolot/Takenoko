@@ -11,6 +11,7 @@ public abstract class AI extends Playable
         super(name);
     }
     //endregion
+    public AI (){}
 
     //region==========ABSTRACT METHODS=====
     @Override

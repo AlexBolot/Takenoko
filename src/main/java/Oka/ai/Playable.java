@@ -44,6 +44,9 @@ public abstract class Playable
         getInventory().addGoal(goal);
         Logger.printLine(getName() + " a pioché : " + goal);
     }
+    protected  Playable(){
+
+    }
     //endregion
 
     //region==========GETTER/SETTER========
