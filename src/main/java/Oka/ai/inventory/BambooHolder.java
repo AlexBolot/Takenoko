@@ -3,6 +3,7 @@ package Oka.ai.inventory;
 import Oka.model.Bamboo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static Oka.model.Enums.Color;
 
@@ -30,20 +31,16 @@ public class BambooHolder extends ArrayList<Bamboo>
 
     public void removeByColor (Color color, int n)
     {
-        //this.stream().filter(b -> b.getColor().equals(color)).forEach(b -> this.remove(b));
-        int tabIndex[] = new int[this.size()];
-        for (int i = 0; i < this.size(); i++)
-        {
-            Bamboo bamboo = this.get(i);
-            if (bamboo.getColor().equals(color)) tabIndex[i] = 1;
-            else tabIndex[i] = 0;
-        }
         int compt = 0;
-        for(int index =  tabIndex.length-1; index >=0; index--){
-            if(tabIndex[index] == 1 && compt < n) {
+        for (Iterator<Bamboo> it = this.iterator();it.hasNext();)
+        {
+            Bamboo bamboo = it.next();
+            if (bamboo.getColor().equals(color)){
+                it.remove();
                 compt++;
-                this.remove(index);
             }
+            if(compt==n)
+                break;
         }
     }
 

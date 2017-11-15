@@ -15,7 +15,6 @@ package Oka.model.goal;
  .................................................................................................*/
 
 import Oka.ai.inventory.BambooHolder;
-import Oka.model.Bamboo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +45,11 @@ public class BambooGoal extends Goal
     //endregion
 
     //region==========GETTER/SETTER========
+    public HashMap<Color, Integer> getValues ()
+    {
+        return values;
+    }
+
     public int getColorAmount ()
     {
         return (int) values.values().stream().filter(integer -> integer > 0).count();
