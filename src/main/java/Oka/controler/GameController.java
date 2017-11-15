@@ -15,7 +15,6 @@ package Oka.controler;
  .................................................................................................*/
 
 import Oka.ai.AISimple;
-import Oka.ai.inventory.Inventory;
 import Oka.model.goal.Goal;
 import Oka.utils.Logger;
 

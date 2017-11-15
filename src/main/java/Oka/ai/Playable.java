@@ -20,8 +20,6 @@ import Oka.model.Enums.GoalType;
 import Oka.model.goal.Goal;
 import Oka.utils.Logger;
 
-import java.util.Random;
-
 public abstract class Playable
 {
     //region==========ATTRIBUTES===========
@@ -34,15 +32,17 @@ public abstract class Playable
     {
         this.name = name;
 
-        for (int i = 0; i < 3; i++)
-        {
-            GoalType[] values = GoalType.values();
-            GoalType goalType = values[new Random().nextInt(values.length)];
+        Goal goal = DrawStack.getInstance().drawGoal(GoalType.BambooGoal);
+        getInventory().addGoal(goal);
+        Logger.printLine(getName() + " a pioché : " + goal);
 
-            Goal goal = DrawStack.getInstance().drawGoal(goalType);
-            getInventory().addGoal(goal);
-            Logger.printLine(getName() + " a pioché : " + goal);
-        }
+        goal = DrawStack.getInstance().drawGoal(GoalType.GardenGoal);
+        getInventory().addGoal(goal);
+        Logger.printLine(getName() + " a pioché : " + goal);
+
+        goal = DrawStack.getInstance().drawGoal(GoalType.PlotGoal);
+        getInventory().addGoal(goal);
+        Logger.printLine(getName() + " a pioché : " + goal);
     }
     //endregion
 

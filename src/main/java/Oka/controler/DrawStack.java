@@ -68,9 +68,12 @@ public class DrawStack
     public ArrayList<Plot> giveTreePlot () {
         Random rand = new Random();
         ArrayList<Plot> listP = new ArrayList<>();
-        if (listPlot.size() > 4) {
+        if (listPlot.size() > 2)
+        {
             for (int i = 0; i < 3; i++)
-                listP.add(listPlot.remove(rand.nextInt(listPlot.size() - 1)));
+            {
+                listP.add(listPlot.remove(rand.nextInt(listPlot.size())));
+            }
             return listP;
         }
         else if (listPlot.size() > 0)
@@ -122,8 +125,9 @@ public class DrawStack
 
     public void giveBackPlot (ArrayList<Plot> listP)
     {
-        if(listP .size()>1) listPlot.addAll(listP);
+        if (listP.size() > 0) listPlot.addAll(listP);
     }
+
     public static void resetDrawStack() {
         ourInstance = new DrawStack();
     }
@@ -241,7 +245,7 @@ public class DrawStack
         listGardenerGoal.add(new GardenerGoal(3,4,Color.GREEN, new FertilizerState()));
     }
     private void initListBambooGoal() {
-        HashMap<Color,Integer> bamboos = new HashMap();
+        HashMap<Color, Integer> bamboos = new HashMap<>();
         bamboos.put(Color.GREEN,1);
         bamboos.put(Color.PINK,1);
         bamboos.put(Color.YELLOW,1);
