@@ -35,6 +35,8 @@ public class BambooGoalTest
 
         ai.getInventory().addBamboo(GREEN);
         ai.getInventory().addBamboo(GREEN);
+        ai.getInventory().addBamboo(GREEN);
+        ai.getInventory().addBamboo(GREEN);
 
         bg1.validate(ai.getInventory().bambooHolder());
         assertTrue(bg1.isValidated());

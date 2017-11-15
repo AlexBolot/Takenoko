@@ -29,6 +29,8 @@ public class AISimple extends AI {
         Enums.State[] values = Enums.State.values();
 
     }
+    public AISimple(){
+    }
     //endregion
 
     //region==========METHODS==============
@@ -511,6 +513,10 @@ public class AISimple extends AI {
     {
         //Todo : Implement -> no idea how to do it for now :/
         return 0;
+    }
+
+    public void PrintObjectives(AISimple ai) {
+        Logger.printTitle(ai.getName() + " Objectifs validés :" + ai.getInventory().validatedGoals(true));
     }
     //endregion
 

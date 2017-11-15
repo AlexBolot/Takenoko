@@ -53,7 +53,7 @@ public class PlotGoal extends Goal
     @Override
     public String toString ()
     {
-        StringBuilder b = new StringBuilder(super.toString() + "  ");
+        StringBuilder b = new StringBuilder(getClass().getSimpleName() + "  ");
 
         if (this.linkedGoals.size() == 0) b.append(color);
         else

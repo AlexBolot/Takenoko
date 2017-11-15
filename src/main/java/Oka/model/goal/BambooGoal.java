@@ -96,7 +96,7 @@ public class BambooGoal extends Goal
     public String toString ()
     {
         StringBuilder str = new StringBuilder();
-        str.append(super.toString());
+        str.append(getClass().getSimpleName());
 
         for (Map.Entry<Color, Integer> entry : values.entrySet())
         {
