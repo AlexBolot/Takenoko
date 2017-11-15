@@ -3,8 +3,11 @@ package Oka.ai.inventory;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
+import Oka.model.goal.PlotGoal;
+import Oka.model.plot.Plot;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /*..................................................................................................
@@ -43,6 +46,9 @@ public class GoalHolder extends ArrayList<Goal>
                 else if (goal instanceof GardenerGoal)
                 {
                     ((GardenerGoal) goal).validate();
+                }
+                if (goal instanceof PlotGoal) {
+                    ((PlotGoal) goal).validate(Optional.empty());
                 }
             }
         });
