@@ -86,7 +86,6 @@ public class AISimple extends AI
         Logger.printLine(getName() + " - bamboos : {GREEN :" + getInventory().bambooHolder().countBamboo(Color.GREEN) +"} " +
                 "{YELLOW :" + getInventory().bambooHolder().countBamboo(Color.YELLOW) +"} "
                 + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
-//lol
     }
 
     protected boolean drawChannel() {
@@ -289,9 +288,7 @@ public class AISimple extends AI
         if (draw == null) return false;
 
         //On choisit un carte aléatoire parmis les trois car ou moins envoyé par la pioche plot
-        int randInt;
-        if (draw.size() >= 3) randInt = rand.nextInt(3);
-        else randInt = rand.nextInt(draw.size());
+        int randInt = rand.nextInt(draw.size());
         Plot plot = draw.get(randInt);
 
         // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)

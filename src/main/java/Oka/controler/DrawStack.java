@@ -65,16 +65,23 @@ public class DrawStack
                 return drawGoal(GoalType.values()[random.nextInt(GoalType.values().length)]);
         }
     }
-    public ArrayList<Plot> giveTreePlot ()
-    {
+    public ArrayList<Plot> giveTreePlot () {
         Random rand = new Random();
         ArrayList<Plot> listP = new ArrayList<>();
-        if(listPlot.size()>4){
-            for(int i=0; i<3; i++)
-                listP.add(listPlot.remove(rand.nextInt(listPlot.size()-1)));
+        if (listPlot.size() > 4) {
+            for (int i = 0; i < 3; i++)
+                listP.add(listPlot.remove(rand.nextInt(listPlot.size() - 1)));
             return listP;
-        }else
-            return listPlot;
+        }
+        else if (listPlot.size() > 0)
+        {
+            for (int i = 0; i < listPlot.size(); i++)
+            {
+                listP.add(listPlot.remove(0));
+            }
+        return listP;
+        }
+        else return null;
     }
     /**
      * returns an optional irrigation channel if one can be drawn from the stack
