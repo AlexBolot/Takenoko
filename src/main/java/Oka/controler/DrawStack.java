@@ -76,7 +76,6 @@ public class DrawStack
         }else
             return listPlot;
     }
-
     /**
      * returns an optional irrigation channel if one can be drawn from the stack
      *
@@ -112,17 +111,11 @@ public class DrawStack
         }
         enclosureStates--;
         return Optional.of(new EnclosureState());
-
     }
 
     public void giveBackPlot (ArrayList<Plot> listP)
     {
-        if(listP.size()>0){
-            for (Plot p : listP)
-            {
-                listPlot.add(p);
-            }
-        }
+        if(listP .size()>1) listPlot.addAll(listP);
     }
     public static void resetDrawStack() {
         ourInstance = new DrawStack();
