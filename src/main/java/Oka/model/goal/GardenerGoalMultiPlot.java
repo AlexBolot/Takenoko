@@ -19,6 +19,11 @@ public class GardenerGoalMultiPlot extends GardenerGoal
         this.plotAmount = plotAmount;
     }
 
+    public int getPlotAmount ()
+    {
+        return plotAmount;
+    }
+
     @Override
     public boolean validate ()
     {
@@ -38,4 +43,5 @@ public class GardenerGoalMultiPlot extends GardenerGoal
         }
         return false;
     }
+
 }
