@@ -4,10 +4,12 @@ import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
+import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
 import Oka.model.plot.state.PondState;
 import Oka.utils.Cleaner;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +23,7 @@ import static org.junit.Assert.*;
 public class DrawStackTest {
 
 
-    DrawStack ourInstance = new DrawStack();
+    DrawStack ourInstance;
     ArrayList<BambooGoal> listBambooGoal = new ArrayList<>();
     ArrayList<GardenerGoal> listGardenerGoal = new ArrayList<>();
 
@@ -38,6 +40,12 @@ public class DrawStackTest {
         listBambooGoal.add(new BambooGoal(4,2, Enums.Color.YELLOW));
         listBambooGoal.add(new BambooGoal(5,2, Enums.Color.PINK));
 
+        ourInstance = new DrawStack();
+
+    }
+    @After
+    public void end(){
+        DrawStack.resetDrawStack();
     }
     @Test
     public void testDrawStack() {
@@ -45,6 +53,20 @@ public class DrawStackTest {
         assertEquals(listBambooGoal.get(1),new BambooGoal(4,2, Enums.Color.YELLOW ));
         assertEquals(listBambooGoal.get(0),new BambooGoal(3,2,Enums.Color.GREEN ));
         assertEquals(listBambooGoal.get(2),new BambooGoal(5,2, Enums.Color.PINK));
+
+    }
+    @Test
+    public void giveTreePlot() throws Exception {
+        ArrayList<Plot> listP = ourInstance.giveTreePlot();
+        while(listP!=null){
+            assertEquals(3,listP.size());
+            listP = ourInstance.giveTreePlot();
+        }
+        assertEquals(null,ourInstance.giveTreePlot());
+    }
+
+    @Test
+    public void giveBackPlot() throws Exception {
 
     }
 

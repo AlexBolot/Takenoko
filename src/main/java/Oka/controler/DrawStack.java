@@ -82,7 +82,7 @@ public class DrawStack
             {
                 listP.add(listPlot.remove(0));
             }
-        return listP;
+            return listP;
         }
         else return null;
     }
