@@ -9,12 +9,25 @@ import Oka.model.plot.Plot;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Optional;
+/*..................................................................................................
+ . Copyright (c)
+ .
+ . The PlotStateHolder	 Class was Coded by : Team_A
+ .
+ . Members :
+ . -> Alexandre Bolot
+ . -> Mathieu Paillart
+ . -> Grégoire Peltier
+ . -> Théos Mariani
+ .
+ . Last Modified : 16/11/2017
+ .................................................................................................*/
 
 public class PlotGoal extends Goal
 {
     private Enums.Color color;
     private HashMap<Vector, PlotGoal> linkedGoals = new HashMap<>();
-
+    private boolean isSymetric = false;
     public PlotGoal (int value, Enums.Color color)
     {
         super(value);
@@ -30,7 +43,6 @@ public class PlotGoal extends Goal
     public boolean validate (Optional<Point> coords)
     {
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
-
         if (coords.isPresent())
         {
             Cell cell = grid.get(coords.get());
@@ -45,10 +57,41 @@ public class PlotGoal extends Goal
                                             .validate(Optional.of(entry.getKey().applyVector(coords.get())))
                             );
         }
+
         boolean b = grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
+        if (!b && !this.isSymetric) b = this.symmetric().validate(Optional.empty());
         setValidated(b);
         return b;
 
+    }
+
+    public PlotGoal symmetric() {
+        HashMap<Vector, PlotGoal> nSubGoals = new HashMap<>();
+        this.linkedGoals.entrySet().forEach(entry -> {
+            Vector v = entry.getKey();
+            nSubGoals.put(new Vector(v.axis(), -v.length()), entry.getValue());
+        });
+        PlotGoal symetric = new PlotGoal(this.getValue(), this.color, nSubGoals);
+        symetric.setSymetric(true);
+        return symetric;
+    }
+
+    public boolean isSymetric() {
+        return isSymetric;
+    }
+
+    public void setSymetric(boolean is) {
+        this.isSymetric = is;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PlotGoal)) return false;
+        PlotGoal pg = ((PlotGoal) obj);
+        boolean sameLinks = linkedGoals.keySet().stream().allMatch(vector ->
+                pg.linkedGoals.keySet().contains(vector) &&
+                        pg.linkedGoals.get(vector).equals(this.linkedGoals.get(vector)));
+        return this.color.equals(pg.color) && this.getValue() == pg.getValue() && sameLinks;
     }
 
     @Override

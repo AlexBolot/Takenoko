@@ -9,11 +9,9 @@ import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Enums.Color;
 import Oka.model.Irrigation;
-import Oka.model.Pond;
 import Oka.model.goal.*;
 import Oka.model.plot.Plot;
 import Oka.utils.Logger;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.awt.*;
 import java.util.*;
@@ -142,6 +140,7 @@ public class AISimple extends AI {
     public boolean moveGardener() {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.moveGardener)) return false;
+
         List<Goal> goals = getInventory().validatedGoals(false)
                 .stream()
                 .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)
