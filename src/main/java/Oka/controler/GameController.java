@@ -58,7 +58,7 @@ public class GameController {
                     ai.getInventory().addGoal(new Goal(2, true));
                     lastTurn(playable, playable.get(i));
 
-                    AISimple AIWin = sumValuesObjectives(playable);
+                    AISimple AIWin = maxValuesObjectives(playable);
                     Logger.printWin(AIWin.getName());
                     return;
                 }
@@ -77,7 +77,7 @@ public class GameController {
 
     }
 
-    public AISimple sumValuesObjectives (ArrayList<AISimple> playable) {
+    public AISimple maxValuesObjectives(ArrayList<AISimple> playable) {
         int max = 0;
         AISimple AIWinner = new AISimple();
         for (AISimple ai : playable) {
