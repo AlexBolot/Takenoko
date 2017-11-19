@@ -111,7 +111,7 @@ public class Inventory
     public int getValueOfGoalHolder(){
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
-            s = s + goall.getValue();
+            s = s+goall.getValue();
         }
         return(s);
     }
