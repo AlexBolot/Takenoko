@@ -82,8 +82,8 @@ public class GameController {
         AISimple AIWinner = new AISimple();
         for (AISimple ai : playable) {
             ai.PrintObjectives(ai);
-            if (ai.getInventory().getValueOfGoalHolder(ai.getInventory().goalHolder()) > max) {
-                max = ai.getInventory().getValueOfGoalHolder(ai.getInventory().goalHolder());
+            if (ai.getInventory().getValueOfGoalHolder() > max) {
+                max = ai.getInventory().getValueOfGoalHolder();
                 AIWinner = ai;
             }
         }

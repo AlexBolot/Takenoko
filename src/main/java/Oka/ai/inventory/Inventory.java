@@ -99,16 +99,19 @@ public class Inventory
     {
         channels--;
     }
+
     public void resetActionHolder(){
         actionHolder = new ActionHolder();
     }
+
     public ActionHolder getActionHolder () {
         return actionHolder;
     }
-    public int getValueOfGoalHolder(GoalHolder goalholder){
+
+    public int getValueOfGoalHolder(){
         int s=0;
-        for (Goal goall : goalholder.getGoalValidated(true)){
-            s=s+goall.getValue();
+        for (Goal goall : goalHolder.getGoalValidated(true)){
+            s = s + goall.getValue();
         }
         return(s);
     }
