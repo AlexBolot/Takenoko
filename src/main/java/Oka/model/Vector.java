@@ -111,6 +111,21 @@ public class Vector
     }
 
     @Override
+    public int hashCode() {
+        int result = length;
+        result = 31 * result + axis.hashCode();
+        return result;
+    }
+
+    public int length() {
+        return length;
+    }
+
+    public Axis axis() {
+        return axis;
+    }
+
+    @Override
     public String toString ()
     {
         return axis + " " + String.valueOf(length);

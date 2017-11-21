@@ -179,6 +179,7 @@ public class AISimple extends AI
     {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.moveGardener)) return false;
+
         List<Goal> goals = getInventory().validatedGoals(false)
                                          .stream()
                                          .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)

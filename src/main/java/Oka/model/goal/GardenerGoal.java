@@ -54,7 +54,6 @@ public class GardenerGoal extends Goal
         boolean valid = plots.stream().anyMatch(plot -> plot.getColor().equals(getColor()) && plot.getBamboo().size() == getBambooAmount());
         setValidated(valid);
         return valid;
-
     }
     //endregion
 

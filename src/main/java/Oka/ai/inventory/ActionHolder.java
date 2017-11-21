@@ -12,7 +12,6 @@ public class ActionHolder extends HashMap<Enums.Action,Integer>
         for(Enums.Action action : Enums.Action.values()){
             this.put(action,1);
         }
-
     }
 
     public int getActionLeft () {
