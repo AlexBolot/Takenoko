@@ -34,7 +34,7 @@ public class GardenerTest
 
         Point point1 = new Point(0, 1);
         Point point2 = new Point(1, 0);
-        Point point3 = new Point(1, 1);
+        Point point3 = new Point(1, -1);
 
         Plot plot1 = new Plot(point1, PINK);
         Plot plot2 = new Plot(point2, PINK);

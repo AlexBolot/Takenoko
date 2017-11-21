@@ -8,49 +8,55 @@ import Oka.entities.Panda;
 import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Enums.Color;
+import Oka.model.Enums.GoalType;
 import Oka.model.Irrigation;
-import Oka.model.Pond;
 import Oka.model.goal.*;
 import Oka.model.plot.Plot;
 import Oka.utils.Logger;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AISimple extends AI {
+public class AISimple extends AI
+{
     private int compteur = 0;
+
     //region==========CONSTRUCTORS=========
-    public AISimple(String name) {
+    public AISimple (String name)
+    {
         super(name);
-
-        Enums.State[] values = Enums.State.values();
-
     }
-    public AISimple(){
-    }
+
+    public AISimple () {}
     //endregion
 
     //region==========METHODS==============
-    public void play() {
-        getInventory().resetActionHolder();
+    public void play ()
+    {
         Logger.printSeparator(getName());
-        if (compteur++ != 0) Dice.rollDice(this);
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
+
+        getInventory().resetActionHolder();
+        if (compteur++ != 0) Dice.rollDice(this);
+
         int turn = 0;
-        while (getInventory().getActionHolder().hasActionsLeft()) {
+        while (getInventory().getActionHolder().hasActionsLeft())
+        {
             if (turn++ > 30) break;
-            //Pick a new goal if has no more unvalidated goals
-            if (getInventory().validatedGoals(false).size() == 0) {
+
+            //Pick a new goal if has no more unvalidated goals or only has PlotGoals
+            if (hasToPickGoal())
+            {
                 /* For now we pick a random goal
                 Action is consumed only if pickGoal could be achieved*/
                 if (pickGoal()) continue;
             }
 
             //Plays its plotstates if has some
-            if (getInventory().plotStates().size() > 0) {
+            if (getInventory().plotStates().size() > 0)
+            {
                 //Action is consumed only if plotState could be placed
                 placePlotState();
             }
@@ -73,13 +79,29 @@ public class AISimple extends AI {
                     placePlot();
             }
         }
-        Logger.printLine(getName() + " - bamboos : {GREEN :" + getInventory().bambooHolder()
-                                                                             .countBamboo(Color.GREEN) + "} " + "{YELLOW :" + getInventory()
-                .bambooHolder()
-                .countBamboo(Color.YELLOW) + "} " + "{PINK :" + getInventory().bambooHolder().countBamboo(Color.PINK) + "}");
+
+        Logger.printLine(String.format("%s - bamboos : {GREEN :%d} {YELLOW :%d} {PINK :%d}",
+                                       getName(),
+                                       getInventory().bambooHolder().countBamboo(Color.GREEN),
+                                       getInventory().bambooHolder().countBamboo(Color.YELLOW),
+                                       getInventory().bambooHolder().countBamboo(Color.PINK)));
+
+        getInventory().addTurnWithoutPickGoal();
     }
 
-    protected boolean drawChannel() {
+    protected boolean hasToPickGoal ()
+    {
+        ArrayList<Goal> invalidGoals = getInventory().validatedGoals(false);
+
+        boolean hasNoGoalLeft = invalidGoals.size() == 0;
+        boolean onlyHasPlotGoals = invalidGoals.stream().allMatch(PlotGoal.class::isInstance);
+        boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 10;
+
+        return hasNoGoalLeft || onlyHasPlotGoals || isKindaStuck;
+    }
+
+    protected boolean drawChannel ()
+    {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawChannel)) return false;
 
         Optional<Irrigation> irrigation = DrawStack.getInstance().drawChannel();
@@ -110,23 +132,37 @@ public class AISimple extends AI {
         {
             Color c = color.get();
             Set<Irrigation> interestingIrg = irrigations.
-                    stream()
-                    .filter(irrigation ->
-                            (irrigation.getPlot1().getColor().equals(c) || irrigation.getPlot2().getColor().equals(c)))
-                    .collect(Collectors.toSet());
-            if (interestingIrg.size() != 0) {
+                                                                stream()
+                                                        .filter(irrigation -> (irrigation.getPlot1()
+                                                                                         .getColor()
+                                                                                         .equals(c) || irrigation.getPlot2()
+                                                                                                                 .getColor()
+                                                                                                                 .equals(c)))
+                                                        .collect(Collectors.toSet());
+            if (interestingIrg.size() != 0)
+            {
                 Irrigation irg = (Irrigation) interestingIrg.toArray()[0];
 
-                if (board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords())) {
+                if (board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords()))
+                {
                     getInventory().removeChannel();
-                    Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " + irg.getPlot1().getCoords().toString() + ' ' + irg.getPlot2().getCoords().toString());
+                    Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " + irg.getPlot1()
+                                                                                                                 .getCoords()
+                                                                                                                 .toString() + ' ' + irg.getPlot2()
+                                                                                                                                        .getCoords()
+                                                                                                                                        .toString());
                     return true;
                 }
             }
         }
         Irrigation irg = (Irrigation) irrigations.toArray()[0];
-        if (board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords())) {
-            Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " + irg.getPlot1().getCoords().toString() + ' ' + irg.getPlot2().getCoords().toString());
+        if (board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords()))
+        {
+            Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " + irg.getPlot1()
+                                                                                                         .getCoords()
+                                                                                                         .toString() + ' ' + irg.getPlot2()
+                                                                                                                                .getCoords()
+                                                                                                                                .toString());
             getInventory().removeChannel();
             return true;
         }
@@ -134,18 +170,19 @@ public class AISimple extends AI {
     }
 
     /**
-     * moves the gardener to a desired spot
-     * chooses the spot based on the current bamboo objective
-     *
-     * @return true if it managed to move false otherwise
+     moves the gardener to a desired spot
+     chooses the spot based on the current bamboo objective
+
+     @return true if it managed to move false otherwise
      */
-    public boolean moveGardener() {
+    public boolean moveGardener ()
+    {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.moveGardener)) return false;
         List<Goal> goals = getInventory().validatedGoals(false)
-                .stream()
-                .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)
-                .collect(Collectors.toList());
+                                         .stream()
+                                         .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)
+                                         .collect(Collectors.toList());
 
         Optional<Color> lookedForColor = findInterestingColor(goals);
 
@@ -157,8 +194,10 @@ public class AISimple extends AI {
         int maxBamboo = 4;
         Gardener gardener = Gardener.getInstance();
 
-        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++) {
-            if (moveEntity(gardener, bambooSize, lookedForColor.get())) {
+        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
+        {
+            if (moveEntity(gardener, bambooSize, lookedForColor.get()))
+            {
                 //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
                 Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
                 getInventory().getActionHolder().consumeAction(Enums.Action.moveGardener);
@@ -166,8 +205,10 @@ public class AISimple extends AI {
             }
         }
 
-        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++) {
-            if (moveEntity(gardener, bambooSize, Color.NONE)) {
+        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
+        {
+            if (moveEntity(gardener, bambooSize, Color.NONE))
+            {
                 //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
                 Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
                 getInventory().getActionHolder().consumeAction(Enums.Action.moveGardener);
@@ -179,17 +220,18 @@ public class AISimple extends AI {
     }
 
     /**
-     * moves the panda to a tile of the desired color based on bamboogoal
-     *
-     * @return true if the tile was found, false otherwise
+     moves the panda to a tile of the desired color based on bamboogoal
+
+     @return true if the tile was found, false otherwise
      */
-    public boolean movePanda() {
+    public boolean movePanda ()
+    {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.movePanda)) return false;
         List<Goal> goals = getInventory().validatedGoals(false)
-                .stream()
-                .filter(goal -> goal instanceof BambooGoal)
-                .collect(Collectors.toList());
+                                         .stream()
+                                         .filter(goal -> goal instanceof BambooGoal)
+                                         .collect(Collectors.toList());
 
         Optional<Color> lookedForColor = findInterestingColor(goals);
 
@@ -197,9 +239,12 @@ public class AISimple extends AI {
         //Else, we go and find an interesting cell of the good color
         int maxBamboo = 4;
         Panda panda = Panda.getInstance();
-        if (lookedForColor.isPresent()) {
-            for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--) {
-                if (moveEntity(panda, bambooSize, lookedForColor.get())) {
+        if (lookedForColor.isPresent())
+        {
+            for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
+            {
+                if (moveEntity(panda, bambooSize, lookedForColor.get()))
+                {
                     //  Logger.printLine(getName() + " moved panda : " + panda.getCoords());
                     Logger.printLine(getName() + " a déplacé le panda en : " + panda.getCoords());
                     getInventory().getActionHolder().consumeAction(Enums.Action.movePanda);
@@ -222,9 +267,10 @@ public class AISimple extends AI {
     }
 
     /**
-     * place a plot tile
+     place a plot tile
      */
-    protected void placeBambooOnPlot () {
+    protected void placeBambooOnPlot ()
+    {
         List<Goal> goals = getInventory().validatedGoals(false)
                                          .stream()
                                          .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)
@@ -234,13 +280,16 @@ public class AISimple extends AI {
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
         if (lookedForColor.isPresent())
-        {    for (Cell cell : grid.values()){
+        {
+            for (Cell cell : grid.values())
+            {
 
                 if (cell instanceof Plot)
                 {
                     Plot plot = (Plot) cell;
 
-                    if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0 && plot.isIrrigated()) {
+                    if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0 && plot.isIrrigated())
+                    {
                         plot.addBamboo();
                         Logger.printLine(getName() + " a placé un bamboo sur : " + plot);
                         return;
@@ -252,7 +301,8 @@ public class AISimple extends AI {
 
     }
 
-    public boolean placePlot() {
+    public boolean placePlot ()
+    {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.placePlot)) return false;
         GameBoard board = GameBoard.getInstance();
         Random rand = new Random();
@@ -281,28 +331,29 @@ public class AISimple extends AI {
     }
 
     /**
-     * moves a passed entity to a spot with the desired bamboo quantity.
-     *
-     * @param entity     Entity, Panda or gardener
-     * @param bambooSize int, the desired bamboo amount on the tile
-     * @param color      Color, desired color of the tile
-     * @return true if the asked tile could be found, false otherwise
+     moves a passed entity to a spot with the desired bamboo quantity.
+
+     @param entity     Entity, Panda or gardener
+     @param bambooSize int, the desired bamboo amount on the tile
+     @param color      Color, desired color of the tile
+     @return true if the asked tile could be found, false otherwise
      */
-
-
-    protected boolean moveEntity(Entity entity, int bambooSize, Color color) {
+    protected boolean moveEntity (Entity entity, int bambooSize, Color color)
+    {
         GameBoard gameBoard = GameBoard.getInstance();
         HashMap<Point, Cell> grid = gameBoard.getGrid();
         Point currentPoint = entity.getCoords();
 
-        for (Point point : grid.keySet()) {
+        for (Point point : grid.keySet())
+        {
             if (point.equals(currentPoint) || !(grid.get(point) instanceof Plot)) continue;
 
             Plot plot = (Plot) grid.get(point);
 
             boolean checkColor = (color.equals(plot.getColor()) || color.equals(Color.NONE));
 
-            if (plot.getBamboo().size() == bambooSize && checkColor && gameBoard.moveEntity(entity, point)) {
+            if (plot.getBamboo().size() == bambooSize && checkColor && gameBoard.moveEntity(entity, point))
+            {
                 return true;
             }
         }
@@ -310,7 +361,8 @@ public class AISimple extends AI {
         return false;
     }
 
-    protected boolean placePlotState() {
+    protected boolean placePlotState ()
+    {
         // TODO: optimise based on proximity to completion
 
         Optional<Color> lookedForColor;
@@ -318,14 +370,15 @@ public class AISimple extends AI {
 
         List<Goal> goals;
 
-        switch (getInventory().plotStates().get(0).getState()) {
+        switch (getInventory().plotStates().get(0).getState())
+        {
             //region case Pond :
             case Pond:
                 goals = this.getInventory()
-                        .validatedGoals(false)
-                        .stream()
-                        .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
-                        .collect(Collectors.toList());//we get back a collection of them
+                            .validatedGoals(false)
+                            .stream()
+                            .filter(c -> c instanceof BambooGoal)//we take only the bamboogoals
+                            .collect(Collectors.toList());//we get back a collection of them
 
                 lookedForColor = findInterestingColor(goals);
                 break;
@@ -334,10 +387,10 @@ public class AISimple extends AI {
             //region case Enclosure :
             case Enclosure:
                 goals = this.getInventory()
-                        .validatedGoals(false)
-                        .stream()
-                        .filter(c -> c instanceof GardenerGoal)//we take only the bamboogoals
-                        .collect(Collectors.toList());//we get back a collection of them
+                            .validatedGoals(false)
+                            .stream()
+                            .filter(c -> c instanceof GardenerGoal)//we take only the bamboogoals
+                            .collect(Collectors.toList());//we get back a collection of them
 
                 lookedForColor = findInterestingColor(goals);
                 break;
@@ -362,11 +415,14 @@ public class AISimple extends AI {
         if (!lookedForColor.isPresent()) return false;
 
         //Else, we go and find an interesting cell of the good color
-        for (Cell cell : grid.values()) {
-            if (cell instanceof Plot) {
+        for (Cell cell : grid.values())
+        {
+            if (cell instanceof Plot)
+            {
                 Plot plot = (Plot) cell;
 
-                if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0) {
+                if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0)
+                {
                     plot.setState(getInventory().plotStates().get(0));
 
                     //Logger.printLine(getName() + " upgraded : " + plot);
@@ -382,46 +438,55 @@ public class AISimple extends AI {
     }
 
     /**
-     * Picks a random goal from the DrawStackPlot
-     *
-     * @return true if everything went right (should always return true)
+     Picks a random goal from the DrawStackPlot
+
+     @return true if everything went right (should always return true)
      */
-    protected boolean pickGoal() {
+    protected boolean pickGoal ()
+    {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawGoal)) return false;
-        Enums.GoalType[] values = Enums.GoalType.values();
-        Enums.GoalType goalType = values[new Random().nextInt(values.length)];
+
+        GoalType[] values = GoalType.values();
+
+        GoalType goalType = values[new Random().nextInt(values.length - 1)];
+
         getInventory().getActionHolder().consumeAction(Enums.Action.drawGoal);
+
         return pickGoal(goalType);
     }
 
     /**
-     * Picks a goal of [param: goalType] from DrawStackPlot
-     *
-     * @param goalType The desired GoalType
-     * @return true if everything went right (should always return true)
+     Picks a goal of [param: goalType] from DrawStackPlot
+
+     @param goalType The desired GoalType
+     @return true if everything went right (should always return true)
      */
-    protected boolean pickGoal(Enums.GoalType goalType) {
-        Goal goal = DrawStack.getInstance().drawGoal(goalType);
+    protected boolean pickGoal (GoalType goalType)
+    {
+        Optional<Goal> optionalGoal = DrawStack.getInstance().drawGoal(goalType);
 
-        getInventory().addGoal(goal);
+        if (optionalGoal.isPresent())
+        {
+            getInventory().addGoal(optionalGoal.get());
+            getInventory().resetTurnWithoutPickGoal();
+            return true;
+        }
 
-        return true;
+        return false;
     }
 
     /**
-     * <h2>Finds the most interesting color to look for in the list of goals</h2>
-     * <h3>— To test if a color was found : [result].isPresent() <br>
-     * — To get the color : [result].get()</h3>
-     *
-     * @param goals list of goals to be looked at
-     * @return The most interseting color if found, otherwise returns Optional.empty()
+     <h2>Finds the most interesting color to look for in the list of goals</h2>
+     <h3>— To test if a color was found : [result].isPresent() <br>
+     — To get the color : [result].get()</h3>
+
+     @param goals list of goals to be looked at
+     @return The most interseting color if found, otherwise returns Optional.empty()
      */
-        private Optional<Color> findInterestingColor (List<Goal> goals)
+    private Optional<Color> findInterestingColor (List<Goal> goals)
     {
         //We sort goals by completion to get the closest to completion first
-        List<Goal> goalList = goals.stream()
-                                   .sorted((g1, g2) -> Float.compare(getCompletion(g1), getCompletion(g2)))
-                                   .collect(Collectors.toList());
+        List<Goal> goalList = goals.stream().sorted(Comparator.comparingDouble(this::getCompletion)).collect(Collectors.toList());
 
         for (Goal goal : goalList)
         {
@@ -437,7 +502,7 @@ public class AISimple extends AI {
         return Optional.empty();
     }
 
-    private float getCompletion (Goal goal)
+    public double getCompletion (Goal goal)
     {
         if (goal instanceof BambooGoal) return getBambooGoalCompletion((BambooGoal) goal);
 
@@ -450,7 +515,7 @@ public class AISimple extends AI {
         return 0;
     }
 
-    private float getBambooGoalCompletion (BambooGoal bambooGoal)
+    private double getBambooGoalCompletion (BambooGoal bambooGoal)
     {
         HashMap<Color, Integer> values = bambooGoal.getValues();
 
@@ -466,7 +531,7 @@ public class AISimple extends AI {
         return totalObtained / totalRequested;
     }
 
-    private float getGardenerGoalMultiPlotCompletion (GardenerGoalMultiPlot goalMultiPlot)
+    private double getGardenerGoalMultiPlotCompletion (GardenerGoalMultiPlot goalMultiPlot)
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();
         List<Plot> tmpPlots = new ArrayList<>();
@@ -492,7 +557,7 @@ public class AISimple extends AI {
         return totalFound / totalRequired;
     }
 
-    private float getGardenerGoalCompletion (GardenerGoal gardenerGoal)
+    private double getGardenerGoalCompletion (GardenerGoal gardenerGoal)
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();
 
@@ -509,13 +574,14 @@ public class AISimple extends AI {
         return maxFound / gardenerGoal.getBambooAmount();
     }
 
-    private float getPlotGoalCompletion (PlotGoal plotGoal)
+    private double getPlotGoalCompletion (PlotGoal plotGoal)
     {
         //Todo : Implement -> no idea how to do it for now :/
         return 0;
     }
 
-    public void PrintObjectives(AISimple ai) {
+    public void PrintObjectives (AISimple ai)
+    {
         Logger.printTitle(ai.getName() + " Objectifs validés :" + ai.getInventory().validatedGoals(true));
     }
     //endregion

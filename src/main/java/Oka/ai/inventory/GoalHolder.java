@@ -4,7 +4,6 @@ import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.goal.PlotGoal;
-import Oka.model.plot.Plot;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -36,7 +35,8 @@ public class GoalHolder extends ArrayList<Goal>
 
     public void checkGoal (BambooHolder bambooHolder)
     {
-        this.forEach(goal -> {
+        for (Goal goal : this)
+        {
             if (!goal.isValidated())
             {
                 if (goal instanceof BambooGoal)
@@ -47,11 +47,12 @@ public class GoalHolder extends ArrayList<Goal>
                 {
                     ((GardenerGoal) goal).validate();
                 }
-                if (goal instanceof PlotGoal) {
+                if (goal instanceof PlotGoal)
+                {
                     ((PlotGoal) goal).validate(Optional.empty());
                 }
             }
-        });
+        }
     }
 
     public void addGoal (Goal goal)

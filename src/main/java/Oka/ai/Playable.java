@@ -32,15 +32,15 @@ public abstract class Playable
     {
         this.name = name;
 
-        Goal goal = DrawStack.getInstance().drawGoal(GoalType.BambooGoal);
+        Goal goal = DrawStack.getInstance().drawGoal(GoalType.BambooGoal).get();
         getInventory().addGoal(goal);
         Logger.printLine(getName() + " a pioché : " + goal);
 
-        goal = DrawStack.getInstance().drawGoal(GoalType.GardenGoal);
+        goal = DrawStack.getInstance().drawGoal(GoalType.GardenGoal).get();
         getInventory().addGoal(goal);
         Logger.printLine(getName() + " a pioché : " + goal);
 
-        goal = DrawStack.getInstance().drawGoal(GoalType.PlotGoal);
+        goal = DrawStack.getInstance().drawGoal(GoalType.PlotGoal).get();
         getInventory().addGoal(goal);
         Logger.printLine(getName() + " a pioché : " + goal);
     }

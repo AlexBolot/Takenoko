@@ -22,14 +22,14 @@ import java.util.ArrayList;
 
 public class Inventory
 {
+    private BambooHolder    bambooHolder         = new BambooHolder();
+    private GoalHolder      goalHolder           = new GoalHolder();
+    private PlotStateHolder plotStateHolder      = new PlotStateHolder();
+    private int             channels             = 0;
+    private int             turnsWithoutPickGoal = 0;
+    private ActionHolder    actionHolder         = new ActionHolder();
 
-    private BambooHolder    bambooHolder    = new BambooHolder();
-    private GoalHolder      goalHolder      = new GoalHolder();
-    private PlotStateHolder plotStateHolder = new PlotStateHolder();
-    private int channels = 0;
-    private ActionHolder actionHolder = new ActionHolder();
-
-    //============ Active functions ============
+    //region============ Active functions ============
 
     /**
      check the goals and returns all the validated ones
@@ -40,10 +40,11 @@ public class Inventory
     {
         this.goalHolder.checkGoal(bambooHolder);
         return this.validatedGoals(true);
-
     }
 
-    // =============== Adders ==================
+    //endregion
+
+    //region=============== Adders ==================
     public void addBamboo (Enums.Color color)
     {
         this.bambooHolder.addBamboo(color);
@@ -63,8 +64,9 @@ public class Inventory
     {
         channels++;
     }
+    //endregion
 
-    //=============== Getters =================
+    //region =============== Getters =================
     public BambooHolder bambooHolder ()
     {
         return this.bambooHolder;
@@ -85,6 +87,21 @@ public class Inventory
         return this.plotStateHolder;
     }
 
+    public int getTurnsWithoutPickGoal ()
+    {
+        return turnsWithoutPickGoal;
+    }
+
+    public void addTurnWithoutPickGoal ()
+    {
+        turnsWithoutPickGoal++;
+    }
+
+    public void resetTurnWithoutPickGoal ()
+    {
+        turnsWithoutPickGoal = 0;
+    }
+
     public int getChannelAmount ()
     {
         return channels;
@@ -99,17 +116,25 @@ public class Inventory
     {
         channels--;
     }
-    public void resetActionHolder(){
+
+    public void resetActionHolder ()
+    {
         actionHolder = new ActionHolder();
     }
-    public ActionHolder getActionHolder () {
+
+    public ActionHolder getActionHolder ()
+    {
         return actionHolder;
     }
-    public int getValueOfGoalHolder(GoalHolder goalholder){
-        int s=0;
-        for (Goal goall : goalholder.getGoalValidated(true)){
-            s=s+goall.getValue();
+
+    public int getValueOfGoalHolder (GoalHolder goalholder)
+    {
+        int s = 0;
+        for (Goal goall : goalholder.getGoalValidated(true))
+        {
+            s = s + goall.getValue();
         }
-        return(s);
+        return (s);
     }
+    //endregion
 }

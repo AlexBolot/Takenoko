@@ -39,7 +39,7 @@ public class PandaTest
 
         Point point1 = new Point(0, 1);
         Point point2 = new Point(1, 0);
-        Point point3 = new Point(1, 1);
+        Point point3 = new Point(1, -1);
 
         Plot plot1 = new Plot(point1, PINK);
         Plot plot2 = new Plot(point2, PINK);
@@ -49,7 +49,7 @@ public class PandaTest
         board.addCell(plot2);
         board.addCell(plot3);
 
-        //Plots come with 1 bamboo when they are placed.
+        //Plots come with 1 bamboo when they are placed near the plot.
         assertEquals(1, plot1.getBamboo().size());
         assertEquals(1, plot2.getBamboo().size());
         assertEquals(1, plot3.getBamboo().size());

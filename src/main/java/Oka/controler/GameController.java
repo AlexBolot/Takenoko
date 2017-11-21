@@ -20,7 +20,8 @@ import Oka.utils.Logger;
 
 import java.util.ArrayList;
 
-public class GameController {
+public class GameController
+{
     //region==========ATTRIBUTES===========
     private static GameController gameController = new GameController();
 
@@ -28,32 +29,40 @@ public class GameController {
     //endregion//
 
     //region==========GETTER/SETTER========
-    public static GameController getInstance () {
+    public static GameController getInstance ()
+    {
         return gameController;
     }
 
-    public AISimple getCurrentPlayer () {
+    public AISimple getCurrentPlayer ()
+    {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer (AISimple currentPlayer) {
+    public void setCurrentPlayer (AISimple currentPlayer)
+    {
         this.currentPlayer = currentPlayer;
     }
     //endregion
 
     //region==========METHODS==============
-    public void play (ArrayList<AISimple> playable) {
+    public void play (ArrayList<AISimple> playable)
+    {
         int turn = 0;
-        while (true) {
+        while (true)
+        {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
-            for (int i = 0; i < playable.size(); i++) {
+
+            for (int i = 0; i < playable.size(); i++)
+            {
                 AISimple ai = playable.get(i);
                 currentPlayer = ai;
                 ai.play();
 
                 int checkGoal = ai.getInventory().checkGoals().size();
 
-                if (checkGoal > 0) {
+                if (checkGoal >= 9)
+                {
                     // on rajoute l'objectif empereur
                     ai.getInventory().addGoal(new Goal(2, true));
                     lastTurn(playable, playable.get(i));
@@ -67,9 +76,12 @@ public class GameController {
     }
     //endregion
 
-    public void lastTurn (ArrayList<AISimple> playable, AISimple ai1) {
-        for (AISimple ai : playable) {
-            if (ai != ai1) {
+    public void lastTurn (ArrayList<AISimple> playable, AISimple ai1)
+    {
+        for (AISimple ai : playable)
+        {
+            if (ai != ai1)
+            {
                 ai.play();
                 ai.getInventory().checkGoals();
             }
@@ -77,12 +89,15 @@ public class GameController {
 
     }
 
-    public AISimple sumValuesObjectives (ArrayList<AISimple> playable) {
+    public AISimple sumValuesObjectives (ArrayList<AISimple> playable)
+    {
         int max = 0;
         AISimple AIWinner = new AISimple();
-        for (AISimple ai : playable) {
+        for (AISimple ai : playable)
+        {
             ai.PrintObjectives(ai);
-            if (ai.getInventory().getValueOfGoalHolder(ai.getInventory().goalHolder()) > max) {
+            if (ai.getInventory().getValueOfGoalHolder(ai.getInventory().goalHolder()) > max)
+            {
                 max = ai.getInventory().getValueOfGoalHolder(ai.getInventory().goalHolder());
                 AIWinner = ai;
             }

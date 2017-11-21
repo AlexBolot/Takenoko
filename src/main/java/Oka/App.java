@@ -5,7 +5,6 @@ import Oka.controler.GameController;
 import Oka.utils.Cleaner;
 import Oka.utils.Logger;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -13,11 +12,8 @@ import java.util.Scanner;
 
 public class App
 {
-    public static void main (String[] args) throws FileNotFoundException
+    public static void main (String[] args)
     {
-        //Used for log testing with HexMap Project
-        //Logger.setPrintStream(new PrintStream(new File("/Users/alexandre/Desktop/tmp.txt")));
-
         System.out.println("Saisir le nombre de parties jouées (1 partie = logs précis, supérieur à 1 = logs statistiques");
 
         int answer = 0;
@@ -66,7 +62,8 @@ public class App
                 ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
                 gc.play(Playable);
-                System.out.println("Tour:" + i);
+
+                if (i % 100 == 0) System.out.println("Tour:" + i);
             }
 
             for (Map.Entry<String, Integer> entry : Logger.getStats().entrySet())

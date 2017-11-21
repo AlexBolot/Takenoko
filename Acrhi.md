@@ -12,3 +12,7 @@ _ce fichier contient la description de nos décisions d'architecture logiciel_
 
 - Ce n'est plus le GameBoard qui gère la pioche des plots, mais directement la classe DrawStack avec les méthode giveTreePlot() and giveBackPlot()
  
+ 
+ ###Goals
+ 
+ - On l'IA stocke le nombre de tours depuis lequel elle a un objctif sans le remplir. Au bout d'un nombre de tours elle pioche un objectif en plus pour essayer de se débloquer

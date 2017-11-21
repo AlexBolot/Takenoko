@@ -7,8 +7,8 @@ public class Enums
     public enum GoalType
     {
         BambooGoal,
-        PlotGoal,
-        GardenGoal
+        GardenGoal,
+        PlotGoal
     }
 
     public enum Axis

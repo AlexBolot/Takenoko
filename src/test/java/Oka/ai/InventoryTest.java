@@ -21,18 +21,21 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class InventoryTest {
+public class InventoryTest
+{
     GoalHolder goalHolder = new GoalHolder();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp ()
+    {
         Cleaner.clearAll();
         goalHolder.addGoal(new BambooGoal(3, 3, Enums.Color.GREEN));
 
     }
 
     @Test
-    public void checkOneGoal() throws Exception {
+    public void checkOneGoal ()
+    {
         Inventory i = new Inventory();
         BambooGoal bambooGoal = new BambooGoal(3, 3, Enums.Color.GREEN);
         i.addGoal(bambooGoal);
@@ -45,28 +48,28 @@ public class InventoryTest {
 
     }
 
-
     @Test
-    public void checkMultipleGoals() {
+    public void checkMultipleGoals ()
+    {
         Inventory i = new Inventory();
         BambooGoal bambooGoal = new BambooGoal(3, 3, Enums.Color.GREEN);
         GardenerGoal gardenerGoal = new GardenerGoal(3, 3, Enums.Color.GREEN, new NeutralState());
 
         i.addGoal(bambooGoal);
+        i.addGoal(gardenerGoal);
 
         i.addBamboo(Enums.Color.GREEN);
         i.addBamboo(Enums.Color.GREEN);
         i.addBamboo(Enums.Color.GREEN);
-
 
         GameBoard board = GameBoard.getInstance();
         Plot plot = new Plot(new Point(1, 0), Enums.Color.GREEN);
         plot.addBamboo();
         plot.addBamboo();
-        plot.addBamboo();
-        board.addCell(plot);
 
-        i.addGoal(gardenerGoal);
+        //fixed : adding only 2 bamboos because plot already has one (when placed)
+
+        board.addCell(plot);
 
         Set<Goal> expected = new HashSet<>(Arrays.asList(gardenerGoal, bambooGoal));
 
