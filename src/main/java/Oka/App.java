@@ -63,7 +63,7 @@ public class App
 
                 gc.play(Playable);
 
-                if (i % 100 == 0) System.out.println("Tour:" + i);
+                if (i % 1000 == 0) System.out.println("Tour:" + i);
             }
 
             for (Map.Entry<String, Integer> entry : Logger.getStats().entrySet())

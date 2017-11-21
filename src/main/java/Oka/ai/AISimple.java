@@ -278,23 +278,17 @@ public class AISimple extends AI
                                          .collect(Collectors.toList());
 
         Optional<Color> lookedForColor = findInterestingColor(goals);
-        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+        List<Plot> plots = GameBoard.getInstance().getPlots();
 
         if (lookedForColor.isPresent())
         {
-            for (Cell cell : grid.values())
+            for (Plot plot : plots)
             {
-
-                if (cell instanceof Plot)
+                if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0 && plot.isIrrigated())
                 {
-                    Plot plot = (Plot) cell;
-
-                    if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0 && plot.isIrrigated())
-                    {
-                        plot.addBamboo();
-                        Logger.printLine(getName() + " a placé un bamboo sur : " + plot);
-                        return;
-                    }
+                    plot.addBamboo();
+                    Logger.printLine(getName() + " a placé un bamboo sur : " + plot);
+                    return;
                 }
             }
 
@@ -367,7 +361,7 @@ public class AISimple extends AI
         // TODO: optimise based on proximity to completion
 
         Optional<Color> lookedForColor;
-        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+        List<Plot> plots = GameBoard.getInstance().getPlots();
 
         List<Goal> goals;
 
@@ -416,22 +410,17 @@ public class AISimple extends AI
         if (!lookedForColor.isPresent()) return false;
 
         //Else, we go and find an interesting cell of the good color
-        for (Cell cell : grid.values())
+        for (Plot plot : plots)
         {
-            if (cell instanceof Plot)
+            if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0)
             {
-                Plot plot = (Plot) cell;
+                plot.setState(getInventory().plotStates().get(0));
 
-                if (plot.getColor().equals(lookedForColor.get()) && plot.getBamboo().size() == 0)
-                {
-                    plot.setState(getInventory().plotStates().get(0));
+                //Logger.printLine(getName() + " upgraded : " + plot);
+                Logger.printLine(getName() + " a placé l'aménagement sur : " + plot);
 
-                    //Logger.printLine(getName() + " upgraded : " + plot);
-                    Logger.printLine(getName() + " a placé l'aménagement sur : " + plot);
-
-                    getInventory().plotStates().remove(0);
-                    return true;
-                }
+                getInventory().plotStates().remove(0);
+                return true;
             }
         }
 
