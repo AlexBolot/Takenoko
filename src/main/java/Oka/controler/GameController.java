@@ -17,6 +17,7 @@ package Oka.controler;
 import Oka.ai.AISimple;
 import Oka.model.goal.Goal;
 import Oka.utils.Logger;
+import Oka.utils.Stats;
 
 import java.util.ArrayList;
 
@@ -77,9 +78,12 @@ public class GameController
                     lastTurn(playable, playable.get(i));
 
                     ArrayList<AISimple> ListAIWin = getAIWins(playable);
+
                     if(ListAIWin.size() == 1){
+                        Stats.saveStatWinner(ListAIWin.get(0).getName());
                         Logger.printWin(ListAIWin.get(0).getName());
                     }else{
+                        Stats.saveStatWinner("Draw");
                         Logger.printDraw();
                     }
                     return;
@@ -101,28 +105,40 @@ public class GameController
         }
     }
 
+
+    /**
+     <hr>
+     <h3>cette méthode sauvegarde les stats de tous les joueurs et renvoie le ou les joueurs avec le plus de point</h3>
+     <hr>
+
+     */
     public ArrayList<AISimple> getAIWins(ArrayList<AISimple> playable) {
-        int max = 0;
+        int max = 0,
+                pointPLayer;
         ArrayList<AISimple> listAIWinnger = new ArrayList<>();
 
         for (AISimple ai : playable) {
             ai.PrintObjectives(ai);
-            if (ai.getInventory().getValueOfGoalHolder() > max) {
-                max = ai.getInventory().getValueOfGoalHolder();
+            pointPLayer = ai.getInventory().getValueOfGoalHolder();
+
+            Stats.saveStatPoint(ai.getName(),pointPLayer);
+            if (pointPLayer > max) {
+                max = pointPLayer;
                 listAIWinnger.clear();
                 listAIWinnger.add(ai);
-            }else if(ai.getInventory().getValueOfGoalHolder() == max){
+            }else if(pointPLayer == max){
                 listAIWinnger.add(ai);
             }
         }
         if(listAIWinnger.size()>1){
             max = 0;
             for (AISimple ai : playable) {
-                if (ai.getInventory().getValueOfBambooGoalHolder() > max) {
-                    max = ai.getInventory().getValueOfGoalHolder();
+                pointPLayer = ai.getInventory().getValueOfGoalHolder();
+                if (pointPLayer > max) {
+                    max = pointPLayer;
                     listAIWinnger.clear();
                     listAIWinnger.add(ai);
-                }else if(ai.getInventory().getValueOfGoalHolder() == max){
+                }else if(pointPLayer == max){
                     listAIWinnger.add(ai);
                 }
             }
