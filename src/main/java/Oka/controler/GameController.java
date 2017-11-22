@@ -48,7 +48,16 @@ public class GameController
     //region==========METHODS==============
     public void play (ArrayList<AISimple> playable)
     {
-        int turn = 0;
+        int turn = 0,
+            nbGoal;
+        if(playable.size()==2){
+            nbGoal=9;
+        }else if(playable.size()==3){
+            nbGoal=8;
+        }else{
+            nbGoal=7;
+        }
+
         while (true)
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
@@ -61,14 +70,18 @@ public class GameController
 
                 int checkGoal = ai.getInventory().checkGoals().size();
 
-                if (checkGoal >= 9)
+                if (checkGoal >= nbGoal)
                 {
                     // on rajoute l'objectif empereur
                     ai.getInventory().addGoal(new Goal(2, true));
                     lastTurn(playable, playable.get(i));
 
-                    AISimple AIWin = maxValuesObjectives(playable);
-                    Logger.printWin(AIWin.getName());
+                    ArrayList<AISimple> ListAIWin = getAIWins(playable);
+                    if(ListAIWin.size() == 1){
+                        Logger.printWin(ListAIWin.get(0).getName());
+                    }else{
+                        Logger.printDraw();
+                    }
                     return;
                 }
             }
@@ -86,20 +99,35 @@ public class GameController
                 ai.getInventory().checkGoals();
             }
         }
-
     }
 
-    public AISimple maxValuesObjectives(ArrayList<AISimple> playable) {
+    public ArrayList<AISimple> getAIWins(ArrayList<AISimple> playable) {
         int max = 0;
-        AISimple AIWinner = new AISimple();
+        ArrayList<AISimple> listAIWinnger = new ArrayList<>();
+
         for (AISimple ai : playable) {
             ai.PrintObjectives(ai);
             if (ai.getInventory().getValueOfGoalHolder() > max) {
                 max = ai.getInventory().getValueOfGoalHolder();
-                AIWinner = ai;
+                listAIWinnger.clear();
+                listAIWinnger.add(ai);
+            }else if(ai.getInventory().getValueOfGoalHolder() == max){
+                listAIWinnger.add(ai);
             }
         }
-        return AIWinner;
+        if(listAIWinnger.size()>1){
+            max = 0;
+            for (AISimple ai : playable) {
+                if (ai.getInventory().getValueOfBambooGoalHolder() > max) {
+                    max = ai.getInventory().getValueOfGoalHolder();
+                    listAIWinnger.clear();
+                    listAIWinnger.add(ai);
+                }else if(ai.getInventory().getValueOfGoalHolder() == max){
+                    listAIWinnger.add(ai);
+                }
+            }
+        }
+        return listAIWinnger;
     }
 
 }

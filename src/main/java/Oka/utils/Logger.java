@@ -154,6 +154,25 @@ public class Logger
             printStream.println("\n" + playerName + " A GAGNÉ !!!");
         }
     }
+    /**
+     <hr>
+     <h3>Prints the draw"</h3>
+     <hr>
+
+     */
+    public static void printDraw ()
+    {
+        if (loggerMode != 1)
+        {
+            if (stats.containsKey("Draw")) stats.replace("Draw", stats.get("Draw") + 1);
+            else stats.put("Draw", 1);
+        }
+        else
+        {
+            // printStream.println("\n" + playerName + " WINS !!!");
+            printStream.println("\n  EGALITÉ !!!");
+        }
+    }
 
     /**
      <hr>

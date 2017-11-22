@@ -68,7 +68,11 @@ public class App
 
             for (Map.Entry<String, Integer> entry : Logger.getStats().entrySet())
             {
-                System.out.printf("\n%s : %.2f %% de victoire", entry.getKey(), (float) (entry.getValue() * 100) / (float) answer);
+                if(!entry.getKey().equals("Draw"))
+                    System.out.printf("\n%s : %.2f %% de victoire", entry.getKey(), (float) (entry.getValue() * 100) / (float) answer);
+                else
+                    System.out.printf("\n%.2f %% d'égalité", (float) (entry.getValue() * 100) / (float) answer);
+
             }
 
             System.out.println();
