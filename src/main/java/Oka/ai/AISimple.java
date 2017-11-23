@@ -93,11 +93,11 @@ public class AISimple extends AI
     {
         ArrayList<Goal> invalidGoals = getInventory().validatedGoals(false);
 
-        boolean hasNoGoalLeft = invalidGoals.size() == 0;
+        boolean hasNoGoalLeft = invalidGoals.size() == 0 ;
         boolean onlyHasPlotGoals = invalidGoals.stream().allMatch(PlotGoal.class::isInstance);
         boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 10;
 
-        return hasNoGoalLeft || onlyHasPlotGoals || isKindaStuck;
+        return (hasNoGoalLeft || onlyHasPlotGoals || isKindaStuck) && invalidGoals.size()<=5;
     }
 
     protected boolean drawChannel ()
