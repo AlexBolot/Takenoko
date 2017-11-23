@@ -1,8 +1,12 @@
 package Oka.model;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static Oka.model.Enums.Axis;
+import static Oka.model.Enums.Axis.*;
 
 public class Vector
 {
@@ -52,15 +56,15 @@ public class Vector
 
         if (origin.getX() != dest.getX() && origin.getY() == dest.getY())
         {
-            return new Vector(Axis.x, (int) Math.abs(dest.getX() - origin.getX()));
+            return new Vector(x, (int) Math.abs(dest.getX() - origin.getX()));
         }
         if (origin.getX() == dest.getX() && origin.getY() != dest.getY())
         {
-            return new Vector(Axis.y, (int) Math.abs(dest.getY() - origin.getY()));
+            return new Vector(y, (int) Math.abs(dest.getY() - origin.getY()));
         }
         if (origin.getX() - dest.getX() == -(origin.getY() - dest.getY()))
         {
-            return new Vector(Axis.z, (int) Math.abs(dest.getX() - origin.getX()));
+            return new Vector(z, (int) Math.abs(dest.getX() - origin.getX()));
         }
         return null;
     }
@@ -117,6 +121,17 @@ public class Vector
         return result;
     }
 
+    @Override
+    public Vector clone() {
+        return new Vector(this.axis, length);
+    }
+
+    public void rotateClockwize() {
+        List<Axis> axis = new ArrayList<>(Arrays.asList(y, x, z));
+        int i = axis.indexOf(this.axis) + 1;
+        this.axis = axis.get(i % 3);
+        if (i == 3) this.length = -this.length;
+    }
     public int length() {
         return length;
     }

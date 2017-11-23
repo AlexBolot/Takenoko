@@ -31,6 +31,31 @@ public class VectorTest
     }
 
     @Test
+    public void cloneTest() {
+        Vector x = new Vector(Axis.x, 1);
+        Vector clone = x.clone();
+        x.rotateClockwize();
+        assertNotEquals(x, clone);
+    }
+
+    @Test
+    public void rotateClockwize() {
+        Vector x = new Vector(Axis.x, 1);
+        Vector rX = new Vector(Axis.z, 1);
+        x.rotateClockwize();
+        assertEquals(rX, x);
+
+        Vector z = new Vector(Axis.z, 1);
+        Vector rZ = new Vector(Axis.y, -1);
+        z.rotateClockwize();
+        assertEquals(rZ, z);
+
+        z = new Vector(Axis.z, -1);
+        rZ = new Vector(Axis.y, 1);
+        z.rotateClockwize();
+        assertEquals(rZ, z);
+    }
+    @Test
     public void testApplyVector_Right ()
     {
         //region -> Apply Vector of length 1 to origin
