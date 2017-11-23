@@ -12,9 +12,13 @@ import Oka.model.Enums.GoalType;
 import Oka.model.Irrigation;
 import Oka.model.goal.*;
 import Oka.model.plot.Plot;
+import Oka.model.plot.state.EnclosureState;
+import Oka.model.plot.state.FertilizerState;
+import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -571,10 +575,41 @@ public class AISimple extends AI
         return 0;
     }
 
-    public void PrintObjectives (AISimple ai)
+    public void printObjectives (AISimple ai)
     {
         Logger.printTitle(ai.getName() + " Objectifs validés :" + ai.getInventory().validatedGoals(true));
     }
+    public boolean choosePlotState(){
+        Enums.State[] values = Enums.State.values().clone();
+        ArrayList<Enums.State> valuesarray = new ArrayList<>(Arrays.asList(values));
+        valuesarray.remove(Enums.State.Neutral);
+        Collections.shuffle(valuesarray);
+        for(Enums.State state : valuesarray) {
+            switch (state) {
+                case Pond:
+                    Optional<PondState> optPond = DrawStack.getInstance().drawPondState();
+                    optPond.ifPresent(pondState -> getInventory().addPlotState(pondState));
+                    if (optPond.isPresent()) return true;
+                    break;
+
+                case Enclosure:
+                    Optional<EnclosureState> optEnclosure = DrawStack.getInstance().drawEnclosureState();
+                    optEnclosure.ifPresent(enclosureState -> getInventory().addPlotState(enclosureState));
+                    if (optEnclosure.isPresent()) return true;
+                    break;
+
+                case Fertilizer:
+                    Optional<FertilizerState> optFertilizer = DrawStack.getInstance().drawFertilizerState();
+                    optFertilizer.ifPresent(fertilizerState -> getInventory().addPlotState(fertilizerState));
+                    if (optFertilizer.isPresent()) return true;
+                    break;
+            }
+        }
+            return false;
+
+
+    }
     //endregion
+
 
 }
