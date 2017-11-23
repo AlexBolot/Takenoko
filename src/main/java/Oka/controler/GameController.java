@@ -118,7 +118,7 @@ public class GameController
         ArrayList<AISimple> listAIWinnger = new ArrayList<>();
 
         for (AISimple ai : playable) {
-            ai.PrintObjectives(ai);
+            ai.printObjectives(ai);
             pointPLayer = ai.getInventory().getValueOfGoalHolder();
 
             Stats.saveStatPoint(ai.getName(),pointPLayer);
