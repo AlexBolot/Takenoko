@@ -7,6 +7,7 @@ import Oka.model.Vector;
 import Oka.model.plot.Plot;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 /*..................................................................................................
@@ -58,23 +59,24 @@ public class PlotGoal extends Goal
         }
 
         boolean b = grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
-        if (!b && !this.isSymetric) b = this.symmetric().validate(Optional.empty());
+        if (!b && !this.isSymetric)
+            b = this.symmetrics().stream().anyMatch(plotGoal -> plotGoal.validate(Optional.empty()));
         setValidated(b);
         return b;
 
     }
 
-    public PlotGoal symmetric ()
-    {
-        HashMap<Vector, PlotGoal> nSubGoals = new HashMap<>();
-        this.linkedGoals.entrySet().forEach(entry -> {
-            Vector v = entry.getKey();
-            nSubGoals.put(new Vector(v.axis(), -v.length()), entry.getValue());
-        });
-        PlotGoal symetric = new PlotGoal(this.getValue(), this.color, nSubGoals);
-        symetric.setSymetric(true);
-        return symetric;
+    public ArrayList<PlotGoal> symmetrics() {
+        ArrayList<PlotGoal> symetrics = new ArrayList<>();
+        PlotGoal rotated = this.rotated();
+        while (!equals(rotated)) {
+            rotated.setSymetric(true);
+            symetrics.add(rotated);
+            rotated = rotated.rotated();
+        }
+        return symetrics;
     }
+
 
     public PlotGoal rotated() {
         HashMap<Vector, PlotGoal> rotatedSubGoals = new HashMap<>();

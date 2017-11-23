@@ -9,9 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
+import static Oka.model.Enums.Axis.x;
 import static org.junit.Assert.*;
 
 public class PlotGoalTest {
@@ -41,7 +43,7 @@ public class PlotGoalTest {
 
         plots = new HashMap<>();
 
-        plots.put(new Vector(Enums.Axis.x, 1), pgPink);
+        plots.put(new Vector(x, 1), pgPink);
         PlotGoal expected = new PlotGoal(0, Enums.Color.YELLOW, plots);
         plots = new HashMap<>();
         plots.put(new Vector(Enums.Axis.y, 1), expected);
@@ -50,6 +52,44 @@ public class PlotGoalTest {
 
 
     }
+
+    @Test
+    public void symetricsGeneration() {
+
+        HashMap<Vector, PlotGoal> plots = new HashMap<>();
+        plots.put(new Vector(Enums.Axis.y, 1), pgPink);
+        PlotGoal original = new PlotGoal(0, Enums.Color.YELLOW, plots);
+
+        ArrayList<PlotGoal> symetrics = new ArrayList<>();
+
+        plots = new HashMap<>();
+        plots.put(new Vector(x, 1), pgPink);
+        PlotGoal symetric = new PlotGoal(0, Enums.Color.YELLOW, plots);
+        symetrics.add(symetric);
+
+        plots = new HashMap<>();
+        plots.put(new Vector(Enums.Axis.z, 1), pgPink);
+        symetric = new PlotGoal(0, Enums.Color.YELLOW, plots);
+        symetrics.add(symetric);
+
+        plots = new HashMap<>();
+        plots.put(new Vector(Enums.Axis.y, -1), pgPink);
+        symetric = new PlotGoal(0, Enums.Color.YELLOW, plots);
+        symetrics.add(symetric);
+
+        plots = new HashMap<>();
+        plots.put(new Vector(x, -1), pgPink);
+        symetric = new PlotGoal(0, Enums.Color.YELLOW, plots);
+        symetrics.add(symetric);
+
+        plots = new HashMap<>();
+        plots.put(new Vector(Enums.Axis.z, -1), pgPink);
+        symetric = new PlotGoal(0, Enums.Color.YELLOW, plots);
+        symetrics.add(symetric);
+
+        assertTrue(original.symmetrics().stream().allMatch(symetrics::contains));
+    }
+
     @Test
     public void validateSimetry() {
         Cleaner.clearAll();
@@ -58,7 +98,7 @@ public class PlotGoalTest {
 
         plots.put(new Vector(Enums.Axis.y, 1), pgGreen);
         plots.put(new Vector(Enums.Axis.z, -1), pgGreen);
-        plots.put(new Vector(Enums.Axis.x, -1), pgPink);
+        plots.put(new Vector(x, -1), pgPink);
 
         PlotGoal pg3 = new PlotGoal(3, Enums.Color.PINK, plots);
 
@@ -78,6 +118,19 @@ public class PlotGoalTest {
 
         assertTrue(pg3.validate(Optional.empty()));
 
+        Cleaner.clearAll();
+
+        plots = new HashMap<>();
+        plots.put(new Vector(x, 1), pgPink);
+
+        PlotGoal theOnePG = new PlotGoal(3, Enums.Color.GREEN, plots);
+        board = GameBoard.getInstance();
+        board.addCell(new Plot(new Point(-1, 0), Enums.Color.GREEN));
+        board.addCell(new Plot(new Point(-1, 1), Enums.Color.PINK));
+        board.addCell(new Plot(new Point(0, 1), Enums.Color.YELLOW));
+        assertTrue(theOnePG.validate(Optional.empty()));
+
+
     }
 
 
@@ -87,7 +140,7 @@ public class PlotGoalTest {
 
         HashMap<Vector, PlotGoal> plots = new HashMap<>();
         plots.put(new Vector(Enums.Axis.y, 1), pgPink);
-        plots.put(new Vector(Enums.Axis.x, 1), pgPink);
+        plots.put(new Vector(x, 1), pgPink);
         plots.put(new Vector(Enums.Axis.z, 1), pgPink);
 
         PlotGoal pg4 = new PlotGoal(3, Enums.Color.PINK, plots);
@@ -120,34 +173,15 @@ public class PlotGoalTest {
     }
 
     @Test
-    public void symetricTest() {
-
-
-        HashMap<Vector, PlotGoal> subGoals = new HashMap<>();
-        subGoals.put(new Vector(Enums.Axis.x, 1), pgGreen);
-        subGoals.put(new Vector(Enums.Axis.y, 1), pgPink);
-        subGoals.put(new Vector(Enums.Axis.z, 1), pgYellow);
-        PlotGoal pgCenter = new PlotGoal(3, Enums.Color.PINK, subGoals);
-
-        subGoals = new HashMap<>();
-        subGoals.put(new Vector(Enums.Axis.x, -1), pgGreen);
-        subGoals.put(new Vector(Enums.Axis.y, -1), pgPink);
-        subGoals.put(new Vector(Enums.Axis.z, -1), pgYellow);
-        PlotGoal symetric = new PlotGoal(3, Enums.Color.PINK, subGoals);
-        assertEquals(symetric, pgCenter.symmetric());
-    }
-
-    @Test
     public void equalsTest() {
 
-
         HashMap<Vector, PlotGoal> subGoals = new HashMap<>();
-        subGoals.put(new Vector(Enums.Axis.x, 1), pgGreen);
+        subGoals.put(new Vector(x, 1), pgGreen);
         subGoals.put(new Vector(Enums.Axis.y, 1), pgPink);
         subGoals.put(new Vector(Enums.Axis.z, 1), pgYellow);
         PlotGoal pgCenter = new PlotGoal(3, Enums.Color.PINK, subGoals);
         subGoals = new HashMap<>();
-        subGoals.put(new Vector(Enums.Axis.x, 1), pgGreen);
+        subGoals.put(new Vector(x, 1), pgGreen);
         subGoals.put(new Vector(Enums.Axis.y, 1), pgPink);
         subGoals.put(new Vector(Enums.Axis.z, 1), pgYellow);
         PlotGoal pgSame = new PlotGoal(3, Enums.Color.PINK, subGoals);
