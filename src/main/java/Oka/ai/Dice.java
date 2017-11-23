@@ -10,11 +10,12 @@ import Oka.utils.Logger;
 import java.util.Optional;
 import java.util.Random;
 
+import static Oka.model.Enums.Action.drawPlotState;
+
 public class Dice
 {
     static void rollDice (AI ai)
     {
-        Enums.State[] values = Enums.State.values();
 
         switch (new Random().nextInt(5) + 1)
         {
@@ -39,28 +40,11 @@ public class Dice
                 break;
 
             case 5:
-
-                switch (values[new Random().nextInt(values.length - 1) + 1])
-                {
-                    case Pond:
-                        Optional<PondState> optPond = DrawStack.getInstance().drawPondState();
-                        optPond.ifPresent(pondState -> ai.getInventory().addPlotState(pondState));
-                        break;
-
-                    case Enclosure:
-                        Optional<EnclosureState> optEnclosure = DrawStack.getInstance().drawEnclosureState();
-                        optEnclosure.ifPresent(enclosureState -> ai.getInventory().addPlotState(enclosureState));
-                        break;
-
-                    case Fertilizer:
-                        Optional<FertilizerState> optFertilizer = DrawStack.getInstance().drawFertilizerState();
-                        optFertilizer.ifPresent(fertilizerState -> ai.getInventory().addPlotState(fertilizerState));
-                        break;
-                }
-
+                if(ai.choosePlotState()){
                 Logger.printLine("Cloudy");
                 Logger.printLine(ai.getName() + " a pioché aménagement grâce au dé météo : " + ai.getInventory().plotStates());
                 break;
+                }
 
             case 6:
                 rollDice(ai);

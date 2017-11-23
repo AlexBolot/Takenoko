@@ -31,6 +31,8 @@ public abstract class AI extends Playable
 
     protected abstract void placeBambooOnPlot();
 
+    public abstract boolean choosePlotState ();
+
     //endregion
 }
 
