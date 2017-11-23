@@ -566,6 +566,7 @@ public class AISimple extends AI
 
     private double getPlotGoalCompletion (PlotGoal plotGoal)
     {
+
         //Todo : Implement -> no idea how to do it for now :/
         return 0;
     }

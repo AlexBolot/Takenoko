@@ -30,6 +30,27 @@ public class PlotGoalTest {
     }
 
     @Test
+    public void rotatedTest() {
+        HashMap<Vector, PlotGoal> plots = new HashMap<>();
+
+        plots.put(new Vector(Enums.Axis.y, 1), pgPink);
+        PlotGoal original = new PlotGoal(0, Enums.Color.YELLOW, plots);
+        plots = new HashMap<>();
+        plots.put(new Vector(Enums.Axis.z, -1), original);
+        original = new PlotGoal(0, Enums.Color.GREEN, plots);
+
+        plots = new HashMap<>();
+
+        plots.put(new Vector(Enums.Axis.x, 1), pgPink);
+        PlotGoal expected = new PlotGoal(0, Enums.Color.YELLOW, plots);
+        plots = new HashMap<>();
+        plots.put(new Vector(Enums.Axis.y, 1), expected);
+        expected = new PlotGoal(0, Enums.Color.GREEN, plots);
+        assertEquals(expected, original.rotated());
+
+
+    }
+    @Test
     public void validateSimetry() {
         Cleaner.clearAll();
 

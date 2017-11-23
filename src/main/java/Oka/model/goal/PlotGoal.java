@@ -76,6 +76,19 @@ public class PlotGoal extends Goal
         return symetric;
     }
 
+    public PlotGoal rotated() {
+        HashMap<Vector, PlotGoal> rotatedSubGoals = new HashMap<>();
+        this.linkedGoals.entrySet().forEach(entry -> {
+            Vector v = entry.getKey().clone();
+            v.rotateClockwize();
+            rotatedSubGoals.put(v, entry.getValue().rotated());
+        });
+        PlotGoal rotated = new PlotGoal(this.getValue(), this.color, rotatedSubGoals);
+        return rotated;
+    }
+
+
+
     public boolean isSymetric ()
     {
         return isSymetric;

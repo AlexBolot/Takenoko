@@ -3,7 +3,6 @@ package Oka.controler;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
-import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
@@ -14,9 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
-import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -31,10 +28,6 @@ public class DrawStackTest {
     @Before
     public void init()
     {
-        HashMap<Enums.Color,Integer> bamboos = new HashMap();
-        bamboos.put(Enums.Color.GREEN,1);
-        bamboos.put(Enums.Color.PINK,1);
-        bamboos.put(Enums.Color.YELLOW,1);
 
         listBambooGoal.add(new BambooGoal(3,2,Enums.Color.GREEN ));
         listBambooGoal.add(new BambooGoal(4,2, Enums.Color.YELLOW));
@@ -63,11 +56,6 @@ public class DrawStackTest {
             listP = ourInstance.giveTreePlot();
         }
         assertEquals(null,ourInstance.giveTreePlot());
-    }
-
-    @Test
-    public void giveBackPlot() throws Exception {
-
     }
 
     @Test
