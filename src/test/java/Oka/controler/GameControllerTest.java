@@ -1,7 +1,6 @@
 package Oka.controler;
 
 import Oka.ai.AISimple;
-import Oka.ai.Playable;
 import Oka.model.goal.Goal;
 import org.junit.After;
 import org.junit.Before;
@@ -41,7 +40,9 @@ public class GameControllerTest {
     }
     @Test
     public void maxValuesObjectives() throws Exception {
-        assertEquals(p1, gameController.maxValuesObjectives(listPlayable));
+        assertEquals(p1, gameController.getAIWins(listPlayable).get(0));
+        p2.getInventory().addGoal(new Goal(1,true));
+        assertEquals(2, gameController.getAIWins(listPlayable).size());
     }
 
 }

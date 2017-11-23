@@ -24,16 +24,10 @@ public class Logger
     /**
      <hr>
      <h3>1 = detailed loggs.<br>
-     more than 1 = simple stats at the end.<br></h3>
+     more than 1 = simple statAverage at the end.<br></h3>
      */
     private static int loggerMode = 0;
 
-    /**
-     <hr>
-     <h3>Hashmap used to store all the stats.<br>
-     Used for multiple-game runs, to accumulate the stats.</h3>
-     */
-    private static HashMap<String, Integer> stats = new HashMap<>();
     //endregion
 
     //region==========GETTER/SETTER========
@@ -50,10 +44,6 @@ public class Logger
         Logger.printStream = printStream;
     }
 
-    public static HashMap<String, Integer> getStats ()
-    {
-        return stats;
-    }
     //endregion
 
     //region==========METHODS==============
@@ -143,15 +133,22 @@ public class Logger
      */
     public static void printWin (String playerName)
     {
-        if (loggerMode != 1)
-        {
-            if (stats.containsKey(playerName)) stats.replace(playerName, stats.get(playerName) + 1);
-            else stats.put(playerName, 1);
-        }
-        else
-        {
+        if (loggerMode == 1){
             // printStream.println("\n" + playerName + " WINS !!!");
             printStream.println("\n" + playerName + " A GAGNÉ !!!");
+        }
+    }
+    /**
+     <hr>
+     <h3>Prints the draw"</h3>
+     <hr>
+
+     */
+    public static void printDraw ()
+    {
+        if (loggerMode == 1){
+            // printStream.println("\n" + playerName + " WINS !!!");
+            printStream.println("\n  EGALITÉ !!!");
         }
     }
 

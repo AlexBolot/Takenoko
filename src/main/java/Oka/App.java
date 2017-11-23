@@ -4,6 +4,7 @@ import Oka.ai.AISimple;
 import Oka.controler.GameController;
 import Oka.utils.Cleaner;
 import Oka.utils.Logger;
+import Oka.utils.Stats;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,9 +67,14 @@ public class App
                 if (i % 1000 == 0) System.out.println("Tour:" + i);
             }
 
-            for (Map.Entry<String, Integer> entry : Logger.getStats().entrySet())
+            for (Map.Entry<String, int[]> entry : Stats.getStatAverage().entrySet())
             {
-                System.out.printf("\n%s : %.2f %% de victoire", entry.getKey(), (float) (entry.getValue() * 100) / (float) answer);
+                if(!entry.getKey().equals("Draw"))
+                    System.out.printf("\n%s : %.2f %% de victoire avec une moyenne de point égale à "+ (entry.getValue()[1]) / answer,
+                            entry.getKey(), (float) (entry.getValue()[0] * 100) / (float) answer);
+                else
+                    System.out.printf("\n%.2f %% d'égalité", (float) (entry.getValue()[0] * 100) / (float) answer);
+
             }
 
             System.out.println();

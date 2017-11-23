@@ -27,7 +27,8 @@ public class PlotGoal extends Goal
 {
     private Enums.Color color;
     private HashMap<Vector, PlotGoal> linkedGoals = new HashMap<>();
-    private boolean isSymetric = false;
+    private boolean                   isSymetric  = false;
+
     public PlotGoal (int value, Enums.Color color)
     {
         super(value);
@@ -40,22 +41,20 @@ public class PlotGoal extends Goal
         this.linkedGoals = linkedGoals;
     }
 
+    @SuppressWarnings ("OptionalUsedAsFieldOrParameterType")
     public boolean validate (Optional<Point> coords)
     {
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+
         if (coords.isPresent())
         {
             Cell cell = grid.get(coords.get());
 
-            return !(cell == null) && !cell.getCoords().equals(new Point()) &&
-                    ((Plot) cell).getColor().equals(this.color) &&
-                    ((Plot) cell).isIrrigated() &&
-                    linkedGoals.entrySet()
-                            .stream()
-                            .allMatch(
-                                    entry -> entry.getValue()
-                                            .validate(Optional.of(entry.getKey().applyVector(coords.get())))
-                            );
+            return !(cell == null) && !cell.getCoords().equals(new Point()) && ((Plot) cell).getColor().equals(this.color) && ((Plot) cell).isIrrigated() && linkedGoals.entrySet()
+                                                                                                                                                                        .stream()
+                                                                                                                                                                        .allMatch(
+                                                                                                                                                                                entry -> entry.getValue()
+                                                                                                                                                                                              .validate(Optional.of(entry.getKey().applyVector(coords.get()))));
         }
 
         boolean b = grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
@@ -65,7 +64,8 @@ public class PlotGoal extends Goal
 
     }
 
-    public PlotGoal symmetric() {
+    public PlotGoal symmetric ()
+    {
         HashMap<Vector, PlotGoal> nSubGoals = new HashMap<>();
         this.linkedGoals.entrySet().forEach(entry -> {
             Vector v = entry.getKey();
@@ -76,21 +76,23 @@ public class PlotGoal extends Goal
         return symetric;
     }
 
-    public boolean isSymetric() {
+    public boolean isSymetric ()
+    {
         return isSymetric;
     }
 
-    public void setSymetric(boolean is) {
+    public void setSymetric (boolean is)
+    {
         this.isSymetric = is;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals (Object obj)
+    {
         if (!(obj instanceof PlotGoal)) return false;
         PlotGoal pg = ((PlotGoal) obj);
-        boolean sameLinks = linkedGoals.keySet().stream().allMatch(vector ->
-                pg.linkedGoals.keySet().contains(vector) &&
-                        pg.linkedGoals.get(vector).equals(this.linkedGoals.get(vector)));
+        boolean sameLinks = linkedGoals.keySet().stream().allMatch(vector -> pg.linkedGoals.keySet().contains(vector) && pg.linkedGoals.get(
+                vector).equals(this.linkedGoals.get(vector)));
         return this.color.equals(pg.color) && this.getValue() == pg.getValue() && sameLinks;
     }
 

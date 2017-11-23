@@ -1,13 +1,11 @@
 package Oka.model.goal;
 
 import Oka.controler.GameBoard;
-import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.NeutralState;
 
-import java.awt.*;
-import java.util.HashMap;
+import java.util.List;
 
 public class GardenerGoalMultiPlot extends GardenerGoal
 {
@@ -27,13 +25,12 @@ public class GardenerGoalMultiPlot extends GardenerGoal
     @Override
     public boolean validate ()
     {
-        HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
+        List<Plot> plots = GameBoard.getInstance().getPlots();
+
         int compteur = 0;
-        for (Cell cell : grid.values())
+        for (Plot plot : plots)
         {
-            if ((cell instanceof Plot) && ((Plot) cell).getColor().equals(getColor()) && (((Plot) cell).getBamboo()
-                                                                                                       .size() == (getBambooAmount())))
-                compteur++;
+            if (plot.getColor().equals(getColor()) && plot.getBamboo().size() == (getBambooAmount())) compteur++;
 
             if (compteur == plotAmount)
             {

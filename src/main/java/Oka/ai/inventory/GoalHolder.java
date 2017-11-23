@@ -55,9 +55,9 @@ public class GoalHolder extends ArrayList<Goal>
         }
     }
 
-    public void addGoal (Goal goal)
+    public void addGoal (Goal goal) throws ExceptionInInitializerError
     {
-        this.add(goal);
+            this.add(goal);
     }
     //endregion
 }

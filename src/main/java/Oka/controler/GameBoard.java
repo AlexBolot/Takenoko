@@ -2,15 +2,13 @@ package Oka.controler;
 
 import Oka.entities.Entity;
 import Oka.model.*;
+import Oka.model.Vector;
 import Oka.model.plot.Plot;
 import Oka.utils.Logger;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameBoard
@@ -80,7 +78,7 @@ public class GameBoard
         this.irrigation = irrigation;
     }
 
-    public java.util.List<Plot> getPlots ()
+    public List<Plot> getPlots ()
     {
         return grid.values().stream().filter(Plot.class::isInstance).map(Plot.class::cast).collect(Collectors.toList());
     }

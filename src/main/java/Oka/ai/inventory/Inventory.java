@@ -1,6 +1,7 @@
 package Oka.ai.inventory;
 
 import Oka.model.Enums;
+import Oka.model.goal.BambooGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.state.NeutralState;
 
@@ -129,6 +130,14 @@ public class Inventory
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
             s = s+goall.getValue();
+        }
+        return (s);
+    }
+    public int getValueOfBambooGoalHolder(){
+        int s=0;
+        for (Goal goall : goalHolder.getGoalValidated(true)){
+            if(goall instanceof BambooGoal)
+                s = s+goall.getValue();
         }
         return (s);
     }
