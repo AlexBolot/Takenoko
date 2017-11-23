@@ -62,6 +62,7 @@ public class GameController
         while (true)
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
+            Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
 
             for (int i = 0; i < playable.size(); i++)
             {
@@ -76,8 +77,10 @@ public class GameController
                     // on rajoute l'objectif empereur
                     ai.getInventory().addGoal(new Goal(2, true));
                     lastTurn(playable, playable.get(i));
-
                     ArrayList<AISimple> ListAIWin = getAIWins(playable);
+
+                    Stats.saveStatTurn(turn);
+                    Stats.saveStatGoal(ListAIWin.get(0).getInventory().getNbGoalByType(true));
 
                     if(ListAIWin.size() == 1){
                         Stats.saveStatWinner(ListAIWin.get(0).getName());
@@ -133,7 +136,7 @@ public class GameController
         if(listAIWinnger.size()>1){
             max = 0;
             for (AISimple ai : playable) {
-                pointPLayer = ai.getInventory().getValueOfGoalHolder();
+                pointPLayer = ai.getInventory().getValueOfBambooGoalHolder();
                 if (pointPLayer > max) {
                     max = pointPLayer;
                     listAIWinnger.clear();

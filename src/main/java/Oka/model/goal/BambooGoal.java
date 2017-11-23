@@ -98,13 +98,13 @@ public class BambooGoal extends Goal
         StringBuilder str = new StringBuilder();
         str.append(getClass().getSimpleName());
 
-        for (Map.Entry<Color, Integer> entry : values.entrySet())
+       /* for (Map.Entry<Color, Integer> entry : values.entrySet())
         {
             //noinspection StringConcatenationInsideStringBufferAppend -> blablablabla :D
             str.append(" {color:" + entry.getKey() + ", amount:" + entry.getValue() + "} +");
-        }
-
-        str.deleteCharAt(str.length() - 1);
+        }*/
+        str.append(" ->value : " + this.getValue());
+        //str.deleteCharAt(str.length() - 1);
 
         return str.toString();
     }

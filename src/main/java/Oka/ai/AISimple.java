@@ -13,6 +13,7 @@ import Oka.model.Irrigation;
 import Oka.model.goal.*;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
+import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
 import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
@@ -101,7 +102,7 @@ public class AISimple extends AI
         boolean onlyHasPlotGoals = invalidGoals.stream().allMatch(PlotGoal.class::isInstance);
         boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 10;
 
-        return (hasNoGoalLeft || onlyHasPlotGoals || isKindaStuck) && invalidGoals.size()<=5;
+        return (hasNoGoalLeft || onlyHasPlotGoals || isKindaStuck) && invalidGoals.size()<5;
     }
 
     protected boolean drawChannel ()
@@ -350,8 +351,11 @@ public class AISimple extends AI
             Plot plot = (Plot) grid.get(point);
 
             boolean checkColor = (color.equals(plot.getColor()) || color.equals(Color.NONE));
+            boolean checkStateForPanda = true;
+            if( entity instanceof Panda)
+                checkStateForPanda = !(plot.getState().equals(new EnclosureState()));
 
-            if (plot.getBamboo().size() == bambooSize && checkColor && gameBoard.moveEntity(entity, point))
+            if (plot.getBamboo().size() == bambooSize && checkColor && gameBoard.moveEntity(entity, point) && checkStateForPanda)
             {
                 return true;
             }
@@ -442,7 +446,7 @@ public class AISimple extends AI
 
         GoalType[] values = GoalType.values();
 
-        GoalType goalType = values[new Random().nextInt(values.length - 1)];
+        GoalType goalType = this.getInventory().getLessGoalType();
 
         getInventory().getActionHolder().consumeAction(Enums.Action.drawGoal);
 
@@ -570,7 +574,6 @@ public class AISimple extends AI
 
     private double getPlotGoalCompletion (PlotGoal plotGoal)
     {
-
         //Todo : Implement -> no idea how to do it for now :/
         return 0;
     }

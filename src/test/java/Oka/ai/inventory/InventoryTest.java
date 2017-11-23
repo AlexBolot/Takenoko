@@ -5,6 +5,7 @@ import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
+import Oka.model.goal.PlotGoal;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.NeutralState;
 import Oka.utils.Cleaner;
@@ -20,6 +21,8 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class InventoryTest {
+
+
     private Inventory inventory;
     GoalHolder goalHolder = new GoalHolder();
 
@@ -47,7 +50,6 @@ public class InventoryTest {
         i.addBamboo(Enums.Color.GREEN);
 
         assertEquals(Collections.singletonList(bambooGoal), i.checkGoals());
-
     }
 
     @Test
@@ -83,6 +85,21 @@ public class InventoryTest {
     @Test
     public void getValueOfGoalHolder() throws Exception {
         assertEquals(6,inventory.getValueOfGoalHolder());
+    }
+    @Test
+    public void getValueOfBambooGoalHolder() throws Exception {
+    }
+
+    @Test
+    public void getNbGoalByType() throws Exception {
+
+    }
+
+    @Test
+    public void getLessGoalType() throws Exception {
+        assertEquals(Enums.GoalType.BambooGoal,inventory.getLessGoalType());
+        inventory.addGoal(new BambooGoal(2,2, Enums.Color.GREEN));
+        assertEquals(Enums.GoalType.GardenGoal,inventory.getLessGoalType());
     }
 
 }

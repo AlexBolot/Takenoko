@@ -16,11 +16,12 @@ public class GardenerGoal extends Goal
     //endregion
 
     //region==========CONSTRUCTORS=========
-    public GardenerGoal (int value, int bambooAmount, Color color, NeutralState State)
+    public GardenerGoal (int value, int bambooAmount, Color color, NeutralState state)
     {
         super(value);
         this.bambooAmount = bambooAmount;
         this.color = color;
+        this.state = state;
     }
     //endregion
 
@@ -51,7 +52,7 @@ public class GardenerGoal extends Goal
     public boolean validate ()
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();
-        boolean valid = plots.stream().anyMatch(plot -> plot.getColor().equals(getColor()) && plot.getBamboo().size() == getBambooAmount());
+        boolean valid = plots.stream().anyMatch(plot -> plot.getColor().equals(getColor()) && plot.getBamboo().size() == getBambooAmount() && plot.getState().equals(state));
         setValidated(valid);
         return valid;
     }
@@ -60,7 +61,7 @@ public class GardenerGoal extends Goal
     //region==========EQUALS/TOSTRING======
     public String toString ()
     {
-        return getClass().getSimpleName() + " bambooAmount = " + bambooAmount + " plotColor = " + color;
+        return getClass().getSimpleName() + /*" bambooAmount = " + bambooAmount + " plotColor = " + color*/ " ->value : " + this.getValue();
     }
     //endregion
 }

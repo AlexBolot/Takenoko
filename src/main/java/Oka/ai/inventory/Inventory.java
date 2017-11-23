@@ -1,8 +1,11 @@
 package Oka.ai.inventory;
 
+import Oka.controler.DrawStack;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
+import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
+import Oka.model.goal.PlotGoal;
 import Oka.model.plot.state.NeutralState;
 
 import java.util.ArrayList;
@@ -126,6 +129,7 @@ public class Inventory
         return actionHolder;
     }
 
+    //retourne le nombre de point
     public int getValueOfGoalHolder(){
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
@@ -133,6 +137,7 @@ public class Inventory
         }
         return (s);
     }
+    // retourne le nombre de point gagné grace au bambooGoal important en cas d'égalité
     public int getValueOfBambooGoalHolder(){
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
@@ -141,5 +146,31 @@ public class Inventory
         }
         return (s);
     }
+    // retour le nombre de goal par type pour les stats
+    public int[] getNbGoalByType(boolean validate){
+        int[] tab = new int[3];
+        for (Goal goall : goalHolder.getGoalValidated(validate)){
+            if(goall instanceof BambooGoal)
+                tab[0]++;
+            if(goall instanceof GardenerGoal)
+                tab[1]++;
+            if(goall instanceof PlotGoal)
+                tab[2]++;
+        }
+        return tab;
+    }
+    public Enums.GoalType getLessGoalType(){
+        int[] nbGoalByType = getNbGoalByType(false);
+        int min=5,
+            index=0;
+        for(int i=0; i<3; i++){
+            if(nbGoalByType[i]<min && DrawStack.getInstance().emptyGoalType(Enums.GoalType.values()[i])) {
+                min = nbGoalByType[i];
+                index = i;
+            }
+        }
+        return Enums.GoalType.values()[index];
+    }
+
     //endregion
 }

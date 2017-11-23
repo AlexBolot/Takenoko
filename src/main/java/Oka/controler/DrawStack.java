@@ -52,6 +52,22 @@ public class DrawStack
         ourInstance = new DrawStack();
     }
 
+    public boolean emptyGoalType(Enums.GoalType goalType){
+        switch (goalType) {
+            case BambooGoal:
+                return !listBambooGoal.isEmpty();
+
+            case GardenGoal:
+                return !listGardenerGoal.isEmpty();
+
+            case PlotGoal:
+                return !listPlotGoal.isEmpty();
+
+            default :
+                return false;
+        }
+    }
+
     public Optional<Goal> drawGoal (GoalType goalType)
     {
         Random random = new Random();
