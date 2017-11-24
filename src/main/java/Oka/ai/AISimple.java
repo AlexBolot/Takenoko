@@ -94,6 +94,10 @@ public class AISimple extends AI
         getInventory().addTurnWithoutPickGoal();
     }
 
+    /**
+     * @return True : if the AI doesn't succeed to validate some goal or if it doesn't have any goal in his inventory.
+     * <br> False : if the AI has goal and isn't stuck.
+     */
     protected boolean hasToPickGoal ()
     {
         ArrayList<Goal> invalidGoals = getInventory().validatedGoals(false);
@@ -105,6 +109,10 @@ public class AISimple extends AI
         return (hasNoGoalLeft || onlyHasPlotGoals || isKindaStuck) && invalidGoals.size()<5;
     }
 
+    /**
+     * @return True : if the AI succeeds to draw a channel
+     * <br> False : if the AI has no more action left or there is no irrigation left.
+     */
     protected boolean drawChannel ()
     {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawChannel)) return false;
@@ -273,7 +281,7 @@ public class AISimple extends AI
     }
 
     /**
-     place a plot tile
+     place a bamboo on a plot
      */
     protected void placeBambooOnPlot ()
     {
@@ -301,6 +309,10 @@ public class AISimple extends AI
 
     }
 
+    /**
+     * @return True if the AI place a plot.
+     * <br> False if there is no more plot available to draw & if there is no more action left.
+     */
     public boolean placePlot ()
     {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.placePlot)) return false;
@@ -364,6 +376,10 @@ public class AISimple extends AI
         return false;
     }
 
+    /**
+     * @return True if the AI place a plotstate.
+     * <br> False if there are no color matching with AI's goal.
+     */
     protected boolean placePlotState ()
     {
         // TODO: optimise based on proximity to completion
@@ -407,14 +423,11 @@ public class AISimple extends AI
                 break;
             //endregion
 
-            //region defaul :
+            //region default :
             default:
                 lookedForColor = Optional.empty();
                 //endregion
         }
-
-        /* If we didn't find a color to look for,
-        no point in moving the gardener */
         if (!lookedForColor.isPresent()) return false;
 
         //Else, we go and find an interesting cell of the good color
@@ -500,6 +513,10 @@ public class AISimple extends AI
         return Optional.empty();
     }
 
+    /**
+     * @param goal take goal of the AI
+     * @return the proportion of completion of this goal.
+     */
     public double getCompletion (Goal goal)
     {
         if (goal instanceof BambooGoal) return getBambooGoalCompletion((BambooGoal) goal);
@@ -513,6 +530,10 @@ public class AISimple extends AI
         return 0;
     }
 
+    /**
+     * @param bambooGoal take BambooGoal of the AI.
+     * @return The proportion of completion of a bamboogoal.
+     */
     private double getBambooGoalCompletion (BambooGoal bambooGoal)
     {
         HashMap<Color, Integer> values = bambooGoal.getValues();
@@ -529,6 +550,10 @@ public class AISimple extends AI
         return totalObtained / totalRequested;
     }
 
+    /**
+     * @param goalMultiPlot take GoalMultiPlot of the AI.
+     * @return The proportion of completion of a GoalMultiPlot.
+     */
     private double getGardenerGoalMultiPlotCompletion (GardenerGoalMultiPlot goalMultiPlot)
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();
@@ -555,6 +580,10 @@ public class AISimple extends AI
         return totalFound / totalRequired;
     }
 
+    /**
+     * @param gardenerGoal take GardenerGoal of the AI.
+     * @return the proportion of completion of a GardernerGoal.
+     */
     private double getGardenerGoalCompletion (GardenerGoal gardenerGoal)
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();
@@ -572,16 +601,30 @@ public class AISimple extends AI
         return maxFound / gardenerGoal.getBambooAmount();
     }
 
+    /**
+     * @param plotGoal take a PlotGoal of the AI.
+     * @return The proportion of completion of a plotGoal.
+     */
     private double getPlotGoalCompletion (PlotGoal plotGoal)
     {
         //Todo : Implement -> no idea how to do it for now :/
         return 0;
     }
 
+    /**
+     * @param ai Current AI who's playing.
+     *  Print all the objectives completed by this AI.
+     */
     public void printObjectives (AISimple ai)
     {
         Logger.printTitle(ai.getName() + " Objectifs validés :" + ai.getInventory().validatedGoals(true));
     }
+
+
+    /**
+     * @return True if the AI succeeds to draw one of those plotstates ( pond/enclosure/fertilizer )
+     * <br> False if there is no more in the draw.
+     */
     public boolean choosePlotState(){
         Enums.State[] values = Enums.State.values().clone();
         ArrayList<Enums.State> valuesarray = new ArrayList<>(Arrays.asList(values));

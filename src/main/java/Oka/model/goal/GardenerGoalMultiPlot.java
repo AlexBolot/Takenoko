@@ -23,6 +23,9 @@ public class GardenerGoalMultiPlot extends GardenerGoal
     }
 
     @Override
+    /**
+     * A method which tries to validate the goal
+     */
     public boolean validate ()
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();

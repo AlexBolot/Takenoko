@@ -129,7 +129,9 @@ public class Inventory
         return actionHolder;
     }
 
-    //retourne le nombre de point
+    /**
+     * @return The number of point
+     */
     public int getValueOfGoalHolder(){
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
@@ -137,7 +139,10 @@ public class Inventory
         }
         return (s);
     }
-    // retourne le nombre de point gagné grace au bambooGoal important en cas d'égalité
+
+    /**
+     * @return The number of point for bamboogoal ( which determine draw or not )
+     */
     public int getValueOfBambooGoalHolder(){
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
@@ -146,7 +151,11 @@ public class Inventory
         }
         return (s);
     }
-    // retour le nombre de goal par type pour les stats
+
+    /**
+     * @param validate True : validatedgoal / False : notvalidatedgoal
+     * @return The number of goal by each category ( bamboogoal/gardenergoal/plotgoal )
+     */
     public int[] getNbGoalByType(boolean validate){
         int[] tab = new int[3];
         for (Goal goall : goalHolder.getGoalValidated(validate)){
@@ -159,6 +168,10 @@ public class Inventory
         }
         return tab;
     }
+
+    /**
+     * @return TODO théos, documente ça !
+     */
     public Enums.GoalType getLessGoalType(){
         int[] nbGoalByType = getNbGoalByType(false);
         int min=5,

@@ -49,6 +49,10 @@ public class GardenerGoal extends Goal
     //endregion
 
     //region==========METHODS==============
+
+    /**
+     * A method which tries to validate the goal
+     */
     public boolean validate ()
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();

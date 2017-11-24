@@ -75,7 +75,12 @@ public class BambooGoal extends Goal
 
     //endregion
 
+
     //region==========METHODS==============
+    /**
+     * @param bambooHolder the BambooHolder of the AI who's playing.
+     * A method which tries to validate the goal
+     */
     public void validate (BambooHolder bambooHolder)
     {
         for (Color color : values.keySet())

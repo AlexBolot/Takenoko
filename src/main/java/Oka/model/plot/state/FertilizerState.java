@@ -12,6 +12,9 @@ public class FertilizerState extends NeutralState
         return state;
     }
 
+    /**
+     * @return 2 because the gardener can grow two bamboos on the plot instead of one on a fertilizerstate.
+     */
     @Override
     public int getHowManyaddBambo ()
     {

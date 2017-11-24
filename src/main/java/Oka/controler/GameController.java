@@ -46,6 +46,10 @@ public class GameController
     }
     //endregion
 
+    /**
+     * @param playable Take all the players.
+     *  And make them play and having fun #BestMethod
+     */
     //region==========METHODS==============
     public void play (ArrayList<AISimple> playable)
     {
@@ -96,6 +100,11 @@ public class GameController
     }
     //endregion
 
+    /**
+     * @param playable Take all the players. ( or AI in our case )
+     * @param ai1 Take an AI ( the AI who completed the nine goal )
+     *  And make all the others AI play their last TURN !!!
+     */
     public void lastTurn (ArrayList<AISimple> playable, AISimple ai1)
     {
         for (AISimple ai : playable)
@@ -111,7 +120,7 @@ public class GameController
 
     /**
      <hr>
-     <h3>cette méthode sauvegarde les stats de tous les joueurs et renvoie le ou les joueurs avec le plus de point</h3>
+     <h3> this method save all the stats of the players and return the player(s) that has more points than the others.</h3>
      <hr>
 
      */

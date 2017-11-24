@@ -14,6 +14,12 @@ import static Oka.model.Enums.Action.drawPlotState;
 
 public class Dice
 {
+
+    /**
+     * /**
+     * A method which deal with weather in the game each turn an AI plays.
+     * @param ai It's the AI who's currently playing.
+     */
     static void rollDice (AI ai)
     {
 

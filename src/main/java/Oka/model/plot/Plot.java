@@ -82,6 +82,9 @@ public class Plot extends Cell
 
     //region==========METHODS==============
 
+    /**
+     * Addbamboo on a plot.
+     */
     public void addBamboo ()
     {
         for (int i = 0; i < state.getHowManyaddBambo(); i++)

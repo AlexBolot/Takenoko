@@ -5,7 +5,7 @@ import java.awt.*;
 public class Pond extends Cell
 {
     /**
-     Pond des oeufs (Grégoire m'a forcé à écrire ça)
+     Crée un nouveau point ( Pond ) coordonnées x = 0 / y = 0
      */
     public Pond ()
     {

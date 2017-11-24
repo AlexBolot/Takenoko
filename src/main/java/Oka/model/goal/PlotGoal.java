@@ -42,7 +42,13 @@ public class PlotGoal extends Goal
         this.linkedGoals = linkedGoals;
     }
 
+
     @SuppressWarnings ("OptionalUsedAsFieldOrParameterType")
+
+    /**
+     * @param coords take coords of plot in the grid.
+     * @return true if it succeeds to validate a plotgoal.
+     */
     public boolean validate (Optional<Point> coords)
     {
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();

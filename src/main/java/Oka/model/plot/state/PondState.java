@@ -12,6 +12,9 @@ public class PondState extends NeutralState
     }
 
     @Override
+    /**
+     * @return true because the pondstate are always irrigated.
+     */
     public boolean getIsIrrigated ()
     {
         return true;

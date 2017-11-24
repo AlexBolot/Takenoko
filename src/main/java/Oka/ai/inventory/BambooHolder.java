@@ -23,12 +23,22 @@ import static Oka.model.Enums.Color;
 
 public class BambooHolder extends ArrayList<Bamboo>
 {
+
     //region==========METHODS==============
+    /**
+     * @param color Take a color of bamboo as parameter ( green/yellow/pink )
+     * @return the number of bamboo in the inventory.
+     */
     public int countBamboo (Color color)
     {
         return (int) this.stream().filter(bamboo -> bamboo.getColor().equals(color)).count();
     }
 
+    /**
+     * @param color the color of the bamboo.
+     * @param n the number of bamboo we want to remove.
+     *  Remove from the inventory the number of bamboo with the color selected.
+     */
     public void removeByColor (Color color, int n)
     {
         int compt = 0;
@@ -44,6 +54,10 @@ public class BambooHolder extends ArrayList<Bamboo>
         }
     }
 
+    /**
+     * @param color Color of bamboo added.
+     * A method which addBamboo in the inventory.
+     */
     public void addBamboo (Color color)
     {
         this.add(new Bamboo((color)));
