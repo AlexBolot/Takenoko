@@ -37,12 +37,13 @@ public class App
 
         Logger.setLoggerMode(answer);
 
-        AISimple AM = new AISimple("AISimple1");
-        AISimple IL = new AISimple("AISimple2");
 
         if (answer == 1)
         {
             GameController gc = GameController.getInstance();
+
+            AISimple AM = new AISimple("AISimple1");
+            AISimple IL = new AISimple("AISimple2");
 
             ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
@@ -56,7 +57,10 @@ public class App
 
                 GameController gc = GameController.getInstance();
 
-                /* if (i % 1000 == 0)*/ System.out.println("Tour:" + i);
+                AISimple AM = new AISimple("AISimple1");
+                AISimple IL = new AISimple("AISimple2");
+
+                if (i % 100 == 0) System.out.println("Tour:" + i);
 
                 ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
