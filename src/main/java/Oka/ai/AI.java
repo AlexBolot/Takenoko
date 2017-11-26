@@ -33,6 +33,8 @@ public abstract class AI extends Playable
 
     public abstract boolean choosePlotState ();
 
+    public abstract void printObjectives();
+
     //endregion
 }
 

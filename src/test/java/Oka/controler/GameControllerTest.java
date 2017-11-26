@@ -1,5 +1,6 @@
 package Oka.controler;
 
+import Oka.ai.AI;
 import Oka.ai.AISimple;
 import Oka.model.goal.Goal;
 import org.junit.After;
@@ -13,7 +14,7 @@ import static org.junit.Assert.*;
 public class GameControllerTest {
     private AISimple p1;
     private AISimple p2;
-    private ArrayList<AISimple> listPlayable;
+    private ArrayList<AI> listPlayable;
     private GameController gameController;
 
     @Before

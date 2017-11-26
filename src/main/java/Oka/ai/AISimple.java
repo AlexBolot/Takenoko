@@ -77,7 +77,7 @@ public class AISimple extends AI
                 case 2:
                     if (drawChannel())
                     {
-                        placeChannel();
+                        this.placeChannel();
                     }
                     continue;
                 case 3:
@@ -144,8 +144,7 @@ public class AISimple extends AI
         if (color.isPresent())
         {
             Color c = color.get();
-            Set<Irrigation> interestingIrg = irrigations.
-                                                                stream()
+            Set<Irrigation> interestingIrg = irrigations.stream()
                                                         .filter(irrigation -> (irrigation.getPlot1()
                                                                                          .getColor()
                                                                                          .equals(c) || irrigation.getPlot2()
@@ -243,9 +242,9 @@ public class AISimple extends AI
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.movePanda)) return false;
         List<Goal> goals = getInventory().validatedGoals(false)
-                                         .stream()
-                                         .filter(goal -> goal instanceof BambooGoal)
-                                         .collect(Collectors.toList());
+                .stream()
+                .filter(goal -> goal instanceof BambooGoal)
+                .collect(Collectors.toList());
 
         Optional<Color> lookedForColor = findInterestingColor(goals);
 
@@ -306,7 +305,6 @@ public class AISimple extends AI
             }
 
         }
-
     }
 
     /**
@@ -456,8 +454,6 @@ public class AISimple extends AI
     protected boolean pickGoal ()
     {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawGoal)) return false;
-
-        GoalType[] values = GoalType.values();
 
         GoalType goalType = this.getInventory().getLessGoalType();
 
@@ -612,12 +608,12 @@ public class AISimple extends AI
     }
 
     /**
-     * @param ai Current AI who's playing.
      *  Print all the objectives completed by this AI.
      */
-    public void printObjectives (AISimple ai)
+    @Override
+    public void printObjectives ()
     {
-        Logger.printTitle(ai.getName() + " Objectifs validés :" + ai.getInventory().validatedGoals(true));
+        Logger.printTitle(this.getName() + " Objectifs validés :" + this.getInventory().validatedGoals(true));
     }
 
 

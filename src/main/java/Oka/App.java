@@ -1,5 +1,7 @@
 package Oka;
 
+import Oka.ai.AI;
+import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
 import Oka.controler.GameController;
 import Oka.utils.Cleaner;
@@ -35,36 +37,30 @@ public class App
 
         Logger.setLoggerMode(answer);
 
+        AISimple AM = new AISimple("AISimple1");
+        AISimple IL = new AISimple("AISimple2");
+
         if (answer == 1)
         {
-
             GameController gc = GameController.getInstance();
 
-            AISimple AM = new AISimple("A.M Pinna");
-            AISimple IL = new AISimple("I.Litovksy");
-
-            ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+            ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
             gc.play(Playable);
         }
-
         else
         {
-
             for (int i = 0; i < answer; i++)
             {
                 Cleaner.clearAll();
 
                 GameController gc = GameController.getInstance();
 
-                AISimple AM = new AISimple("A.M Pinna");
-                AISimple IL = new AISimple("I.Litovksy");
+                /* if (i % 1000 == 0)*/ System.out.println("Tour:" + i);
 
-                ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+                ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
                 gc.play(Playable);
-
-                if (i % 1000 == 0) System.out.println("Tour:" + i);
             }
 
             for (Map.Entry<String, int[]> entry : Stats.getStatAverage().entrySet())
