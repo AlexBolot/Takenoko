@@ -131,7 +131,6 @@ public class AIRandom extends AI {
         return false;
     }
 
-    @Override
     protected boolean moveGardener() {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.moveGardener)) return false;
@@ -152,7 +151,6 @@ public class AIRandom extends AI {
         return false;
     }
 
-    @Override
     protected boolean movePanda() {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.movePanda)) return false;
@@ -174,7 +172,6 @@ public class AIRandom extends AI {
         return false;
     }
 
-    @Override
     protected boolean placePlot() {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.placePlot)) return false;
         GameBoard board = GameBoard.getInstance();
@@ -202,7 +199,6 @@ public class AIRandom extends AI {
         return true;
     }
 
-    @Override
     protected boolean drawChannel() {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawChannel)) return false;
 
@@ -215,7 +211,6 @@ public class AIRandom extends AI {
         return true;
     }
 
-    @Override
     protected boolean placeChannel() {
         if (!getInventory().hasChannel()) return false;
 
@@ -238,7 +233,6 @@ public class AIRandom extends AI {
         return false;
     }
 
-    @Override
     protected boolean moveEntity(Entity entity, int bambooSize, Enums.Color color) {
 
         GameBoard gameBoard = GameBoard.getInstance();

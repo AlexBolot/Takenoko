@@ -13,13 +13,11 @@ import Oka.model.Irrigation;
 import Oka.model.goal.*;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
-import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
 import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +38,6 @@ public class AISimple extends AI
     //region==========METHODS==============
     public void play ()
     {
-        Logger.printSeparator(getName());
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
 
         getInventory().resetActionHolder();

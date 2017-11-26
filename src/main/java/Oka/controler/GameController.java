@@ -75,6 +75,9 @@ public class GameController
             {
                 AI ai = playable.get(i);
                 currentPlayer = ai;
+
+                Logger.printSeparator(ai.getName());
+
                 ai.play();
 
                 int checkGoal = ai.getInventory().checkGoals().size();

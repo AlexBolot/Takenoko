@@ -10,8 +10,8 @@ import java.util.List;
 public class GardenerGoal extends Goal
 {
     //region==========ATTRIBUTES===========
-    private Color color;
-    private int   bambooAmount;
+    private Color        color;
+    private int          bambooAmount;
     private NeutralState state;
     //endregion
 
@@ -26,11 +26,10 @@ public class GardenerGoal extends Goal
     //endregion
 
     //region==========GETTER/SETTER========
-    public int getBambooAmount()
+    public int getBambooAmount ()
     {
         return bambooAmount;
     }
-
 
     public void setBambooAmount (int bambooAmount)
     {
@@ -46,6 +45,17 @@ public class GardenerGoal extends Goal
     {
         this.color = color;
     }
+
+    public double getRatio ()
+    {
+        return sigmoid(getValue() / (double) bambooAmount);
+    }
+
+    public NeutralState getState ()
+    {
+        return state;
+    }
+
     //endregion
 
     //region==========METHODS==============

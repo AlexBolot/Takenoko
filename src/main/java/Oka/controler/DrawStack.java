@@ -1,6 +1,7 @@
 package Oka.controler;
 
 import Oka.model.Enums;
+import Oka.model.Enums.State;
 import Oka.model.Irrigation;
 import Oka.model.Vector;
 import Oka.model.goal.*;
@@ -52,8 +53,10 @@ public class DrawStack
         ourInstance = new DrawStack();
     }
 
-    public boolean emptyGoalType(Enums.GoalType goalType){
-        switch (goalType) {
+    public boolean emptyGoalType (Enums.GoalType goalType)
+    {
+        switch (goalType)
+        {
             case BambooGoal:
                 return !listBambooGoal.isEmpty();
 
@@ -63,14 +66,14 @@ public class DrawStack
             case PlotGoal:
                 return !listPlotGoal.isEmpty();
 
-            default :
+            default:
                 return false;
         }
     }
 
     /**
-     * @param goalType GardenerGoal/BambooGoal/PlotGoal
-     * @return A goal that the AI has chosen to draw according to the type she needs.
+     @param goalType GardenerGoal/BambooGoal/PlotGoal
+     @return A goal that the AI has chosen to draw according to the type she needs.
      */
     public Optional<Goal> drawGoal (GoalType goalType)
     {
@@ -95,7 +98,7 @@ public class DrawStack
     }
 
     /**
-     * @return This gives an Arraylist of 3 Plot to the AI ( when she has to draw one of them to place it )
+     @return This gives an Arraylist of 3 Plot to the AI ( when she has to draw one of them to place it )
      */
     public ArrayList<Plot> giveTreePlot ()
     {
@@ -131,9 +134,10 @@ public class DrawStack
         remainingChannels--;
         return Optional.of(new Irrigation());
     }
+
     /**
-     * @return True if you can draw an FertilizerState
-     * <br> False if you can't.
+     @return True if you can draw an FertilizerState
+     <br> False if you can't.
      */
     public Optional<FertilizerState> drawFertilizerState ()
     {
@@ -144,9 +148,10 @@ public class DrawStack
         fertilizerStates--;
         return Optional.of(new FertilizerState());
     }
+
     /**
-     * @return True if you can draw a PondState
-     * <br> False if you can't.
+     @return True if you can draw a PondState
+     <br> False if you can't.
      */
     public Optional<PondState> drawPondState ()
     {
@@ -158,17 +163,10 @@ public class DrawStack
         return Optional.of(new PondState());
 
     }
-    /**
-     * A method which put the plot not chosen by the AI into the draw.
-     */
-    public void giveBackPlot (ArrayList<Plot> listP)
-    {
-        if (listP.size() > 0) listPlot.addAll(listP);
-    }
 
     /**
-     * @return True if you can draw an EnclosureState
-     * <br> False if you can't.
+     @return True if you can draw an EnclosureState
+     <br> False if you can't.
      */
     public Optional<EnclosureState> drawEnclosureState ()
     {
@@ -180,8 +178,48 @@ public class DrawStack
         return Optional.of(new EnclosureState());
     }
 
+    public Optional<NeutralState> drawState (State state)
+    {
+        switch (state)
+        {
+            case Pond:
+                if (pondStates > 0)
+                {
+                    pondStates--;
+                    return Optional.of(new PondState());
+                }
+                break;
+
+            case Enclosure:
+                if (enclosureStates > 0)
+                {
+                    enclosureStates--;
+                    return Optional.of(new EnclosureState());
+                }
+                break;
+
+            case Fertilizer:
+                if (fertilizerStates > 0)
+                {
+                    fertilizerStates--;
+                    return Optional.of(new FertilizerState());
+                }
+                break;
+        }
+
+        return Optional.empty();
+    }
+
     /**
-     * All the plot available to draw in the game.
+     A method which put the plot not chosen by the AI into the draw.
+     */
+    public void giveBackPlot (ArrayList<Plot> listP)
+    {
+        if (listP.size() > 0) listPlot.addAll(listP);
+    }
+
+    /**
+     All the plot available to draw in the game.
      */
     private void initListPlot ()
     {
@@ -210,7 +248,7 @@ public class DrawStack
     }
 
     /**
-     * All the Plotgoal possible.
+     All the Plotgoal possible.
      */
     private void initListPlotGoal ()
     {
@@ -287,7 +325,7 @@ public class DrawStack
     }
 
     /**
-     * All the GardenerGoal possible.
+     All the GardenerGoal possible.
      */
     private void initListGardenGoal ()
     {
@@ -309,7 +347,7 @@ public class DrawStack
     }
 
     /**
-     * All the BambooGoal possible.
+     All the BambooGoal possible.
      */
     private void initListBambooGoal ()
     {

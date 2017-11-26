@@ -23,6 +23,38 @@ public class Vector
     }
     //endregion
 
+    /**
+     <hr>
+     <h3>Finds the manathan vector between two points.
+     </h3>
+     <hr>
+
+     @param origin Origin point
+     @param dest   Destination point
+     @return A new Vector(axis, length) with the distance and the axis
+     */
+    public static Vector findVector (Point origin, Point dest)
+    {
+        int point1z = -(origin.x + origin.y);
+        int point2z = -(dest.x + dest.y);
+
+        int absx = Math.abs(origin.x - dest.x);
+        int absy = Math.abs(origin.y - dest.y);
+        int absz = Math.abs(point1z - point2z);
+        int maxAbs = Math.max(absx, Math.max(absy, absz));
+
+        Axis axis = (absx > absz) ? x : ((absy > absz) ? y : z);
+
+        return new Vector(axis, maxAbs);
+    }
+
+    //region==========GETTER/SETTER========
+    public int length ()
+    {
+        return length;
+    }
+    //endregion
+
     //region==========METHODS==============
 
     /**
@@ -69,6 +101,11 @@ public class Vector
         return null;
     }
 
+    public Axis axis ()
+    {
+        return axis;
+    }
+
     /**
      <hr>
      <h3>Applies this vector on the point given as parameter.
@@ -100,6 +137,14 @@ public class Vector
         }
         return newPoint;
     }
+
+    public void rotateClockwize ()
+    {
+        List<Axis> axis = new ArrayList<>(Arrays.asList(y, x, z));
+        int i = axis.indexOf(this.axis) + 1;
+        this.axis = axis.get(i % 3);
+        if (i == 3) this.length = -this.length;
+    }
     //endregion
 
     //region==========EQUALS/TOSTRING======
@@ -115,29 +160,17 @@ public class Vector
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode ()
+    {
         int result = length;
         result = 31 * result + axis.hashCode();
         return result;
     }
 
     @Override
-    public Vector clone() {
+    public Vector clone ()
+    {
         return new Vector(this.axis, length);
-    }
-
-    public void rotateClockwize() {
-        List<Axis> axis = new ArrayList<>(Arrays.asList(y, x, z));
-        int i = axis.indexOf(this.axis) + 1;
-        this.axis = axis.get(i % 3);
-        if (i == 3) this.length = -this.length;
-    }
-    public int length() {
-        return length;
-    }
-
-    public Axis axis() {
-        return axis;
     }
 
     @Override

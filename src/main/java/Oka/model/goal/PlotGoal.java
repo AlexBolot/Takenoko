@@ -57,11 +57,11 @@ public class PlotGoal extends Goal
         {
             Cell cell = grid.get(coords.get());
 
-            return !(cell == null) && !cell.getCoords().equals(new Point()) && ((Plot) cell).getColor().equals(this.color) && ((Plot) cell).isIrrigated() && linkedGoals.entrySet()
-                                                                                                                                                                        .stream()
-                                                                                                                                                                        .allMatch(
-                                                                                                                                                                                entry -> entry.getValue()
-                                                                                                                                                                                              .validate(Optional.of(entry.getKey().applyVector(coords.get()))));
+            return !(cell == null) && !cell.getCoords().equals(new Point()) && ((Plot) cell).getColor()
+                                                                                            .equals(this.color) && ((Plot) cell).isIrrigated() && linkedGoals
+                    .entrySet()
+                    .stream()
+                    .allMatch(entry -> entry.getValue().validate(Optional.of(entry.getKey().applyVector(coords.get()))));
         }
 
         boolean b = grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
@@ -95,8 +95,6 @@ public class PlotGoal extends Goal
         return rotated;
     }
 
-
-
     public boolean isSymetric ()
     {
         return isSymetric;
@@ -105,6 +103,16 @@ public class PlotGoal extends Goal
     public void setSymetric (boolean is)
     {
         this.isSymetric = is;
+    }
+
+    public int getSize ()
+    {
+        return 1 + linkedGoals.values().stream().mapToInt(PlotGoal::getSize).sum();
+    }
+
+    public double getRatio ()
+    {
+        return sigmoid(getValue() / getSize());
     }
 
     @Override

@@ -18,7 +18,6 @@ import Oka.ai.inventory.BambooHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -50,11 +49,6 @@ public class BambooGoal extends Goal
         return values;
     }
 
-    public int getColorAmount ()
-    {
-        return (int) values.values().stream().filter(integer -> integer > 0).count();
-    }
-
     public int getAmountByColor (Color color)
     {
         return values.get(color);
@@ -73,8 +67,25 @@ public class BambooGoal extends Goal
         return colors.get(new Random().nextInt(colors.size()));
     }
 
-    //endregion
+    public Color getColor (BambooHolder bambooHolder)
+    {
+        for (Color color : values.keySet())
+        {
+            if (bambooHolder.countBamboo(color) < values.get(color)) return color;
+        }
 
+        //Should never be able to return null
+        //(should be validated before that)
+        return null;
+    }
+
+    public double getRatio ()
+    {
+        double totalBambooRequired = values.values().stream().reduce((val1, val2) -> val1 + val2).orElse(0);
+
+        return sigmoid(getValue() / totalBambooRequired);
+    }
+    //endregion
 
     //region==========METHODS==============
     /**
@@ -113,15 +124,18 @@ public class BambooGoal extends Goal
 
         return str.toString();
     }
+
     @Override
-    public boolean equals (Object obj){
+    public boolean equals (Object obj)
+    {
 
         if (obj == null || !(obj instanceof BambooGoal)) return false;
 
         BambooGoal c = (BambooGoal) obj;
 
-        return ((BambooGoal) obj).getColor().equals(this.getColor())
-                && this.getAmountByColor(this.getColor())==((BambooGoal) obj).getAmountByColor(((BambooGoal) obj).getColor());
+        return ((BambooGoal) obj).getColor()
+                                 .equals(this.getColor()) && this.getAmountByColor(this.getColor()) == ((BambooGoal) obj).getAmountByColor(((BambooGoal) obj)
+                                                                                                                                                   .getColor());
     }
     //endregion
 }
