@@ -5,6 +5,7 @@ import Oka.controler.GameBoard;
 import Oka.entities.Entity;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
+import Oka.model.Enums;
 import Oka.model.Enums.Color;
 import Oka.model.Enums.GoalType;
 import Oka.model.Enums.State;
@@ -449,21 +450,109 @@ public class AIGoal extends AI
 
         }
 
-        int p;
-        int g;
-        int y;
+        int p = 0;
+        int g = 0 ;
+        int y = 0;
 
-        goals.forEach(goal -> {
+        for (Goal goal : goals) {
 
-            if (goal instanceof BambooGoal)
-            {
-                //...
+            if (goal instanceof BambooGoal) {
+                BambooGoal bambooGoal = (BambooGoal) goal;
+                for (Enums.Color color : bambooGoal.getValues().keySet()) {
+                    if (color.equals(Enums.Color.PINK)) {
+                        p++;
+                    } else if (color.equals(Color.GREEN)) {
+                        g++;
+                    } else {
+                        y++;
+                    }
+                }
+            } else {
+                if (goal instanceof GardenerGoal) {
+                    GardenerGoal gardenergoal = (GardenerGoal) goal;
+                    if (gardenergoal.getColor().equals(Color.GREEN)) {
+                        g++;
+                    } else if (gardenergoal.getColor().equals(Color.YELLOW)) {
+                        y++;
+                    } else {
+                        p++;
+                    }
+
+                }
             }
-            else
-            {
-                //....
+            int pg = 0;
+            int py = 0;
+            int pp = 0;
+            for (Plot plot : draw) {
+                if (plot.getColor().equals(Color.GREEN)) {
+                    pg = 1;
+                } else if (plot.getColor().equals(Color.YELLOW)) {
+                    py = 1;
+                } else if (plot.getColor().equals(Color.PINK)) {
+                    pp = 1;
+                }
             }
-        });
+            if (pg == 1 & py == 1 && pp == 1) {
+                if (g > y && g > p) {
+                    //takeplot green
+                } else if (p > g && p > y) {
+                    //takeplot pink
+                } else if (y > g && y > p) {
+                    //takeplot yellow
+                } else if (g > y && g < p) {
+                    //takeplot pink
+                } else if (p > g && p < y) {
+                    //takeplot yellow
+                }
+                else if (g>p && g<y) {
+                    //takeplot yellow
+                }
+                else if (g==p && g==y){
+                    //randomplot
+                }
+                else if(g==p && g>y){
+                    //takeplot green or pink
+                }
+                else if(g==y && g>p){
+                    //takeplot yellow or green
+                }
+                else if(g==p && g<y){
+                    //takeplot yellow
+                }
+                else if (g==y && g<p){
+                    //takeplot pink
+                }
+            } else if (pg == 0 && py == 1 && pp == 1) {
+                if(y>p){
+                    //takeplot yellow
+                }
+                else {
+                //takeplot pink
+                }
+            } else if (pg == 1 && py == 0 && pp == 1) {
+                if(g>p){
+                    //takeplot green
+                }
+                else{
+                    //takeplot pink
+                }
+            } else if (pg == 1 && py == 1 && pp == 0) {
+                if (g>y){
+                    //takeplot green
+                }
+                else{
+                    //takeplot yellow
+                }
+            } else if (pg == 0 && py == 0 && pp == 1) {
+                //takeplot pink random
+            } else if (pg == 0 && py == 1 && pp == 0) {
+                //takeplot yello random
+            } else if (pg == 1 && py == 0 && pp == 0) {
+                //takeplot green random
+            }
+
+        }
+        // TODO Blame mathieu paillart car il vient de prépa et ne sait pas combien il y a de comparaisons possibles entre 3 entiers.
 
 
         //On choisit un carte aléatoire parmis les trois car ou moins envoyé par la pioche plot
