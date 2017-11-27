@@ -42,13 +42,11 @@ public class PlotGoal extends Goal
         this.linkedGoals = linkedGoals;
     }
 
-
-    @SuppressWarnings ("OptionalUsedAsFieldOrParameterType")
-
     /**
-     * @param coords take coords of plot in the grid.
-     * @return true if it succeeds to validate a plotgoal.
+     @param coords take coords of plot in the grid.
+     @return true if it succeeds to validate a plotgoal.
      */
+    @SuppressWarnings ("OptionalUsedAsFieldOrParameterType")
     public boolean validate (Optional<Point> coords)
     {
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
@@ -65,17 +63,18 @@ public class PlotGoal extends Goal
         }
 
         boolean b = grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
-        if (!b && !this.isSymetric)
-            b = this.symmetrics().stream().anyMatch(plotGoal -> plotGoal.validate(Optional.empty()));
+        if (!b && !this.isSymetric) b = this.symmetrics().stream().anyMatch(plotGoal -> plotGoal.validate(Optional.empty()));
         setValidated(b);
         return b;
 
     }
 
-    public ArrayList<PlotGoal> symmetrics() {
+    public ArrayList<PlotGoal> symmetrics ()
+    {
         ArrayList<PlotGoal> symetrics = new ArrayList<>();
         PlotGoal rotated = this.rotated();
-        while (!equals(rotated)) {
+        while (!equals(rotated))
+        {
             rotated.setSymetric(true);
             symetrics.add(rotated);
             rotated = rotated.rotated();
@@ -83,8 +82,8 @@ public class PlotGoal extends Goal
         return symetrics;
     }
 
-
-    public PlotGoal rotated() {
+    public PlotGoal rotated ()
+    {
         HashMap<Vector, PlotGoal> rotatedSubGoals = new HashMap<>();
         this.linkedGoals.entrySet().forEach(entry -> {
             Vector v = entry.getKey().clone();
@@ -108,6 +107,23 @@ public class PlotGoal extends Goal
     public int getSize ()
     {
         return 1 + linkedGoals.values().stream().mapToInt(PlotGoal::getSize).sum();
+    }
+
+    public HashMap<Enums.Color, Integer> getColors ()
+    {
+        HashMap<Enums.Color, Integer> map = new HashMap<>();
+
+        map.put(color, 1);
+
+        for (PlotGoal plotGoal : linkedGoals.values())
+        {
+            Enums.Color color = plotGoal.color;
+
+            if (map.containsKey(color)) map.replace(color, map.get(color) + 1);
+            else map.put(color, 1);
+        }
+
+        return map;
     }
 
     public double getRatio ()

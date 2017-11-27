@@ -5,7 +5,6 @@ import Oka.controler.GameBoard;
 import Oka.entities.Entity;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
-import Oka.model.Enums;
 import Oka.model.Enums.Color;
 import Oka.model.Enums.GoalType;
 import Oka.model.Enums.State;
@@ -438,138 +437,45 @@ public class AIGoal extends AI
 
         if (draw == null) return false;
 
-        for (Goal goal : goals.stream().filter(PlotGoal.class::isInstance).map(PlotGoal.class::cast).collect(Collectors.toList()))
+        HashMap<Color, Integer> colors = new HashMap<>();
+
+        for (Goal goal : goals)
         {
-            PlotGoal plotGoal = (PlotGoal) goal;
+            if (goal instanceof BambooGoal)
+            {
+                BambooGoal bbg = (BambooGoal) goal;
+                bbg.getValues().keySet().forEach(color -> colors.merge(color, 1, (oldVal, newVal) -> oldVal + newVal));
+                continue;
+            }
 
-            // TODO with Grég : détect if plotgoal is missing a plot
+            if (goal instanceof GardenerGoal)
+            {
+                GardenerGoal gg = (GardenerGoal) goal;
+                colors.merge(gg.getColor(), 1, (oldVal, newVal) -> oldVal + newVal);
+                continue;
+            }
+
+            if (goal instanceof PlotGoal)
+            {
+                PlotGoal pg = (PlotGoal) goal;
+                pg.getColors().keySet().forEach(color -> colors.merge(color, 1, (oldVal, newVal) -> oldVal + newVal));
+            }
+
         }
 
-        for (Goal goal : goals.stream().filter(GardenerGoal.class::isInstance).map(GardenerGoal.class::cast).collect(Collectors.toList()))
+        for (Color color : colors.keySet())
         {
-
+            if (draw.stream().noneMatch(plot -> plot.getColor().equals(color))) colors.replace(color, -1);
         }
 
-        int p = 0;
-        int g = 0 ;
-        int y = 0;
+        //noinspection ConstantConditions
+        int max = colors.values().stream().max(Integer::compareTo).get();
 
-        for (Goal goal : goals) {
+        List<Color> selectedColors = colors.keySet().stream().filter(key -> colors.get(key) == max).collect(Collectors.toList());
 
-            if (goal instanceof BambooGoal) {
-                BambooGoal bambooGoal = (BambooGoal) goal;
-                for (Enums.Color color : bambooGoal.getValues().keySet()) {
-                    if (color.equals(Enums.Color.PINK)) {
-                        p++;
-                    } else if (color.equals(Color.GREEN)) {
-                        g++;
-                    } else {
-                        y++;
-                    }
-                }
-            } else {
-                if (goal instanceof GardenerGoal) {
-                    GardenerGoal gardenergoal = (GardenerGoal) goal;
-                    if (gardenergoal.getColor().equals(Color.GREEN)) {
-                        g++;
-                    } else if (gardenergoal.getColor().equals(Color.YELLOW)) {
-                        y++;
-                    } else {
-                        p++;
-                    }
+        Optional<Plot> optPlot = draw.stream().filter(plot -> selectedColors.contains(plot.getColor())).findAny();
 
-                }
-            }
-            int pg = 0;
-            int py = 0;
-            int pp = 0;
-            for (Plot plot : draw) {
-                if (plot.getColor().equals(Color.GREEN)) {
-                    pg = 1;
-                } else if (plot.getColor().equals(Color.YELLOW)) {
-                    py = 1;
-                } else if (plot.getColor().equals(Color.PINK)) {
-                    pp = 1;
-                }
-            }
-            if (pg == 1 & py == 1 && pp == 1) {
-                if (g > y && g > p) {
-                    //takeplot green
-                } else if (p > g && p > y) {
-                    //takeplot pink
-                } else if (y > g && y > p) {
-                    //takeplot yellow
-                } else if (g > y && g < p) {
-                    //takeplot pink
-                } else if (p > g && p < y) {
-                    //takeplot yellow
-                }
-                else if (g>p && g<y) {
-                    //takeplot yellow
-                }
-                else if (g==p && g==y){
-                    //randomplot
-                }
-                else if(g==p && g>y){
-                    //takeplot green or pink
-                }
-                else if(g==y && g>p){
-                    //takeplot yellow or green
-                }
-                else if(g==p && g<y){
-                    //takeplot yellow
-                }
-                else if (g==y && g<p){
-                    //takeplot pink
-                }
-            } else if (pg == 0 && py == 1 && pp == 1) {
-                if(y>p){
-                    //takeplot yellow
-                }
-                else {
-                //takeplot pink
-                }
-            } else if (pg == 1 && py == 0 && pp == 1) {
-                if(g>p){
-                    //takeplot green
-                }
-                else{
-                    //takeplot pink
-                }
-            } else if (pg == 1 && py == 1 && pp == 0) {
-                if (g>y){
-                    //takeplot green
-                }
-                else{
-                    //takeplot yellow
-                }
-            } else if (pg == 0 && py == 0 && pp == 1) {
-                //takeplot pink random
-            } else if (pg == 0 && py == 1 && pp == 0) {
-                //takeplot yello random
-            } else if (pg == 1 && py == 0 && pp == 0) {
-                //takeplot green random
-            }
-
-        }
-        // TODO Blame mathieu paillart car il vient de prépa et ne sait pas combien il y a de comparaisons possibles entre 3 entiers.
-
-
-        //On choisit un carte aléatoire parmis les trois car ou moins envoyé par la pioche plot
-        /*int randInt = rand.nextInt(draw.size());
-        Plot plot = draw.get(randInt);
-
-        // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
-        draw.remove(randInt);
-        DrawStack.getInstance().giveBackPlot(draw);
-
-        ArrayList<Point> free = GameBoard.getInstance().getAvailableSlots();
-        plot.setCoords(free.get(0));
-        GameBoard.getInstance().addCell(plot);
-        //Logger.printLine(getName() + " placed : " + plot);
-        Logger.printLine(getName() + " a placé : " + plot);
-        getInventory().getActionHolder().consumeAction(placePlot);
-        return true;*/
+        //TODO : choisir quel plot placer
 
         return false;
 
