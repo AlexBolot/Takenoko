@@ -171,11 +171,7 @@ public class AISimple extends AI
             Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " +
                     irg.getPlot1().getCoords().toString() + ' ' + irg.getPlot2().getCoords().toString());
             getInventory().removeIrrigation();
-                                                                                                         .getCoords()
-                                                                                                         .toString() + ' ' + irg.getPlot2()
-                                                                                                                                .getCoords()
-                                                                                                                                .toString());
-            getInventory().removeIrrigation();
+
             return true;
         }
         return false;
