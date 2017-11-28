@@ -27,13 +27,11 @@ public class AIRandom extends AI {
     public AIRandom(String name){
         super(name);
     }
-    public AIRandom(){}
 
     @Override
     public void play() {
-        Logger.printSeparator(getName());
+
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
-        Random rand = new Random();
 
         getInventory().resetActionHolder();
         if (compteur++ != 0) Dice.rollDice(this);

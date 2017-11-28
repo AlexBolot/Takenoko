@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
+import static Oka.utils.Logger.printStat;
+
 public class App
 {
     public static void main (String[] args)
@@ -77,12 +79,7 @@ public class App
                 else
                     System.out.printf("\n%.2f %% d'égalité", (float) (entry.getValue()[0] * 100) / (float) answer);
             }
-            System.out.println();
-            System.out.println("Tour moyen par game : "+ Stats.getNbTour()/answer);
-            System.out.println("Tour max : "+ Stats.getMaxTour());
-            System.out.println("Tour min : "+ Stats.getMinTour());
-            int[] StatGoal = Stats.getStatsGoal();
-            System.out.println("BambooGoal : "+ (float) StatGoal[0]/(float)answer+" GardenerGoal : "+ (float)StatGoal[1]/ (float)answer+" PlotGoal : "+ (float)StatGoal[2]/(float)answer);
+            printStat(answer);
         }
     }
 }
