@@ -60,25 +60,26 @@ public class AISimple extends AI
             if (getInventory().plotStates().size() > 0)
             {
                 //Action is consumed only if plotState could be placed
-                placePlotState();
+                if(placePlotState()) continue;
             }
             //We Randomly chose to either move the gardener, the panda, or place an irrigation or placePlot1
             switch (new Random().nextInt(4))
             {
                 case 0:
                     moveGardener();
-                    continue;
+                    break;
                 case 1:
                     movePanda();
-                    continue;
+                    break;
                 case 2:
                     if (drawChannel())
                     {
                         this.placeChannel();
                     }
-                    continue;
+                    break;
                 case 3:
                     placePlot();
+                    break;
             }
         }
 
@@ -167,11 +168,8 @@ public class AISimple extends AI
         Irrigation irg = (Irrigation) irrigations.toArray()[0];
         if (board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords()))
         {
-            Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " + irg.getPlot1()
-                                                                                                         .getCoords()
-                                                                                                         .toString() + ' ' + irg.getPlot2()
-                                                                                                                                .getCoords()
-                                                                                                                                .toString());
+            Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " +
+                    irg.getPlot1().getCoords().toString() + ' ' + irg.getPlot2().getCoords().toString());
             getInventory().removeChannel();
             return true;
         }
@@ -322,16 +320,15 @@ public class AISimple extends AI
 
         //On choisit un carte aléatoire parmis les trois car ou moins envoyé par la pioche plot
         int randInt = rand.nextInt(draw.size());
-        Plot plot = draw.get(randInt);
+        Plot plot = draw.remove(randInt);
 
         // Toujours penser remettre les cartes dans la pioche après avoir pioché ;)
-        draw.remove(randInt);
         DrawStack.getInstance().giveBackPlot(draw);
 
         ArrayList<Point> free = board.getAvailableSlots();
         plot.setCoords(free.get(0));
         board.addCell(plot);
-        //Logger.printLine(getName() + " placed : " + plot);
+
         Logger.printLine(getName() + " a placé : " + plot);
         getInventory().getActionHolder().consumeAction(Enums.Action.placePlot);
         return true;
@@ -645,7 +642,6 @@ public class AISimple extends AI
             }
         }
             return false;
-
 
     }
 

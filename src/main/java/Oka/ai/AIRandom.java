@@ -9,13 +9,17 @@ import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Irrigation;
 import Oka.model.Vector;
-import Oka.model.goal.Goal;
+import Oka.model.goal.*;
 import Oka.model.plot.Plot;
+import Oka.model.plot.state.EnclosureState;
+import Oka.model.plot.state.FertilizerState;
+import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AIRandom extends AI {
     private int compteur = 0;
@@ -29,7 +33,6 @@ public class AIRandom extends AI {
     public void play() {
         Logger.printSeparator(getName());
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
-        Random rand = new Random();
 
         getInventory().resetActionHolder();
         if (compteur++ != 0) Dice.rollDice(this);
@@ -40,7 +43,7 @@ public class AIRandom extends AI {
             if (turn++ > 30) break;
 
             //Pick a new goal if has no more unvalidated goals or only has PlotGoals
-            if (rand.nextInt(1)==1)
+            if (hasToPickGoal())
             {
                 /* For now we pick a random goal
                 Action is consumed only if pickGoal could be achieved*/
@@ -51,25 +54,26 @@ public class AIRandom extends AI {
             if (getInventory().plotStates().size() > 0)
             {
                 //Action is consumed only if plotState could be placed
-                placePlotState();
+                if(placePlotState()) continue;
             }
             //We Randomly chose to either move the gardener, the panda, or place an irrigation or placePlot1
             switch (new Random().nextInt(4))
             {
                 case 0:
                     moveGardener();
-                    continue;
+                    break;
                 case 1:
                     movePanda();
-                    continue;
+                    break;
                 case 2:
                     if (drawChannel())
                     {
-                        this.placeChannel();
+                        placeChannel();
                     }
-                    continue;
+                    break;
                 case 3:
                     placePlot();
+                    break;
             }
         }
 
@@ -78,9 +82,19 @@ public class AIRandom extends AI {
                 getInventory().bambooHolder().countBamboo(Enums.Color.GREEN),
                 getInventory().bambooHolder().countBamboo(Enums.Color.YELLOW),
                 getInventory().bambooHolder().countBamboo(Enums.Color.PINK)));
+    }
+    /**
+     * @return True : if the AI doesn't succeed to validate some goal or if it doesn't have any goal in his inventory.
+     * <br> False : if the AI has goal and isn't stuck.
+     */
+    protected boolean hasToPickGoal ()
+    {
+        ArrayList<Goal> invalidGoals = getInventory().validatedGoals(false);
 
-        getInventory().addTurnWithoutPickGoal();
+        boolean hasNoGoalLeft = invalidGoals.size() == 0 ;
+        boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 10;
 
+        return (hasNoGoalLeft || isKindaStuck) && invalidGoals.size()<5;
     }
 
     private boolean placePlotState() {
@@ -127,7 +141,6 @@ public class AIRandom extends AI {
             getInventory().resetTurnWithoutPickGoal();
             return true;
         }
-
         return false;
     }
 
@@ -191,9 +204,9 @@ public class AIRandom extends AI {
         DrawStack.getInstance().giveBackPlot(draw);
 
         ArrayList<Point> free = board.getAvailableSlots();
-        plot.setCoords(free.get(/*rand.nextInt(free.size())*/0));
+        plot.setCoords(free.get(0));
         board.addCell(plot);
-        //Logger.printLine(getName() + " placed : " + plot);
+
         Logger.printLine(getName() + " a placé : " + plot);
         getInventory().getActionHolder().consumeAction(Enums.Action.placePlot);
         return true;
@@ -226,8 +239,8 @@ public class AIRandom extends AI {
                     .toString() + ' ' + irg.getPlot2()
                     .getCoords()
                     .toString());
-            getInventory().removeChannel();
 
+            getInventory().removeChannel();
             return true;
         }
         return false;
@@ -238,7 +251,7 @@ public class AIRandom extends AI {
         GameBoard gameBoard = GameBoard.getInstance();
         HashMap<Point, Cell> grid = gameBoard.getGrid();
         Point currentPoint = entity.getCoords();
-        grid.keySet().removeIf(point -> !(point.equals(currentPoint) || !(grid.get(point) instanceof Plot))
+        grid.keySet().stream().filter(point -> !(point.equals(currentPoint) || !(grid.get(point) instanceof Plot))
                                             && Vector.areAligned(entity.getCoords(), point)
                                             &&  ((Plot)grid.get(point)).getBamboo().size() == bambooSize);
 
@@ -260,10 +273,40 @@ public class AIRandom extends AI {
 
     @Override
     protected void placeBambooOnPlot() {
+        List<Plot> plots = GameBoard.getInstance().getPlots();
+        Plot plot = plots.get(new Random().nextInt(plots.size()));
+        plot.addBamboo();
+        Logger.printLine(getName() + " a placé un bamboo sur : " + plot);
     }
 
     @Override
     public boolean choosePlotState() {
+
+        Enums.State[] values = Enums.State.values().clone();
+        ArrayList<Enums.State> valuesarray = new ArrayList<>(Arrays.asList(values));
+        valuesarray.remove(Enums.State.Neutral);
+        Collections.shuffle(valuesarray);
+        for(Enums.State state : valuesarray) {
+            switch (state) {
+                case Pond:
+                    Optional<PondState> optPond = DrawStack.getInstance().drawPondState();
+                    optPond.ifPresent(pondState -> getInventory().addPlotState(pondState));
+                    if (optPond.isPresent()) return true;
+                    break;
+
+                case Enclosure:
+                    Optional<EnclosureState> optEnclosure = DrawStack.getInstance().drawEnclosureState();
+                    optEnclosure.ifPresent(enclosureState -> getInventory().addPlotState(enclosureState));
+                    if (optEnclosure.isPresent()) return true;
+                    break;
+
+                case Fertilizer:
+                    Optional<FertilizerState> optFertilizer = DrawStack.getInstance().drawFertilizerState();
+                    optFertilizer.ifPresent(fertilizerState -> getInventory().addPlotState(fertilizerState));
+                    if (optFertilizer.isPresent()) return true;
+                    break;
+            }
+        }
         return false;
     }
 }
