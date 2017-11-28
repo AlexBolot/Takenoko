@@ -1,7 +1,7 @@
 package Oka.utils;
 
 import java.io.PrintStream;
-import java.util.HashMap;
+import java.util.stream.IntStream;
 
 public class Logger
 {
@@ -47,6 +47,38 @@ public class Logger
     //endregion
 
     //region==========METHODS==============
+
+    public static void printPorgress (int actual, int total)
+    {
+        int scale = 50;
+        int percent = ((actual + 1) * scale / total);
+        int space = 6;
+
+        int sideLength = (scale - space) / 2;
+
+        StringBuilder str = new StringBuilder();
+
+        str.append("\r[");
+
+        //Left Side
+        int right = Math.min(percent, sideLength);
+        IntStream.range(0, right).mapToObj(i1 -> "=").forEach(str::append);
+        IntStream.range(0, sideLength - right).mapToObj(i -> " ").forEach(str::append);
+
+        //Center
+        IntStream.range(0, 4 - countDigits(percent * 2)).mapToObj(i -> " ").forEach(str::append);
+        str.append(percent * 2).append("% ");
+
+        //Right Side
+        int left = Math.max(0, percent - sideLength - 6);
+        IntStream.range(0, left).mapToObj(i -> "=").forEach(str::append);
+        IntStream.range(0, sideLength - left).mapToObj(i -> " ").forEach(str::append);
+
+        //End
+        str.append("] ").append(actual + 1).append("/").append(total);
+
+        System.out.print(str.toString());
+    }
 
     /**
      <hr>
@@ -133,20 +165,22 @@ public class Logger
      */
     public static void printWin (String playerName)
     {
-        if (loggerMode == 1){
+        if (loggerMode == 1)
+        {
             // printStream.println("\n" + playerName + " WINS !!!");
             printStream.println("\n" + playerName + " A GAGNÉ !!!");
         }
     }
+
     /**
      <hr>
      <h3>Prints the draw"</h3>
      <hr>
-
      */
     public static void printDraw ()
     {
-        if (loggerMode == 1){
+        if (loggerMode == 1)
+        {
             // printStream.println("\n" + playerName + " WINS !!!");
             printStream.println("\n  EGALITÉ !!!");
         }
@@ -163,6 +197,19 @@ public class Logger
     public static void setLoggerMode (int i)
     {
         loggerMode = i;
+    }
+
+    private static int countDigits (int i)
+    {
+        int count = 1;
+
+        while (i / 10 != 0)
+        {
+            i /= 10;
+            count++;
+        }
+
+        return count;
     }
     //endregion
 }

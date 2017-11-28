@@ -62,7 +62,7 @@ public class App
                 //AISimple IL = new AISimple("AISimple2");
                 AIRandom IL = new AIRandom("AIRandom");
 
-                if (i % 100 == 0) System.out.println("Tour:" + i);
+                Logger.printPorgress(i, answer);
 
                 ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
