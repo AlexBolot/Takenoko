@@ -42,7 +42,7 @@ public class Enums
     {
         movePanda,
         moveGardener,
-        drawChannel,
+        drawIrrigation,
         drawPlotState,
         drawGoal,
         placePlot

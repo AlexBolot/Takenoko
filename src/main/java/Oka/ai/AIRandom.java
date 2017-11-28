@@ -27,11 +27,10 @@ public class AIRandom extends AI {
     public AIRandom(String name){
         super(name);
     }
-    public AIRandom(){}
 
     @Override
     public void play() {
-        Logger.printSeparator(getName());
+
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
 
         getInventory().resetActionHolder();
@@ -66,11 +65,11 @@ public class AIRandom extends AI {
                     movePanda();
                     break;
                 case 2:
-                    if (drawChannel())
+                    if (drawIrrigation())
                     {
-                        placeChannel();
+                        this.placeIrrigation();
                     }
-                    break;
+                    continue;
                 case 3:
                     placePlot();
                     break;
@@ -212,23 +211,23 @@ public class AIRandom extends AI {
         return true;
     }
 
-    protected boolean drawChannel() {
-        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawChannel)) return false;
+    protected boolean drawIrrigation () {
+        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawIrrigation)) return false;
 
-        Optional<Irrigation> irrigation = DrawStack.getInstance().drawChannel();
+        Optional<Irrigation> irrigation = DrawStack.getInstance().drawIrrigation();
 
         if (!irrigation.isPresent()) return false;
 
-        getInventory().addChannel();
-        getInventory().getActionHolder().consumeAction(Enums.Action.drawChannel);
+        getInventory().addIrrigation();
+        getInventory().getActionHolder().consumeAction(Enums.Action.drawIrrigation);
         return true;
     }
 
-    protected boolean placeChannel() {
-        if (!getInventory().hasChannel()) return false;
+    protected boolean placeIrrigation () {
+        if (!getInventory().hasIrrigation()) return false;
 
         GameBoard board = GameBoard.getInstance();
-        Set<Irrigation> irrigations = board.getAvailableChannelSlots();
+        Set<Irrigation> irrigations = board.getAvailableIrrigationSlots();
         if (irrigations.size() == 0) return false;
 
         Irrigation irg = (Irrigation) irrigations.toArray()[0/*new Random().nextInt(irrigations.size())*/];
@@ -239,8 +238,7 @@ public class AIRandom extends AI {
                     .toString() + ' ' + irg.getPlot2()
                     .getCoords()
                     .toString());
-
-            getInventory().removeChannel();
+            getInventory().removeIrrigation();
             return true;
         }
         return false;

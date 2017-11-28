@@ -391,7 +391,7 @@ public class GameBoard
 
      @return Set of available irrigations
      */
-    public Set<Irrigation> getAvailableChannelSlots ()
+    public Set<Irrigation> getAvailableIrrigationSlots ()
     {
         Set<Irrigation> availableIrrigations = new HashSet<>();
 
@@ -426,9 +426,9 @@ public class GameBoard
     }
     //endregion
 
-    public Irrigation getClosestAvailableChannelSlot (Plot plot)
+    public Irrigation getClosestAvailableIrrigationSlot (Plot plot)
     {
-        ArrayList<Irrigation> availableIrrigations = new ArrayList<>(getAvailableChannelSlots());
+        ArrayList<Irrigation> availableIrrigations = new ArrayList<>(getAvailableIrrigationSlots());
 
         availableIrrigations.sort(Comparator.comparing(irrigation -> {
             int distance1 = Vector.findVector(irrigation.getPlot1().getCoords(), plot.getCoords()).length();

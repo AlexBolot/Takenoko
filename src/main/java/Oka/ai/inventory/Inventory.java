@@ -29,7 +29,7 @@ public class Inventory
     private BambooHolder    bambooHolder         = new BambooHolder();
     private GoalHolder      goalHolder           = new GoalHolder();
     private PlotStateHolder plotStateHolder      = new PlotStateHolder();
-    private int             channels             = 0;
+    private int irrigations = 0;
     private int             turnsWithoutPickGoal = 0;
     private ActionHolder    actionHolder         = new ActionHolder();
 
@@ -64,9 +64,9 @@ public class Inventory
         this.plotStateHolder.add(plotState);
     }
 
-    public void addChannel ()
+    public void addIrrigation ()
     {
-        channels++;
+        irrigations++;
     }
     //endregion
 
@@ -106,19 +106,19 @@ public class Inventory
         turnsWithoutPickGoal = 0;
     }
 
-    public int getChannelAmount ()
+    public int getIrrigationAmount ()
     {
-        return channels;
+        return irrigations;
     }
 
-    public boolean hasChannel ()
+    public boolean hasIrrigation ()
     {
-        return channels > 0;
+        return irrigations > 0;
     }
 
-    public void removeChannel ()
+    public void removeIrrigation ()
     {
-        channels--;
+        irrigations--;
     }
 
     public void resetActionHolder(){

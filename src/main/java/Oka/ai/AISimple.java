@@ -72,9 +72,9 @@ public class AISimple extends AI
                     movePanda();
                     break;
                 case 2:
-                    if (drawChannel())
+                    if (drawIrrigation())
                     {
-                        this.placeChannel();
+                        this.placeIrrigation();
                     }
                     break;
                 case 3:
@@ -108,33 +108,33 @@ public class AISimple extends AI
     }
 
     /**
-     * @return True : if the AI succeeds to draw a channel
+     * @return True : if the AI succeeds to draw an irrigation
      * <br> False : if the AI has no more action left or there is no irrigation left.
      */
-    protected boolean drawChannel ()
+    protected boolean drawIrrigation ()
     {
-        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawChannel)) return false;
+        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawIrrigation)) return false;
 
-        Optional<Irrigation> irrigation = DrawStack.getInstance().drawChannel();
+        Optional<Irrigation> irrigation = DrawStack.getInstance().drawIrrigation();
 
         if (!irrigation.isPresent()) return false;
 
-        getInventory().addChannel();
-        getInventory().getActionHolder().consumeAction(Enums.Action.drawChannel);
+        getInventory().addIrrigation();
+        getInventory().getActionHolder().consumeAction(Enums.Action.drawIrrigation);
         return true;
     }
 
     /**
-     Place the channel in a random manner, mainly to the first available spots it detects
+     Place the irrigation in a random manner, mainly to the first available spots it detects
 
-     @return true if a channel have been placed
+     @return true if an irrigation have been placed
      */
-    protected boolean placeChannel ()
+    protected boolean placeIrrigation ()
     {
-        if (!getInventory().hasChannel()) return false;
+        if (!getInventory().hasIrrigation()) return false;
 
         GameBoard board = GameBoard.getInstance();
-        Set<Irrigation> irrigations = board.getAvailableChannelSlots();
+        Set<Irrigation> irrigations = board.getAvailableIrrigationSlots();
         if (irrigations.size() == 0) return false;
 
         Optional<Color> color = findInterestingColor(this.getInventory().goalHolder());
@@ -155,7 +155,7 @@ public class AISimple extends AI
 
                 if (board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords()))
                 {
-                    getInventory().removeChannel();
+                    getInventory().removeIrrigation();
                     Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " + irg.getPlot1()
                                                                                                                  .getCoords()
                                                                                                                  .toString() + ' ' + irg.getPlot2()
@@ -170,7 +170,8 @@ public class AISimple extends AI
         {
             Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " +
                     irg.getPlot1().getCoords().toString() + ' ' + irg.getPlot2().getCoords().toString());
-            getInventory().removeChannel();
+            getInventory().removeIrrigation();
+
             return true;
         }
         return false;
@@ -642,6 +643,7 @@ public class AISimple extends AI
             }
         }
             return false;
+
 
     }
 

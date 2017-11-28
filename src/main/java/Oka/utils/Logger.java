@@ -2,6 +2,7 @@ package Oka.utils;
 
 import java.io.PrintStream;
 import java.util.stream.IntStream;
+import java.util.stream.IntStream;
 
 public class Logger
 {
@@ -210,6 +211,16 @@ public class Logger
         }
 
         return count;
+    }
+
+    public static void printStat(int nbParti){
+        System.out.println(" ");
+        System.out.println("Tour moyen par game : "+ Stats.getNbTour()/nbParti);
+        System.out.println("Tour max : "+ Stats.getMaxTour());
+        System.out.println("Tour min : "+ Stats.getMinTour());
+        int[] StatGoal = Stats.getStatsGoal();
+        System.out.println("BambooGoal : "+ (float) StatGoal[0]/(float)nbParti+" GardenerGoal : "+ (float)StatGoal[1]/ (float)nbParti+" PlotGoal : "+ (float)StatGoal[2]/(float)nbParti);
+
     }
     //endregion
 }
