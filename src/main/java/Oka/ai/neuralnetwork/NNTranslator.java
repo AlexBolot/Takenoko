@@ -245,7 +245,7 @@ public class NNTranslator
 
         addGoalHolder(inventory.goalHolder(), playable);
 
-        addIrrigations(inventory.getChannelAmount());
+        addIrrigations(inventory.getIrrigationAmount());
     }
 
     private void addActionHolder (ActionHolder actionHolder)
@@ -253,7 +253,7 @@ public class NNTranslator
         addValue(.5d * actionHolder.get(moveGardener));
         addValue(.5d * actionHolder.get(movePanda));
         addValue(.5d * actionHolder.get(drawGoal));
-        addValue(.5d * actionHolder.get(drawChannel));
+        addValue(.5d * actionHolder.get(drawIrrigation));
         addValue(.5d * actionHolder.get(placePlot));
     }
 

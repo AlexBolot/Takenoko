@@ -22,10 +22,8 @@ import Oka.entities.Panda;
 import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
-import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
 import Oka.utils.Cleaner;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,13 +111,13 @@ public class AISimpleTest {
         Cleaner.clearAll();
 
         AISimple ai = new AISimple("Momo");
-        Assert.assertTrue(ai.drawChannel());
-        assertTrue(ai.getInventory().hasChannel());
+        Assert.assertTrue(ai.drawIrrigation());
+        assertTrue(ai.getInventory().hasIrrigation());
 
         for (int i = 0; i < 19; i++) {
-            DrawStack.getInstance().drawChannel();
+            DrawStack.getInstance().drawIrrigation();
         }
-        assertFalse(ai.drawChannel());
+        assertFalse(ai.drawIrrigation());
     }
 
     @Test
@@ -133,12 +131,12 @@ public class AISimpleTest {
         board.addCell(plot10G);
 
         AISimple roger = new AISimple("Roger");
-        roger.drawChannel();
+        roger.drawIrrigation();
         BambooGoal bg = new BambooGoal(3, 3, Enums.Color.GREEN);
 
         roger.getInventory().goalHolder().add(bg);
 
-        assertTrue(roger.placeChannel());
+        assertTrue(roger.placeIrrigation());
 
         assertTrue(board.verifIrrigation(new Point(1, 0), new Point(0, 1)));
 
@@ -161,9 +159,9 @@ public class AISimpleTest {
 
         AISimple roger = new AISimple("Roger");
 
-        roger.drawChannel();
+        roger.drawIrrigation();
         roger.getInventory().resetActionHolder();
-        roger.drawChannel();
+        roger.drawIrrigation();
 
 
         BambooGoal bg = new BambooGoal(3, 3, Enums.Color.YELLOW);
@@ -171,9 +169,9 @@ public class AISimpleTest {
         board.addIrrigation(new Point(1, 1), new Point(1, 0));
         roger.getInventory().goalHolder().add(bg);
 
-        assertTrue(roger.placeChannel());
+        assertTrue(roger.placeIrrigation());
         assertTrue(board.verifIrrigation(new Point(1, 1), new Point(0, 1)));
-        assertTrue(roger.placeChannel());
+        assertTrue(roger.placeIrrigation());
         assertTrue(board.verifIrrigation(new Point(1, 1), new Point(0, 2)));
 
     }

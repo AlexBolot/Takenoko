@@ -27,7 +27,7 @@ public class DrawStack
     private        ArrayList<BambooGoal>   listBambooGoal    = new ArrayList<>();
     private        ArrayList<GardenerGoal> listGardenerGoal  = new ArrayList<>();
     private        ArrayList<PlotGoal>     listPlotGoal      = new ArrayList<>();
-    private        int                     remainingChannels = 20;
+    private        int remainingIrrigation = 20;
     private        int                     fertilizerStates  = 3;
     private        int                     pondStates        = 3;
     private        int                     enclosureStates   = 3;
@@ -124,14 +124,14 @@ public class DrawStack
     }
 
     /**
-     returns an optional irrigation channel if one can be drawn from the stack
+     returns an optional irrigation if one can be drawn from the stack
 
      @return Optional irrigation
      */
-    public Optional<Irrigation> drawChannel ()
+    public Optional<Irrigation> drawIrrigation ()
     {
-        if (remainingChannels < 1) return Optional.empty();
-        remainingChannels--;
+        if (remainingIrrigation < 1) return Optional.empty();
+        remainingIrrigation--;
         return Optional.of(new Irrigation());
     }
 

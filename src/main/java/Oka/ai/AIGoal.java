@@ -273,7 +273,7 @@ public class AIGoal extends AI
      <li>Only consider plots of goal's color and accessible by the panda</li>
      <li>Try to send the panda on plots with bamboo</li>
      <li>Try to send the gardner, then the panda on plots without bamboo (if irrigated)</li>
-     <li>Try to place a channel to irrigate the closest plot to the pond</li>
+     <li>Try to place an irrigation to irrigate the closest plot to the pond</li>
      </ol>
      </h3>
      <hr>
@@ -322,13 +322,13 @@ public class AIGoal extends AI
 
         // 6 - We then try to irrigate the closest
         // interesting point to the Pond (easier to irrigate)
-        if (drawChannel())
+        if (drawIrrigation())
         {
             plots.sort(Comparator.comparing(plot -> Vector.findStraightVector(plot.getCoords(), new Pond().getCoords()).length()));
 
             for (Plot plot : plots)
             {
-                if (placeChannel(plot)) return true;
+                if (placeIrrigation(plot)) return true;
             }
         }
 
@@ -343,7 +343,7 @@ public class AIGoal extends AI
      <li>Only consider plots of goal's color and accessible by the gardener</li>
      <li>Sort plots according to bamboo amount and PlotState</li>
      <li>Try to send the gardener the plots</li>
-     <li>Try to place a channel to irrigate the closest plot to the pond</li>
+     <li>Try to place an irrigation to irrigate the closest plot to the pond</li>
      </ol>
      </h3>
      <hr>
@@ -403,13 +403,13 @@ public class AIGoal extends AI
 
         // 6 - We then try to irrigate the closest
         // interesting point to the Pond (easier to irrigate)
-        if (drawChannel())
+        if (drawIrrigation())
         {
             plots.sort(Comparator.comparing(plot -> Vector.findStraightVector(plot.getCoords(), new Pond().getCoords()).length()));
 
             for (Plot plot : plots)
             {
-                if (placeChannel(plot)) return true;
+                if (placeIrrigation(plot)) return true;
             }
         }
 
@@ -495,25 +495,25 @@ public class AIGoal extends AI
     /**
      <hr>
      <h3>
-     Place the channel on the plot parameter
+     Place the irrigation on the plot parameter
      </h3>
      <hr>
 
-     @param plot Plot to place a channel onto.
-     @return true if a channel have been placed
+     @param plot Plot to place an irrigation onto.
+     @return true if an irrigation have been placed
      */
-    private boolean placeChannel (Plot plot)
+    private boolean placeIrrigation (Plot plot)
     {
-        // 1 - If we don't have a channel to place, quit.
-        if (!getInventory().hasChannel()) return false;
+        // 1 - If we don't have an irrigation to place, quit.
+        if (!getInventory().hasIrrigation()) return false;
 
         // 2 - Find the closest irrigation slot available
-        Irrigation irrig = GameBoard.getInstance().getClosestAvailableChannelSlot(plot);
+        Irrigation irrig = GameBoard.getInstance().getClosestAvailableIrrigationSlot(plot);
 
-        // 3 - Try to place the channel
+        // 3 - Try to place the irrigation
         if (GameBoard.getInstance().addIrrigation(irrig.getPlot1().getCoords(), irrig.getPlot2().getCoords()))
         {
-            getInventory().removeChannel();
+            getInventory().removeIrrigation();
             Logger.printLine(String.format("%s à placé une irrigation entre les deux plots suivants : %s %s",
                                            getName(),
                                            irrig.getPlot1().getCoords().toString(),
@@ -524,14 +524,14 @@ public class AIGoal extends AI
         return false;
     }
 
-    private boolean drawChannel ()
+    private boolean drawIrrigation ()
     {
-        if (!getInventory().getActionHolder().hasActionsLeft(drawChannel)) return false;
+        if (!getInventory().getActionHolder().hasActionsLeft(drawIrrigation)) return false;
 
-        if (DrawStack.getInstance().drawChannel().isPresent())
+        if (DrawStack.getInstance().drawIrrigation().isPresent())
         {
-            getInventory().addChannel();
-            getInventory().getActionHolder().consumeAction(drawChannel);
+            getInventory().addIrrigation();
+            getInventory().getActionHolder().consumeAction(drawIrrigation);
 
             return true;
         }
