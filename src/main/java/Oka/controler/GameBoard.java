@@ -411,7 +411,7 @@ public class GameBoard
 
             neightboors = getCommonNeighboors(irg.getPlot1().getCoords(), irg.getPlot2().getCoords());
 
-            neightboors.stream().filter(cell -> !cell.getCoords().equals(new Point())).forEach(plot -> {
+            neightboors.stream().filter(cell -> !(cell.getCoords().equals(new Point()))).forEach(plot -> {
 
                 if (!verifIrrigation(plot.getCoords(), irg.getPlot1().getCoords()))
                     availableIrrigations.add(new Irrigation((Plot) plot,irg.getPlot1()));

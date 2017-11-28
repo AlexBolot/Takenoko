@@ -42,7 +42,7 @@ public class GameController
         return currentPlayer;
     }
 
-    public void setCurrentPlayer (AISimple currentPlayer)
+    public void setCurrentPlayer (AI currentPlayer)
     {
         this.currentPlayer = currentPlayer;
     }
@@ -70,6 +70,7 @@ public class GameController
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
             Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
+            Logger.printLine("Grid :"+ GameBoard.getInstance().getGrid().keySet().toString());
 
             for (int i = 0; i < playable.size(); i++)
             {

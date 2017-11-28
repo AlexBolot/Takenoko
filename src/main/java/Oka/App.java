@@ -43,7 +43,8 @@ public class App
             GameController gc = GameController.getInstance();
 
             AISimple AM = new AISimple("AISimple1");
-            AISimple IL = new AISimple("AISimple2");
+           // AISimple IL = new AISimple("AISimple2");
+            AIRandom IL = new AIRandom("AIRandom");
 
             ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
@@ -58,7 +59,8 @@ public class App
                 GameController gc = GameController.getInstance();
 
                 AISimple AM = new AISimple("AISimple1");
-                AISimple IL = new AISimple("AISimple2");
+                //AISimple IL = new AISimple("AISimple2");
+                AIRandom IL = new AIRandom("AIRandom");
 
                 if (i % 100 == 0) System.out.println("Tour:" + i);
 
