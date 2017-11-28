@@ -41,32 +41,38 @@ public class PlotGoal extends Goal {
         this.linkedGoals = linkedGoals;
     }
 
-    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public boolean validate(Optional<Point> coords) {
+    /**
+     @param coords take coords of plot in the grid.
+     @return true if it succeeds to validate a plotgoal.
+     */
+    @SuppressWarnings ("OptionalUsedAsFieldOrParameterType")
+    public boolean validate (Optional<Point> coords)
+    {
         HashMap<Point, Cell> grid = GameBoard.getInstance().getGrid();
 
         if (coords.isPresent()) {
             Cell cell = grid.get(coords.get());
 
-            return !(cell == null) && !cell.getCoords().equals(new Point()) && ((Plot) cell).getColor().equals(this.color) && ((Plot) cell).isIrrigated() && linkedGoals.entrySet()
+            return !(cell == null) && !cell.getCoords().equals(new Point()) && ((Plot) cell).getColor()
+                                                                                            .equals(this.color) && ((Plot) cell).isIrrigated() && linkedGoals
+                    .entrySet()
                     .stream()
-                    .allMatch(
-                            entry -> entry.getValue()
-                                    .validate(Optional.of(entry.getKey().applyVector(coords.get()))));
+                    .allMatch(entry -> entry.getValue().validate(Optional.of(entry.getKey().applyVector(coords.get()))));
         }
 
         boolean b = grid.keySet().stream().anyMatch(p -> this.validate(Optional.of(p)));
-        if (!b && !this.isSymetric)
-            b = this.symmetrics().stream().anyMatch(plotGoal -> plotGoal.validate(Optional.empty()));
+        if (!b && !this.isSymetric) b = this.symmetrics().stream().anyMatch(plotGoal -> plotGoal.validate(Optional.empty()));
         setValidated(b);
         return b;
 
     }
 
-    public ArrayList<PlotGoal> symmetrics() {
+    public ArrayList<PlotGoal> symmetrics ()
+    {
         ArrayList<PlotGoal> symetrics = new ArrayList<>();
         PlotGoal rotated = this.rotated();
-        while (!equals(rotated)) {
+        while (!equals(rotated))
+        {
             rotated.setSymetric(true);
             symetrics.add(rotated);
             rotated = rotated.rotated();
@@ -74,8 +80,8 @@ public class PlotGoal extends Goal {
         return symetrics;
     }
 
-
-    public PlotGoal rotated() {
+    public PlotGoal rotated ()
+    {
         HashMap<Vector, PlotGoal> rotatedSubGoals = new HashMap<>();
         this.linkedGoals.entrySet().forEach(entry -> {
             Vector v = entry.getKey().clone();
@@ -85,6 +91,7 @@ public class PlotGoal extends Goal {
         PlotGoal rotated = new PlotGoal(this.getValue(), this.color, rotatedSubGoals);
         return rotated;
     }
+
 
 
     /**
@@ -161,6 +168,33 @@ public class PlotGoal extends Goal {
         this.isSymetric = is;
     }
 
+    public int getSize ()
+    {
+        return 1 + linkedGoals.values().stream().mapToInt(PlotGoal::getSize).sum();
+    }
+
+    public HashMap<Enums.Color, Integer> getColors ()
+    {
+        HashMap<Enums.Color, Integer> map = new HashMap<>();
+
+        map.put(color, 1);
+
+        for (PlotGoal plotGoal : linkedGoals.values())
+        {
+            Enums.Color color = plotGoal.color;
+
+            if (map.containsKey(color)) map.replace(color, map.get(color) + 1);
+            else map.put(color, 1);
+        }
+
+        return map;
+    }
+
+    public double getRatio ()
+    {
+        return sigmoid(getValue() / getSize());
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof PlotGoal)) return false;
@@ -173,13 +207,19 @@ public class PlotGoal extends Goal {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder(getClass().getSimpleName() + "  ");
+    public String toString ()
+    {
+        StringBuilder b = new StringBuilder(getClass().getSimpleName() + " ->value : " + this.getValue());
 
         if (this.linkedGoals.size() == 0) b.append(color);
         else {
+        /*if (this.linkedGoals.size() == 0) b.append(color);
+        else
+        {
             b.append(color);
             b.append(" ");
             linkedGoals.forEach((key, value) -> b.append(" ").append(key).append(" ").append(value));
-        }
+        }*/
         return b.toString();
     }
 }

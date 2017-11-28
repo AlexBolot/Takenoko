@@ -12,6 +12,9 @@ public class EnclosureState extends NeutralState
     }
 
     @Override
+    /**
+     * @return false because the enclosurestate doesn't allow the panda to eat bamboo.
+     */
     public boolean authorizationGetBamboo ()
     {
         return false;

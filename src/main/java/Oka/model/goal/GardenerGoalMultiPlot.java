@@ -11,9 +11,9 @@ public class GardenerGoalMultiPlot extends GardenerGoal
 {
     private int plotAmount;
 
-    public GardenerGoalMultiPlot (int value, int bambooAmount, Enums.Color color, NeutralState State, int plotAmount)
+    public GardenerGoalMultiPlot (int value, int bambooAmount, Enums.Color color, NeutralState state, int plotAmount)
     {
-        super(value, bambooAmount, color, State);
+        super(value, bambooAmount, color, state);
         this.plotAmount = plotAmount;
     }
 
@@ -23,6 +23,9 @@ public class GardenerGoalMultiPlot extends GardenerGoal
     }
 
     @Override
+    /**
+     * A method which tries to validate the goal
+     */
     public boolean validate ()
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();

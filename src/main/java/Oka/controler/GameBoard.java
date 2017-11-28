@@ -24,15 +24,18 @@ public class GameBoard
     //region==========CONSTRUCTORS=========
     private GameBoard ()
     {
-        availableSlots.add(new Point());
+        grid           = new HashMap<>();
+        availableSlots = new ArrayList<>();
+        irrigation     = new HashSet<>();
 
+        availableSlots.add(new Point());
         // On initialise les cases disponibles.
-        availableSlots.add(new Point(0,1));
-        availableSlots.add(new Point(0,-1));
-        availableSlots.add(new Point(1,0));
-        availableSlots.add(new Point(-1,0));
-        availableSlots.add(new Point(1,-1));
-        availableSlots.add(new Point(-1,1));
+        availableSlots.add(new Point(0, 1));
+        availableSlots.add(new Point(0, -1));
+        availableSlots.add(new Point(1, 0));
+        availableSlots.add(new Point(-1, 0));
+        availableSlots.add(new Point(1, -1));
+        availableSlots.add(new Point(-1, 1));
 
         addCell(new Pond());
     }
@@ -54,13 +57,9 @@ public class GameBoard
         this.grid = grid;
     }
 
-    /**
-     should return all the possible slots where a tile may be layed
-     @return ArrayList
-     */
-    public ArrayList<Point> getAvailableSlots ()
+    public static void resetGameBoard ()
     {
-        return availableSlots;
+        ourInstance = new GameBoard();
     }
 
     public void setAvailableSlots (ArrayList<Point> availableSlots)
@@ -84,6 +83,16 @@ public class GameBoard
     }
     //endregion
 
+    /**
+     should return all the possible slots where a tile may be layed
+
+     @return ArrayList
+     */
+    public ArrayList<Point> getAvailableSlots ()
+    {
+        return availableSlots;
+    }
+
     //region==========METHODS==============
     public void addCell (Cell cell)
     {
@@ -92,34 +101,11 @@ public class GameBoard
 
         grid.put(cell.getCoords(), cell);
         availableSlots.remove(cell.getCoords());
-        if (distanceToPond(cell.getCoords()) == 1) {
+        if (distanceToPond(cell.getCoords()) == 1)
+        {
             ((Plot) cell).setIsIrrigated(true);
         }
         refreshAvailableSlots(cell);
-    }
-
-    public boolean addIrrigation(Point point1, Point point2)
-    {
-        assertIsOnGrid(point1);
-        assertIsOnGrid(point2);
-
-        if (!canPlaceIrigation(point1, point2)) {
-            return false;
-        }
-
-        if (point1.equals(new Pond().getCoords()) || point2.equals(new Pond().getCoords())) return false;
-
-        Plot plot1 = (Plot) grid.get(point1);
-        Plot plot2 = (Plot) grid.get(point2);
-
-        Irrigation irg = new Irrigation(plot1, plot2);
-
-        if (this.irrigation.contains(irg)) Logger.printLine("Déjà irrigué");
-        else this.irrigation.add(irg);
-
-        plot1.setIsIrrigated(true);
-        plot2.setIsIrrigated(true);
-        return true;
     }
 
     public boolean canPlaceIrigation (Point point1, Point point2)
@@ -323,12 +309,30 @@ public class GameBoard
         return false;
     }
 
-    int distanceToPond (Point point1)
+    public boolean addIrrigation (Point point1, Point point2)
     {
-        int z = -point1.x - point1.y;
-        return Math.max(Math.abs(point1.x), Math.max(Math.abs(point1.y), Math.abs(z)));
-    }
+        assertIsOnGrid(point1);
+        assertIsOnGrid(point2);
 
+        if (!canPlaceIrigation(point1, point2))
+        {
+            return false;
+        }
+
+        if (point1.equals(new Pond().getCoords()) || point2.equals(new Pond().getCoords())) return false;
+
+        Plot plot1 = (Plot) grid.get(point1);
+        Plot plot2 = (Plot) grid.get(point2);
+
+        Irrigation irg = new Irrigation(plot1, plot2);
+
+        if (this.irrigation.contains(irg)) Logger.printLine("Déjà irrigué");
+        else this.irrigation.add(irg);
+
+        plot1.setIsIrrigated(true);
+        plot2.setIsIrrigated(true);
+        return true;
+    }
 
     private void assertNotOnGrid (Point point)
     {
@@ -339,7 +343,8 @@ public class GameBoard
     private void assertIsOnGrid (Point point)
     {
         if (point == null) throw new IllegalArgumentException("Point is null");
-        if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
+        if (!grid.containsKey(point))
+            throw new IllegalArgumentException("The cell is not on the grid");
     }
 
     private void assertIsAvailable (Point point) throws IllegalArgumentException
@@ -348,13 +353,20 @@ public class GameBoard
         if (!availableSlots.contains(point)) throw new IllegalArgumentException("The slot is not available");
     }
 
+    //FIXME : Please use Vector.findStraightVector instead
+    @Deprecated
+    public int distanceToPond (Point point1)
+    {
+        int z = -point1.x - point1.y;
+        return Math.max(Math.abs(point1.x), Math.max(Math.abs(point1.y), Math.abs(z)));
+    }
+
     private void refreshAvailableSlots (Cell cell)
     {
         for (Point point : getEveryNeighboors(cell.getCoords()))
         {
-            if (!grid.containsKey(point) &&
-                    !availableSlots.contains(point) &&
-                    getCommonNeighboors(point,cell.getCoords()).size()>0){
+            if (!grid.containsKey(point) && !availableSlots.contains(point) && getCommonNeighboors(point, cell.getCoords()).size() > 0)
+            {
                 availableSlots.add(point);
             }
         }
@@ -362,11 +374,16 @@ public class GameBoard
 
     public boolean moveEntity (Entity entity, Point point)
     {
+        return canMoveEntity(entity, point) && entity.move(point);
+    }
+
+    public boolean canMoveEntity (Entity entity, Point point)
+    {
         if (entity == null) throw new IllegalArgumentException("Entity is null");
         if (point == null) throw new IllegalArgumentException("Point is null");
         if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
 
-        return Vector.areAligned(entity.getCoords(), point) && entity.move(point);
+        return Vector.areAligned(entity.getCoords(), point);
     }
 
     /**
@@ -374,10 +391,9 @@ public class GameBoard
 
      @return Set of available irrigations
      */
-    public Set<Irrigation> getAvailableChannelSlots ()
+    public Set<Irrigation> getAvailableIrrigationSlots ()
     {
-
-        Set<Irrigation> availableIrrigations = new HashSet<Irrigation>();
+        Set<Irrigation> availableIrrigations = new HashSet<>();
 
         ArrayList<Cell> neightboors;
 
@@ -395,13 +411,13 @@ public class GameBoard
 
             neightboors = getCommonNeighboors(irg.getPlot1().getCoords(), irg.getPlot2().getCoords());
 
-            neightboors.stream().filter(cell -> !cell.getCoords().equals(new Point())).forEach(plot -> {
+            neightboors.stream().filter(cell -> !(cell.getCoords().equals(new Point()))).forEach(plot -> {
 
-                if (!verifIrrigation(plot.getCoords(), irg.getPlot1().getCoords())) availableIrrigations.add(new Irrigation((Plot) plot,
-                                                                                                                            irg.getPlot1()));
+                if (!verifIrrigation(plot.getCoords(), irg.getPlot1().getCoords()))
+                    availableIrrigations.add(new Irrigation((Plot) plot,irg.getPlot1()));
 
-                if (!verifIrrigation(plot.getCoords(), irg.getPlot2().getCoords())) availableIrrigations.add(new Irrigation((Plot) plot,
-                                                                                                                            irg.getPlot2()));
+                if (!verifIrrigation(plot.getCoords(), irg.getPlot2().getCoords()))
+                    availableIrrigations.add(new Irrigation((Plot) plot,irg.getPlot2()));
 
             });
         }
@@ -410,7 +426,17 @@ public class GameBoard
     }
     //endregion
 
-    public static void resetGameBoard() {
-        ourInstance = new GameBoard();
+    public Irrigation getClosestAvailableIrrigationSlot (Plot plot)
+    {
+        ArrayList<Irrigation> availableIrrigations = new ArrayList<>(getAvailableIrrigationSlots());
+
+        availableIrrigations.sort(Comparator.comparing(irrigation -> {
+            int distance1 = Vector.findVector(irrigation.getPlot1().getCoords(), plot.getCoords()).length();
+            int distance2 = Vector.findVector(irrigation.getPlot2().getCoords(), plot.getCoords()).length();
+
+            return Math.min(distance1, distance2);
+        }));
+
+        return availableIrrigations.get(0);
     }
 }

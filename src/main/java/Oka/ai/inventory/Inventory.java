@@ -1,8 +1,11 @@
 package Oka.ai.inventory;
 
+import Oka.controler.DrawStack;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
+import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
+import Oka.model.goal.PlotGoal;
 import Oka.model.plot.state.NeutralState;
 
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ public class Inventory
     private BambooHolder    bambooHolder         = new BambooHolder();
     private GoalHolder      goalHolder           = new GoalHolder();
     private PlotStateHolder plotStateHolder      = new PlotStateHolder();
-    private int             channels             = 0;
+    private int irrigations = 0;
     private int             turnsWithoutPickGoal = 0;
     private ActionHolder    actionHolder         = new ActionHolder();
 
@@ -61,9 +64,9 @@ public class Inventory
         this.plotStateHolder.add(plotState);
     }
 
-    public void addChannel ()
+    public void addIrrigation ()
     {
-        channels++;
+        irrigations++;
     }
     //endregion
 
@@ -103,19 +106,19 @@ public class Inventory
         turnsWithoutPickGoal = 0;
     }
 
-    public int getChannelAmount ()
+    public int getIrrigationAmount ()
     {
-        return channels;
+        return irrigations;
     }
 
-    public boolean hasChannel ()
+    public boolean hasIrrigation ()
     {
-        return channels > 0;
+        return irrigations > 0;
     }
 
-    public void removeChannel ()
+    public void removeIrrigation ()
     {
-        channels--;
+        irrigations--;
     }
 
     public void resetActionHolder(){
@@ -126,6 +129,9 @@ public class Inventory
         return actionHolder;
     }
 
+    /**
+     * @return The number of point
+     */
     public int getValueOfGoalHolder(){
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
@@ -133,6 +139,10 @@ public class Inventory
         }
         return (s);
     }
+
+    /**
+     * @return The number of point for bamboogoal ( which determine draw or not )
+     */
     public int getValueOfBambooGoalHolder(){
         int s=0;
         for (Goal goall : goalHolder.getGoalValidated(true)){
@@ -141,5 +151,39 @@ public class Inventory
         }
         return (s);
     }
+
+    /**
+     * @param validate True : validatedgoal / False : notvalidatedgoal
+     * @return The number of goal by each category ( bamboogoal/gardenergoal/plotgoal )
+     */
+    public int[] getNbGoalByType(boolean validate){
+        int[] tab = new int[3];
+        for (Goal goall : goalHolder.getGoalValidated(validate)){
+            if(goall instanceof BambooGoal)
+                tab[0]++;
+            if(goall instanceof GardenerGoal)
+                tab[1]++;
+            if(goall instanceof PlotGoal)
+                tab[2]++;
+        }
+        return tab;
+    }
+
+    /**
+     * @return TODO théos, documente ça !
+     */
+    public Enums.GoalType getLessGoalType(){
+        int[] nbGoalByType = getNbGoalByType(false);
+        int min=5,
+            index=0;
+        for(int i=0; i<3; i++){
+            if(nbGoalByType[i]<min && DrawStack.getInstance().emptyGoalType(Enums.GoalType.values()[i])) {
+                min = nbGoalByType[i];
+                index = i;
+            }
+        }
+        return Enums.GoalType.values()[index];
+    }
+
     //endregion
 }

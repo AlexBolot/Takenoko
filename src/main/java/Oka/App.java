@@ -1,5 +1,7 @@
 package Oka;
 
+import Oka.ai.AI;
+import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
 import Oka.controler.GameController;
 import Oka.utils.Cleaner;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
+
+import static Oka.utils.Logger.printStat;
 
 public class App
 {
@@ -35,36 +39,36 @@ public class App
 
         Logger.setLoggerMode(answer);
 
+
         if (answer == 1)
         {
-
             GameController gc = GameController.getInstance();
 
-            AISimple AM = new AISimple("A.M Pinna");
-            AISimple IL = new AISimple("I.Litovksy");
+            AISimple AM = new AISimple("AISimple1");
+           // AISimple IL = new AISimple("AISimple2");
+            AIRandom IL = new AIRandom("AIRandom");
 
-            ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+            ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
             gc.play(Playable);
         }
-
         else
         {
-
             for (int i = 0; i < answer; i++)
             {
                 Cleaner.clearAll();
 
                 GameController gc = GameController.getInstance();
 
-                AISimple AM = new AISimple("A.M Pinna");
-                AISimple IL = new AISimple("I.Litovksy");
+                AISimple AM = new AISimple("AISimple1");
+                //AISimple IL = new AISimple("AISimple2");
+                AIRandom IL = new AIRandom("AIRandom");
 
-                ArrayList<AISimple> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+                Logger.printPorgress(i, answer);
+
+                ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
                 gc.play(Playable);
-
-                if (i % 1000 == 0) System.out.println("Tour:" + i);
             }
 
             for (Map.Entry<String, int[]> entry : Stats.getStatAverage().entrySet())
@@ -74,10 +78,8 @@ public class App
                             entry.getKey(), (float) (entry.getValue()[0] * 100) / (float) answer);
                 else
                     System.out.printf("\n%.2f %% d'égalité", (float) (entry.getValue()[0] * 100) / (float) answer);
-
             }
-
-            System.out.println();
+            printStat(answer);
         }
     }
 }

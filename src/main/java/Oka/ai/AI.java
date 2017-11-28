@@ -1,8 +1,5 @@
 package Oka.ai;
 
-import Oka.entities.Entity;
-import Oka.model.Enums;
-
 public abstract class AI extends Playable
 {
     //region==========CONSTRUCTORS=========
@@ -10,28 +7,21 @@ public abstract class AI extends Playable
     {
         super(name);
     }
+
     //endregion
-    public AI (){}
+    public AI () {}
 
     //region==========ABSTRACT METHODS=====
     @Override
     public abstract void play ();
 
-    protected abstract boolean moveGardener ();
-
     protected abstract boolean movePanda ();
 
-    protected abstract boolean placePlot ();
-
-    protected abstract boolean drawChannel();
-
-    protected abstract boolean placeChannel();
-
-    protected abstract boolean moveEntity (Entity entity, int bambooSize, Enums.Color color);
-
-    protected abstract void placeBambooOnPlot();
+    protected abstract void placeBambooOnPlot ();
 
     public abstract boolean choosePlotState ();
+
+    public abstract void printObjectives();
 
     //endregion
 }

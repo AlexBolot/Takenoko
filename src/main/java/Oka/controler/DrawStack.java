@@ -1,6 +1,7 @@
 package Oka.controler;
 
 import Oka.model.Enums;
+import Oka.model.Enums.State;
 import Oka.model.Irrigation;
 import Oka.model.Vector;
 import Oka.model.goal.*;
@@ -26,7 +27,7 @@ public class DrawStack
     private        ArrayList<BambooGoal>   listBambooGoal    = new ArrayList<>();
     private        ArrayList<GardenerGoal> listGardenerGoal  = new ArrayList<>();
     private        ArrayList<PlotGoal>     listPlotGoal      = new ArrayList<>();
-    private        int                     remainingChannels = 20;
+    private        int remainingIrrigation = 20;
     private        int                     fertilizerStates  = 3;
     private        int                     pondStates        = 3;
     private        int                     enclosureStates   = 3;
@@ -52,6 +53,28 @@ public class DrawStack
         ourInstance = new DrawStack();
     }
 
+    public boolean emptyGoalType (Enums.GoalType goalType)
+    {
+        switch (goalType)
+        {
+            case BambooGoal:
+                return !listBambooGoal.isEmpty();
+
+            case GardenGoal:
+                return !listGardenerGoal.isEmpty();
+
+            case PlotGoal:
+                return !listPlotGoal.isEmpty();
+
+            default:
+                return false;
+        }
+    }
+
+    /**
+     @param goalType GardenerGoal/BambooGoal/PlotGoal
+     @return A goal that the AI has chosen to draw according to the type she needs.
+     */
     public Optional<Goal> drawGoal (GoalType goalType)
     {
         Random random = new Random();
@@ -74,6 +97,9 @@ public class DrawStack
         //return drawGoal(GoalType.values()[random.nextInt(GoalType.values().length)]);
     }
 
+    /**
+     @return This gives an Arraylist of 3 Plot to the AI ( when she has to draw one of them to place it )
+     */
     public ArrayList<Plot> giveTreePlot ()
     {
         Random rand = new Random();
@@ -98,17 +124,21 @@ public class DrawStack
     }
 
     /**
-     returns an optional irrigation channel if one can be drawn from the stack
+     returns an optional irrigation if one can be drawn from the stack
 
      @return Optional irrigation
      */
-    public Optional<Irrigation> drawChannel ()
+    public Optional<Irrigation> drawIrrigation ()
     {
-        if (remainingChannels < 1) return Optional.empty();
-        remainingChannels--;
+        if (remainingIrrigation < 1) return Optional.empty();
+        remainingIrrigation--;
         return Optional.of(new Irrigation());
     }
 
+    /**
+     @return True if you can draw an FertilizerState
+     <br> False if you can't.
+     */
     public Optional<FertilizerState> drawFertilizerState ()
     {
         if (fertilizerStates == 0)
@@ -119,6 +149,10 @@ public class DrawStack
         return Optional.of(new FertilizerState());
     }
 
+    /**
+     @return True if you can draw a PondState
+     <br> False if you can't.
+     */
     public Optional<PondState> drawPondState ()
     {
         if (pondStates == 0)
@@ -130,11 +164,10 @@ public class DrawStack
 
     }
 
-    public void giveBackPlot (ArrayList<Plot> listP)
-    {
-        if (listP.size() > 0) listPlot.addAll(listP);
-    }
-
+    /**
+     @return True if you can draw an EnclosureState
+     <br> False if you can't.
+     */
     public Optional<EnclosureState> drawEnclosureState ()
     {
         if (enclosureStates == 0)
@@ -143,9 +176,51 @@ public class DrawStack
         }
         enclosureStates--;
         return Optional.of(new EnclosureState());
-
     }
 
+    public Optional<NeutralState> drawState (State state)
+    {
+        switch (state)
+        {
+            case Pond:
+                if (pondStates > 0)
+                {
+                    pondStates--;
+                    return Optional.of(new PondState());
+                }
+                break;
+
+            case Enclosure:
+                if (enclosureStates > 0)
+                {
+                    enclosureStates--;
+                    return Optional.of(new EnclosureState());
+                }
+                break;
+
+            case Fertilizer:
+                if (fertilizerStates > 0)
+                {
+                    fertilizerStates--;
+                    return Optional.of(new FertilizerState());
+                }
+                break;
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     A method which put the plot not chosen by the AI into the draw.
+     */
+    public void giveBackPlot (ArrayList<Plot> listP)
+    {
+        if (listP.size() > 0) listPlot.addAll(listP);
+    }
+
+    /**
+     All the plot available to draw in the game.
+     */
     private void initListPlot ()
     {
         for (int i = 0; i < 6; i++)
@@ -172,6 +247,9 @@ public class DrawStack
         listPlot.add(new Plot(Color.YELLOW, new FertilizerState()));
     }
 
+    /**
+     All the Plotgoal possible.
+     */
     private void initListPlotGoal ()
     {
         PlotGoal pgP = new PlotGoal(0, Color.PINK);
@@ -246,6 +324,9 @@ public class DrawStack
         listPlotGoal.add(new PlotGoal(4, Color.YELLOW, plots));
     }
 
+    /**
+     All the GardenerGoal possible.
+     */
     private void initListGardenGoal ()
     {
         listGardenerGoal.add(new GardenerGoal(5, 4, Color.YELLOW, new PondState()));
@@ -265,6 +346,9 @@ public class DrawStack
         listGardenerGoal.add(new GardenerGoal(3, 4, Color.GREEN, new FertilizerState()));
     }
 
+    /**
+     All the BambooGoal possible.
+     */
     private void initListBambooGoal ()
     {
         HashMap<Color, Integer> bamboos = new HashMap<>();

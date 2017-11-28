@@ -26,6 +26,11 @@ import java.util.stream.Collectors;
 public class GoalHolder extends ArrayList<Goal>
 {
     //region==========METHODS==============
+
+    /**
+     * @param validate True if we want to get the validatedgoal / False if we want the notvalidated ones.
+     * @return an Arraylist of goal validated or not depending of validate's boolean.
+     */
     public ArrayList<Goal> getGoalValidated (boolean validate)
     {
         return this.stream()
@@ -33,6 +38,10 @@ public class GoalHolder extends ArrayList<Goal>
                    .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    /**
+     * @param bambooHolder it is necessary only for bamboogoal because it needs to check inventory.
+     * A method which check every goal the AI has and try to validate it.
+     */
     public void checkGoal (BambooHolder bambooHolder)
     {
         for (Goal goal : this)
@@ -55,9 +64,12 @@ public class GoalHolder extends ArrayList<Goal>
         }
     }
 
-    public void addGoal (Goal goal) throws ExceptionInInitializerError
+    /**
+     * @param goal Add this goal to the inventory.
+     */
+    public void addGoal (Goal goal)
     {
-            this.add(goal);
+        if(this.getGoalValidated(false).size()<5) this.add(goal);
     }
     //endregion
 }

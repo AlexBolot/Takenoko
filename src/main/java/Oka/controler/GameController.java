@@ -14,6 +14,7 @@ package Oka.controler;
  . Last Modified : 18/10/17 17:04
  .................................................................................................*/
 
+import Oka.ai.AI;
 import Oka.ai.AISimple;
 import Oka.model.goal.Goal;
 import Oka.utils.Logger;
@@ -26,7 +27,8 @@ public class GameController
     //region==========ATTRIBUTES===========
     private static GameController gameController = new GameController();
 
-    private AISimple currentPlayer;
+    private AI currentPlayer;
+    private int turn;
     //endregion//
 
     //region==========GETTER/SETTER========
@@ -35,22 +37,27 @@ public class GameController
         return gameController;
     }
 
-    public AISimple getCurrentPlayer ()
+    public AI getCurrentPlayer ()
     {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer (AISimple currentPlayer)
+    public void setCurrentPlayer (AI currentPlayer)
     {
         this.currentPlayer = currentPlayer;
     }
     //endregion
 
+    /**
+     * @param playable Take all the players.
+     *  And make them play and having fun #BestMethod
+     */
     //region==========METHODS==============
-    public void play (ArrayList<AISimple> playable)
+    public void play (ArrayList<AI> playable)
     {
-        int turn = 0,
-            nbGoal;
+        int nbGoal;
+        turn = 0;
+
         if(playable.size()==2){
             nbGoal=9;
         }else if(playable.size()==3){
@@ -62,11 +69,16 @@ public class GameController
         while (true)
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
+            Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
+            Logger.printLine("Grid :"+ GameBoard.getInstance().getGrid().keySet().toString());
 
             for (int i = 0; i < playable.size(); i++)
             {
-                AISimple ai = playable.get(i);
+                AI ai = playable.get(i);
                 currentPlayer = ai;
+
+                Logger.printSeparator(ai.getName());
+
                 ai.play();
 
                 int checkGoal = ai.getInventory().checkGoals().size();
@@ -76,8 +88,10 @@ public class GameController
                     // on rajoute l'objectif empereur
                     ai.getInventory().addGoal(new Goal(2, true));
                     lastTurn(playable, playable.get(i));
+                    ArrayList<AI> ListAIWin = getAIWins(playable);
 
-                    ArrayList<AISimple> ListAIWin = getAIWins(playable);
+                    Stats.saveStatTurn(turn);
+                    Stats.saveStatGoal(ListAIWin.get(0).getInventory().getNbGoalByType(true));
 
                     if(ListAIWin.size() == 1){
                         Stats.saveStatWinner(ListAIWin.get(0).getName());
@@ -93,9 +107,14 @@ public class GameController
     }
     //endregion
 
-    public void lastTurn (ArrayList<AISimple> playable, AISimple ai1)
+    /**
+     * @param playable Take all the players. ( or AI in our case )
+     * @param ai1 Take an AI ( the AI who completed the nine goal )
+     *  And make all the others AI play their last TURN !!!
+     */
+    public void lastTurn (ArrayList<AI> playable, AI ai1)
     {
-        for (AISimple ai : playable)
+        for (AI ai : playable)
         {
             if (ai != ai1)
             {
@@ -108,17 +127,17 @@ public class GameController
 
     /**
      <hr>
-     <h3>cette méthode sauvegarde les stats de tous les joueurs et renvoie le ou les joueurs avec le plus de point</h3>
+     <h3> this method save all the stats of the players and return the player(s) that has more points than the others.</h3>
      <hr>
 
      */
-    public ArrayList<AISimple> getAIWins(ArrayList<AISimple> playable) {
+    public ArrayList<AI> getAIWins(ArrayList<AI> playable) {
         int max = 0,
                 pointPLayer;
-        ArrayList<AISimple> listAIWinnger = new ArrayList<>();
+        ArrayList<AI> listAIWinnger = new ArrayList<>();
 
-        for (AISimple ai : playable) {
-            ai.printObjectives(ai);
+        for (AI ai : playable) {
+            ai.printObjectives();
             pointPLayer = ai.getInventory().getValueOfGoalHolder();
 
             Stats.saveStatPoint(ai.getName(),pointPLayer);
@@ -132,8 +151,8 @@ public class GameController
         }
         if(listAIWinnger.size()>1){
             max = 0;
-            for (AISimple ai : playable) {
-                pointPLayer = ai.getInventory().getValueOfGoalHolder();
+            for (AI ai : playable) {
+                pointPLayer = ai.getInventory().getValueOfBambooGoalHolder();
                 if (pointPLayer > max) {
                     max = pointPLayer;
                     listAIWinnger.clear();

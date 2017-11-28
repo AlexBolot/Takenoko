@@ -26,6 +26,7 @@ public class Goal
     {
         this.value = value;
     }
+
     public Goal (int value, boolean validated)
     {
         this.value = value;
@@ -43,12 +44,22 @@ public class Goal
     {
         return value;
     }
+
+    public double getRatio ()
+    {
+        return 0;
+    }
     //endregion
 
     //region==========METHODS==============
     public boolean isValidated ()
     {
         return validated;
+    }
+
+    protected double sigmoid (double x)
+    {
+        return 1d / (1 + Math.exp(-x));
     }
     //endregion
 
