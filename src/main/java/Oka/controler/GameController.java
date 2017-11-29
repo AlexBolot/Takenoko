@@ -69,9 +69,8 @@ public class GameController
         while (true)
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
-            Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
-            Logger.printLine("Grid :"+ GameBoard.getInstance().getGrid().keySet().toString());
-
+          //  Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
+          // Logger.printLine("Grid :"+ GameBoard.getInstance().getGrid().keySet().toString());
             for (int i = 0; i < playable.size(); i++)
             {
                 AI ai = playable.get(i);
