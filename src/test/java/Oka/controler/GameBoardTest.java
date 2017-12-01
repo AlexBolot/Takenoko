@@ -135,17 +135,22 @@ public class GameBoardTest
         Point point = new Point(1, 0);
         Point point1 = new Point(0, 1);
         Point point2 = new Point(1, 1);
+        Point point3 = new Point(2, 0);
 
         Plot plot = new Plot(point, Enums.Color.GREEN);
         Plot plot1 = new Plot(point1, Enums.Color.GREEN);
         Plot plot2 = new Plot(point2, Enums.Color.GREEN);
+        Plot plot3 = new Plot(point3, Enums.Color.GREEN);
 
         GameBoard.getInstance().addCell(plot);
         GameBoard.getInstance().addCell(plot1);
         GameBoard.getInstance().addCell(plot2);
+        GameBoard.getInstance().addCell(plot3);
 
         assertFalse(GameBoard.getInstance().addIrrigation(point, point2));
         assertFalse(GameBoard.getInstance().getIrrigation().contains(new Irrigation(plot, plot2)));
+
+        assertFalse(GameBoard.getInstance().addIrrigation(point1, point3));
     }
 
     @Test
