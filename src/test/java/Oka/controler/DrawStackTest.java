@@ -93,6 +93,34 @@ public class DrawStackTest {
     }
 
     @Test
+    public void bambooGoalQuantity() {
+        ArrayList<BambooGoal> bGoals = new ArrayList<BambooGoal>();
+        while (ourInstance.emptyGoalType(Enums.GoalType.BambooGoal))
+            bGoals.add((BambooGoal) ourInstance.drawGoal(Enums.GoalType.BambooGoal).get());
+        assertEquals(15, bGoals.size());
+        assertEquals(5, bGoals.stream().filter(bambooGoal -> bambooGoal.getAmountByColor(Enums.Color.GREEN) > 0 && bambooGoal.getAmountByColor(Enums.Color.PINK) == 0).count());
+        assertEquals(4, bGoals.stream().filter(bambooGoal -> bambooGoal.getAmountByColor(Enums.Color.YELLOW) > 0 && bambooGoal.getAmountByColor(Enums.Color.PINK) == 0).count());
+        assertEquals(3, bGoals.stream().filter(bambooGoal -> bambooGoal.getAmountByColor(Enums.Color.PINK) > 0 && bambooGoal.getAmountByColor(Enums.Color.YELLOW) == 0).count());
+        assertEquals(3, bGoals.stream().filter(bambooGoal -> bambooGoal.getAmountByColor(Enums.Color.PINK) > 0 && bambooGoal.getAmountByColor(Enums.Color.YELLOW) > 0 && bambooGoal.getAmountByColor(Enums.Color.GREEN) > 0).count());
+    }
+
+    @Test
+    public void goalsQuantity() {
+
+        ArrayList<BambooGoal> gGoals = new ArrayList<BambooGoal>();
+        while (ourInstance.emptyGoalType(Enums.GoalType.GardenGoal))
+            gGoals.add((BambooGoal) ourInstance.drawGoal(Enums.GoalType.GardenGoal).get());
+
+        ArrayList<BambooGoal> pGoals = new ArrayList<BambooGoal>();
+        while (ourInstance.emptyGoalType(Enums.GoalType.PlotGoal))
+            pGoals.add((BambooGoal) ourInstance.drawGoal(Enums.GoalType.PlotGoal).get());
+
+        assertEquals(15, gGoals.size());
+        assertEquals(15, pGoals.size());
+
+
+    }
+    @Test
     public void enclosureStateQuantity() {
         int stateCount = 0;
         Optional<EnclosureState> state;
