@@ -72,8 +72,8 @@ public class DrawStackTest {
         }
         assertEquals(27, plots.size());
         assertEquals(11, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.GREEN)).count());
-        assertEquals(9, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.YELLOW)).count());
-        assertEquals(7, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.PINK)).count());
+        assertEquals(7, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.YELLOW)).count());
+        assertEquals(9, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.PINK)).count());
 
     }
 

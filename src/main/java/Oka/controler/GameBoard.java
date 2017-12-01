@@ -24,9 +24,9 @@ public class GameBoard
     //region==========CONSTRUCTORS=========
     private GameBoard ()
     {
-        grid           = new HashMap<>();
+        grid = new HashMap<>();
         availableSlots = new ArrayList<>();
-        irrigation     = new HashSet<>();
+        irrigation = new HashSet<>();
 
         availableSlots.add(new Point());
         // On initialise les cases disponibles.
@@ -343,8 +343,7 @@ public class GameBoard
     private void assertIsOnGrid (Point point)
     {
         if (point == null) throw new IllegalArgumentException("Point is null");
-        if (!grid.containsKey(point))
-            throw new IllegalArgumentException("The cell is not on the grid");
+        if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
     }
 
     private void assertIsAvailable (Point point) throws IllegalArgumentException
@@ -367,7 +366,7 @@ public class GameBoard
         {
             if (!grid.containsKey(point) && !availableSlots.contains(point) && getCommonNeighboors(point, cell.getCoords()).size() > 0)
             {
-                availableSlots.add(point);
+                if (!point.equals(new Pond().getCoords())) availableSlots.add(point);
             }
         }
     }
@@ -413,11 +412,11 @@ public class GameBoard
 
             neightboors.stream().filter(cell -> !(cell.getCoords().equals(new Point()))).forEach(plot -> {
 
-                if (!verifIrrigation(plot.getCoords(), irg.getPlot1().getCoords()))
-                    availableIrrigations.add(new Irrigation((Plot) plot,irg.getPlot1()));
+                if (!verifIrrigation(plot.getCoords(), irg.getPlot1().getCoords())) availableIrrigations.add(new Irrigation((Plot) plot,
+                                                                                                                            irg.getPlot1()));
 
-                if (!verifIrrigation(plot.getCoords(), irg.getPlot2().getCoords()))
-                    availableIrrigations.add(new Irrigation((Plot) plot,irg.getPlot2()));
+                if (!verifIrrigation(plot.getCoords(), irg.getPlot2().getCoords())) availableIrrigations.add(new Irrigation((Plot) plot,
+                                                                                                                            irg.getPlot2()));
 
             });
         }

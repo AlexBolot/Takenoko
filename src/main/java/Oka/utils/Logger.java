@@ -2,7 +2,6 @@ package Oka.utils;
 
 import java.io.PrintStream;
 import java.util.stream.IntStream;
-import java.util.stream.IntStream;
 
 public class Logger
 {
@@ -52,7 +51,8 @@ public class Logger
     public static void printPorgress (int actual, int total)
     {
         int scale = 50;
-        int percent = ((actual + 1) * scale / total);
+        int vPercent = ((actual + 1) * scale / total);
+        int aPercent = ((actual + 1) * 100 / total);
         int space = 6;
 
         int sideLength = (scale - space) / 2;
@@ -62,16 +62,16 @@ public class Logger
         str.append("\r[");
 
         //Left Side
-        int right = Math.min(percent, sideLength);
+        int right = Math.min(vPercent, sideLength);
         IntStream.range(0, right).mapToObj(i1 -> "=").forEach(str::append);
         IntStream.range(0, sideLength - right).mapToObj(i -> " ").forEach(str::append);
 
         //Center
-        IntStream.range(0, 4 - countDigits(percent * 2)).mapToObj(i -> " ").forEach(str::append);
-        str.append(percent * 2).append("% ");
+        IntStream.range(0, 4 - countDigits(aPercent)).mapToObj(i -> " ").forEach(str::append);
+        str.append(aPercent).append("% ");
 
         //Right Side
-        int left = Math.max(0, percent - sideLength - 6);
+        int left = Math.max(0, vPercent - sideLength - 6);
         IntStream.range(0, left).mapToObj(i -> "=").forEach(str::append);
         IntStream.range(0, sideLength - left).mapToObj(i -> " ").forEach(str::append);
 
@@ -213,13 +213,14 @@ public class Logger
         return count;
     }
 
-    public static void printStat(int nbParti){
+    public static void printStat (int nbParti)
+    {
         System.out.println(" ");
-        System.out.println("Tour moyen par game : "+ Stats.getNbTour()/nbParti);
-        System.out.println("Tour max : "+ Stats.getMaxTour());
-        System.out.println("Tour min : "+ Stats.getMinTour());
+        System.out.println("Tour moyen par game : " + Stats.getNbTour() / nbParti);
+        System.out.println("Tour max : " + Stats.getMaxTour());
+        System.out.println("Tour min : " + Stats.getMinTour());
         int[] StatGoal = Stats.getStatsGoal();
-        System.out.println("BambooGoal : "+ (float) StatGoal[0]/(float)nbParti+" GardenerGoal : "+ (float)StatGoal[1]/ (float)nbParti+" PlotGoal : "+ (float)StatGoal[2]/(float)nbParti);
+        System.out.println("BambooGoal : " + (float) StatGoal[0] / (float) nbParti + " GardenerGoal : " + (float) StatGoal[1] / (float) nbParti + " PlotGoal : " + (float) StatGoal[2] / (float) nbParti);
 
     }
     //endregion

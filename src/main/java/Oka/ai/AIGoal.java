@@ -5,6 +5,7 @@ import Oka.controler.GameBoard;
 import Oka.entities.Entity;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
+import Oka.model.Enums.Action;
 import Oka.model.Enums.Color;
 import Oka.model.Enums.GoalType;
 import Oka.model.Enums.State;
@@ -16,6 +17,7 @@ import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
 import Oka.model.plot.state.NeutralState;
+import Oka.model.plot.state.PondState;
 import Oka.utils.Logger;
 
 import java.awt.*;
@@ -40,11 +42,10 @@ import static Oka.model.Enums.State.*;
  . Last Modified : 23/11/17 09:47
  .................................................................................................*/
 
-@SuppressWarnings ("Duplicates")
+@SuppressWarnings ({"unused", "Duplicates", "ConstantConditions", "UnusedReturnValue", "SameParameterValue"})
 public class AIGoal extends AI
 {
     private int turn = 0;
-
     private Goal  currentGoal;
     private Color currentColor;
 
@@ -59,6 +60,7 @@ public class AIGoal extends AI
 
     //region ============ Implements ============
 
+    @Override
     public void play ()
     {
         // 1 - Picks a goal if has to
@@ -70,7 +72,7 @@ public class AIGoal extends AI
 
         // 3 - Show not-validated goals
         // 4 - RollDice if not first turn
-        printObjectives(false);
+        printObjectives();
         if (turn++ != 0) Dice.rollDice(this);
 
         // 5 - For each goal (ordered by ratio) and while we didn't go over 30 attempts to play
@@ -82,9 +84,10 @@ public class AIGoal extends AI
 
             if (currentGoal instanceof BambooGoal && bambooGoalStrategy()) continue;
             if (currentGoal instanceof GardenerGoal && gardenerGoalStrategy()) continue;
-            if (currentGoal instanceof PlotGoal && plotGoalStrategy()) continue;
+            if (currentGoal instanceof PlotGoal) plotGoalStrategy((PlotGoal) currentGoal);
         }
 
+        placePlot();
 
         Logger.printLine(String.format("%s - bamboos : {GREEN :%d} {YELLOW :%d} {PINK :%d}",
                                        getName(),
@@ -101,8 +104,11 @@ public class AIGoal extends AI
 
      @return true if the action succeded, false otherwise
      */
+    @Override
     public boolean movePanda ()
     {
+        if (!getInventory().getActionHolder().hasActionsLeft(movePanda)) return false;
+
         List<Plot> plots = new ArrayList<>(GameBoard.getInstance().getPlots());
         Panda panda = Panda.getInstance();
 
@@ -137,6 +143,7 @@ public class AIGoal extends AI
     /**
      place a plot tile
      */
+    @Override
     protected void placeBambooOnPlot ()
     {
         List<Plot> plots = new ArrayList<>(GameBoard.getInstance().getPlots());
@@ -217,6 +224,7 @@ public class AIGoal extends AI
         }
     }
 
+    @Override
     public boolean choosePlotState ()
     {
         ArrayList<Goal> goals = new ArrayList<>(getInventory().goalHolder());
@@ -255,10 +263,12 @@ public class AIGoal extends AI
         return coinFlip ? (pickPlotState(Pond) || pickPlotState(Fertilizer)) : (pickPlotState(Fertilizer) || pickPlotState(Pond));
     }
 
-    @Override
+    /**
+     Print all the objectives completed by this AI.
+     */
     public void printObjectives ()
     {
-
+        Logger.printTitle(this.getName() + " Objectifs validés :" + this.getInventory().validatedGoals(true));
     }
 
     //endregion
@@ -282,6 +292,8 @@ public class AIGoal extends AI
      */
     private boolean bambooGoalStrategy ()
     {
+        if (!(currentGoal instanceof BambooGoal)) return false;
+
         BambooGoal bambooGoal = (BambooGoal) currentGoal;
         Color lookedForColor = bambooGoal.getColor(getInventory().bambooHolder());
         List<Plot> plots = new ArrayList<>(GameBoard.getInstance().getPlots());
@@ -303,15 +315,9 @@ public class AIGoal extends AI
         for (Plot plot : plots)
         {
             // 4.1 - If it's irrigated, send Gardener, then Panda
-            if (plot.isIrrigated())
+            if (plot.isIrrigated() && canMoveEntity(gardener, plot.getCoords()) && canMoveEntity(panda, plot.getCoords()))
             {
-                if (moveEntity(gardener, plot.getCoords()))
-                {
-                    if (moveEntity(panda, plot.getCoords()))
-                    {
-                        return true;
-                    }
-                }
+                return moveEntity(gardener, plot.getCoords()) && moveEntity(panda, plot.getCoords());
             }
         }
 
@@ -322,7 +328,7 @@ public class AIGoal extends AI
 
         // 6 - We then try to irrigate the closest
         // interesting point to the Pond (easier to irrigate)
-        if (drawIrrigation())
+        if (getInventory().hasIrrigation() || drawIrrigation())
         {
             plots.sort(Comparator.comparing(plot -> Vector.findStraightVector(plot.getCoords(), new Pond().getCoords()).length()));
 
@@ -352,6 +358,8 @@ public class AIGoal extends AI
      */
     private boolean gardenerGoalStrategy ()
     {
+        if (!(currentGoal instanceof GardenerGoal)) return false;
+
         GardenerGoal gardenerGoal = (GardenerGoal) currentGoal;
         Color lookedForColor = gardenerGoal.getColor();
         List<Plot> plots = new ArrayList<>(GameBoard.getInstance().getPlots());
@@ -403,7 +411,7 @@ public class AIGoal extends AI
 
         // 6 - We then try to irrigate the closest
         // interesting point to the Pond (easier to irrigate)
-        if (drawIrrigation())
+        if (getInventory().hasIrrigation() || drawIrrigation())
         {
             plots.sort(Comparator.comparing(plot -> Vector.findStraightVector(plot.getCoords(), new Pond().getCoords()).length()));
 
@@ -416,9 +424,41 @@ public class AIGoal extends AI
         return false;
     }
 
-    private boolean plotGoalStrategy ()
+    private boolean plotGoalStrategy (PlotGoal plotGoal)
     {
-        //TODO : Implement
+        ArrayList<Map.Entry<Color, Point>> neededSpots = new ArrayList<>(plotGoal.neededSpots());
+
+        ArrayList<Plot> drawnPlots = DrawStack.getInstance().giveTreePlot();
+        if (drawnPlots == null) return false;
+
+        Set<Color> drawnColors = drawnPlots.stream().map(Plot::getColor).collect(Collectors.toSet());
+
+        for (Color color : Color.values())
+        {
+            neededSpots.removeIf(entity -> !drawnColors.contains(color) && entity.getKey().equals(color));
+        }
+
+        neededSpots.sort((o1, o2) -> {
+            int value1 = plotGoal.completion(o1.getValue());
+            int value2 = plotGoal.completion(o2.getValue());
+            return Integer.compare(value1, value2);
+        });
+
+        for (Map.Entry<Color, Point> entry : neededSpots)
+        {
+            List<Plot> tmpPlots = drawnPlots.stream().filter(plot -> plot.getColor().equals(entry.getKey())).collect(Collectors.toList());
+            sortByState(tmpPlots);
+
+            for (Plot plot : tmpPlots)
+            {
+                if (placePlot(plot, entry.getValue()))
+                {
+                    drawnPlots.remove(plot);
+                    DrawStack.getInstance().giveBackPlot(drawnPlots);
+                    return true;
+                }
+            }
+        }
 
         return false;
     }
@@ -429,56 +469,154 @@ public class AIGoal extends AI
 
     private boolean placePlot ()
     {
+        // On vérifie si une case peut aider à faire avancer un GardenerGoal, puis un BambooGoal.
+        // Dans ce cas, on vérifie également si on peut satisfaire un PlotGoal
+        // sinon au plus près possible du Pond (plus facile à irriguer et plus facile d'accès
+
+        // Dans le cas où les GardenerGoal et BambooGoal sont déjà sattisfait, choisir selon critère :
+        // Couleur : Any
+        // State : Pond > Fertilizer > Neutral > Enclorusre
+        //
+        // Dans ce cas, on vérifie également si on peut satisfaire un PlotGoal
+        // sinon au plus près possible du Pond (plus facile à irriguer et plus facile d'accès
+
         if (!getInventory().getActionHolder().hasActionsLeft(placePlot)) return false;
 
+        GameBoard gameBoard = GameBoard.getInstance();
+
+        ArrayList<Plot> drawnPlots;
         ArrayList<Goal> goals = new ArrayList<>(getInventory().goalHolder());
+        ArrayList<Plot> allPlots = new ArrayList<>(gameBoard.getPlots());
+        ArrayList<PlotGoal> plotGoals = new ArrayList<>();
+        ArrayList<BambooGoal> bambooGoals = new ArrayList<>();
+        ArrayList<GardenerGoal> gardenerGoals = new ArrayList<>();
         goals.sort(Comparator.comparing(Goal::getRatio));
-        ArrayList<Plot> draw = DrawStack.getInstance().giveTreePlot();
 
-        if (draw == null) return false;
+        // 0 - Filtering goals
+        goals.forEach(goal -> {
+            if (goal instanceof BambooGoal) bambooGoals.add((BambooGoal) goal);
+            if (goal instanceof GardenerGoal) gardenerGoals.add((GardenerGoal) goal);
+            if (goal instanceof PlotGoal) plotGoals.add((PlotGoal) goal);
+        });
 
-        HashMap<Color, Integer> colors = new HashMap<>();
+        // 1 - Pick cards from DrawStack
+        //region {...code...}
 
-        for (Goal goal : goals)
+        drawnPlots = DrawStack.getInstance().giveTreePlot();
+        if (drawnPlots == null) return false;
+        sortByState(drawnPlots);
+
+        //endregion
+
+        // 2 - Get all neededSlots from all PlotGoals
+        //region {...code...}
+        HashSet<Map.Entry<Color, Point>> tmpNeededSlots = new HashSet<>();
+
+        List<PlotGoal> list = new ArrayList<>();
+        for (Goal goal1 : goals)
         {
-            if (goal instanceof BambooGoal)
-            {
-                BambooGoal bbg = (BambooGoal) goal;
-                bbg.getValues().keySet().forEach(color -> colors.merge(color, 1, (oldVal, newVal) -> oldVal + newVal));
-                continue;
-            }
-
-            if (goal instanceof GardenerGoal)
-            {
-                GardenerGoal gg = (GardenerGoal) goal;
-                colors.merge(gg.getColor(), 1, (oldVal, newVal) -> oldVal + newVal);
-                continue;
-            }
-
-            if (goal instanceof PlotGoal)
-            {
-                PlotGoal pg = (PlotGoal) goal;
-                pg.getColors().keySet().forEach(color -> colors.merge(color, 1, (oldVal, newVal) -> oldVal + newVal));
-            }
-
+            if (goal1 instanceof PlotGoal) list.add((PlotGoal) goal1);
         }
 
-        for (Color color : colors.keySet())
+        list.stream().map(PlotGoal::neededSpots).forEach(tmpNeededSlots::addAll);
+
+        ArrayList<Map.Entry<Color, Point>> neededSlots = new ArrayList<>(tmpNeededSlots);
+        //endregion
+
+        // 3 - Check if possible to please GardenerGoal
+        //region {...code...}
+
+        // --> 3.1 - For each GardenerGoal try to find best spot
+        for (GardenerGoal gardenerGoal : gardenerGoals)
         {
-            if (draw.stream().noneMatch(plot -> plot.getColor().equals(color))) colors.replace(color, -1);
+            NeutralState neededState = gardenerGoal.getState();
+            Color neededColor = gardenerGoal.getColor();
+
+            for (Plot drawn : drawnPlots)
+            {
+                if (!drawn.getState().equals(neededState)) continue;
+                if (!drawn.getColor().equals(neededColor)) continue;
+
+                boolean foundState = allPlots.stream().anyMatch(plot -> plot.getState().equals(neededState));
+                boolean foundColor = allPlots.stream().anyMatch(plot -> plot.getColor().equals(neededColor));
+                if (foundState || foundColor) continue;
+
+                List<Map.Entry<Color, Point>> localNeededSpots = new ArrayList<>();
+                for (Map.Entry<Color, Point> neededSlot : neededSlots)
+                {
+                    if (neededSlot.getKey().equals(drawn.getColor())) localNeededSpots.add(neededSlot);
+                }
+
+                for (Map.Entry<Color, Point> entry : localNeededSpots)
+                {
+                    if (placePlot(drawn, entry.getValue()))
+                    {
+                        drawnPlots.remove(drawn);
+                        DrawStack.getInstance().giveBackPlot(drawnPlots);
+                        return true;
+                    }
+                }
+            }
         }
+        //endregion
 
-        //noinspection ConstantConditions
-        int max = colors.values().stream().max(Integer::compareTo).get();
+        // 4 - Check if possible to please BambooGoal
+        //region {...code...}
 
-        List<Color> selectedColors = colors.keySet().stream().filter(key -> colors.get(key) == max).collect(Collectors.toList());
+        // --> 4.1 - For each BambooGoal try to find best spot
+        for (BambooGoal bambooGoal : bambooGoals)
+        {
+            Color neededColor = bambooGoal.getColor();
 
-        Optional<Plot> optPlot = draw.stream().filter(plot -> selectedColors.contains(plot.getColor())).findAny();
+            for (Plot drawn : drawnPlots)
+            {
+                if (!drawn.getColor().equals(neededColor)) continue;
+                if (allPlots.stream().anyMatch(plot -> plot.getColor().equals(neededColor))) continue;
 
-        //TODO : choisir quel plot placer
+                List<Map.Entry<Color, Point>> localNeededSpots = new ArrayList<>();
+                for (Map.Entry<Color, Point> neededSlot : neededSlots)
+                {
+                    if (neededSlot.getKey().equals(drawn.getColor())) localNeededSpots.add(neededSlot);
+                }
 
-        return false;
+                for (Map.Entry<Color, Point> entry : localNeededSpots)
+                {
+                    if (placePlot(drawn, entry.getValue()))
+                    {
+                        drawnPlots.remove(drawn);
+                        DrawStack.getInstance().giveBackPlot(drawnPlots);
+                        return true;
+                    }
+                }
+            }
+        }
+        //endregion
 
+        // 5 - Check if possible to please PlotGoal
+        //region {...code...}
+
+        return plotGoals.stream().anyMatch(this::plotGoalStrategy);
+
+        //endregion
+    }
+
+    private boolean placePlot (Plot plot)
+    {
+        ArrayList<Point> availableSlots = GameBoard.getInstance().getAvailableSlots();
+        Collections.shuffle(availableSlots);
+
+        return placePlot(plot, availableSlots.get(0));
+    }
+
+    private boolean placePlot (Plot plot, Point destination)
+    {
+        plot.setCoords(destination);
+        GameBoard.getInstance().addCell(plot);
+
+        Logger.printLine(getName() + " a placé : " + plot);
+        getInventory().getActionHolder().consumeAction(Action.placePlot);
+
+        return true;
     }
 
     private boolean hasToPickGoal ()
@@ -504,6 +642,8 @@ public class AIGoal extends AI
      */
     private boolean placeIrrigation (Plot plot)
     {
+        Objects.requireNonNull(plot);
+
         // 1 - If we don't have an irrigation to place, quit.
         if (!getInventory().hasIrrigation()) return false;
 
@@ -532,7 +672,6 @@ public class AIGoal extends AI
         {
             getInventory().addIrrigation();
             getInventory().getActionHolder().consumeAction(drawIrrigation);
-
             return true;
         }
 
@@ -541,7 +680,10 @@ public class AIGoal extends AI
 
     /**
      <hr>
-     <h3>Tries to move the param entity to the param coords on the board
+     <h3>
+     1 - Tries to move the param entity to the param coords on the board<br>
+     2 - Checks if still has action left to move param entity
+     3 - Consumes the moving action of the param entity if it could be moved
      </h3>
      <hr>
 
@@ -551,14 +693,37 @@ public class AIGoal extends AI
      */
     private boolean moveEntity (Entity entity, Point coords)
     {
+        Objects.requireNonNull(entity, "entity is null");
+        Objects.requireNonNull(coords, "coords is null");
+
+        Action action = null;
+        if (entity instanceof Panda) action = movePanda;
+        if (entity instanceof Panda) action = moveGardener;
+
+        if (!getInventory().getActionHolder().hasActionsLeft(action)) return false;
+
         if (GameBoard.getInstance().moveEntity(entity, coords))
         {
-            if (entity instanceof Panda) getInventory().getActionHolder().consumeAction(movePanda);
-            if (entity instanceof Gardener) getInventory().getActionHolder().consumeAction(moveGardener);
+            getInventory().getActionHolder().consumeAction(action);
             return true;
         }
 
         return false;
+    }
+
+    private boolean canMoveEntity (Entity entity, Point coords)
+    {
+        Objects.requireNonNull(entity, "entity is null");
+        Objects.requireNonNull(coords, "coords is null");
+
+        Action action = null;
+        if (entity instanceof Panda) action = movePanda;
+        if (entity instanceof Panda) action = moveGardener;
+
+        boolean hasActionLeft = getInventory().getActionHolder().hasActionsLeft(action);
+        boolean canMove = GameBoard.getInstance().canMoveEntity(entity, coords);
+
+        return hasActionLeft && canMove;
     }
 
     /**
@@ -616,12 +781,25 @@ public class AIGoal extends AI
         return false;
     }
 
-    private void printObjectives (boolean validated)
+    private void sortByState (List<Plot> list)
     {
-        String text = validated ? "validés" : "non validés";
+        list.sort((p1, p2) -> {
+            int p1Value = 2;
+            int p2Value = 2;
 
-        Logger.printTitle(getName() + " Objectifs " + text + " :" + getInventory().validatedGoals(validated));
+            if (p1.getState() instanceof PondState) p1Value = 0;
+            if (p2.getState() instanceof PondState) p2Value = 0;
+
+            if (p1.getState() instanceof FertilizerState) p1Value = 1;
+            if (p2.getState() instanceof FertilizerState) p2Value = 1;
+
+            if (p1.getState() instanceof EnclosureState) p1Value = 3;
+            if (p2.getState() instanceof EnclosureState) p2Value = 3;
+
+            return Integer.compare(p1Value, p2Value);
+        });
     }
+
     //endregion
 
     //region ============ Completion ============
@@ -633,7 +811,7 @@ public class AIGoal extends AI
 
         if (goal instanceof GardenerGoal) return getGardenerGoalCompletion((GardenerGoal) goal);
 
-        if (goal instanceof PlotGoal) return getPlotGoalCompletion((PlotGoal) goal);
+        if (goal instanceof PlotGoal) return ((PlotGoal) goal).toCompletion();
 
         return 0;
     }
@@ -642,7 +820,6 @@ public class AIGoal extends AI
     {
         HashMap<Color, Integer> values = bambooGoal.getValues();
 
-        //Ouais c'est pas fou je sais... #BlameBolot
         float totalRequested = values.values().stream().reduce((i, i2) -> i + i2).orElse(0);
         float totalObtained = 0;
 
@@ -695,12 +872,6 @@ public class AIGoal extends AI
         }
 
         return maxFound / gardenerGoal.getBambooAmount();
-    }
-
-    private double getPlotGoalCompletion (PlotGoal plotGoal)
-    {
-        //Todo : Implement -> no idea how to do it for now :/
-        return 0;
     }
     //endregion
 }

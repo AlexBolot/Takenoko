@@ -44,11 +44,11 @@ public class App
         {
             GameController gc = GameController.getInstance();
 
-            AISimple AM = new AISimple("AISimple1");
-           // AISimple IL = new AISimple("AISimple2");
+            AISimple AM = new AISimple("AISimple");
             AIRandom IL = new AIRandom("AIRandom");
+            AIRandom AB = new AIRandom("AIGoal");
 
-            ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+            ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, AB));
 
             gc.play(Playable);
         }
@@ -60,24 +60,24 @@ public class App
 
                 GameController gc = GameController.getInstance();
 
-                AISimple AM = new AISimple("AISimple1");
-                //AISimple IL = new AISimple("AISimple2");
+                AISimple AM = new AISimple("AISimple");
                 AIRandom IL = new AIRandom("AIRandom");
+                AIRandom AB = new AIRandom("AIGoal");
 
                 Logger.printPorgress(i, answer);
 
-                ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+                ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, AB));
 
                 gc.play(Playable);
             }
 
             for (Map.Entry<String, int[]> entry : Stats.getStatAverage().entrySet())
             {
-                if(!entry.getKey().equals("Draw"))
-                    System.out.printf("\n%s : %.2f %% de victoire avec une moyenne de point égale à "+ (entry.getValue()[1]) / answer,
-                            entry.getKey(), (float) (entry.getValue()[0] * 100) / (float) answer);
-                else
-                    System.out.printf("\n%.2f %% d'égalité", (float) (entry.getValue()[0] * 100) / (float) answer);
+                if (!entry.getKey().equals("Draw"))
+                    System.out.printf("\n%s : %.2f %% de victoire avec une moyenne de point égale à " + (entry.getValue()[1]) / answer,
+                                      entry.getKey(),
+                                      (float) (entry.getValue()[0] * 100) / (float) answer);
+                else System.out.printf("\n%.2f %% d'égalité", (float) (entry.getValue()[0] * 100) / (float) answer);
             }
             printStat(answer);
         }

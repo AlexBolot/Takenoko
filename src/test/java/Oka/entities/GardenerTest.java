@@ -4,6 +4,7 @@ import Oka.controler.GameBoard;
 import Oka.model.plot.Plot;
 import Oka.utils.Cleaner;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
@@ -16,6 +17,16 @@ import static org.junit.Assert.assertNotEquals;
 public class GardenerTest
 {
     private Gardener gardener = Gardener.getInstance();
+
+    @Before
+    public void setUp () throws Exception
+    {
+        //Placing gardener back on the pond.
+        Cleaner.cleanGardener();
+
+        //Reset the grid and available cells.
+        Cleaner.cleanGameBoard();
+    }
 
     @After
     public void tearDown () throws Exception

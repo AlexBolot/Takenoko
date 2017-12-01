@@ -14,43 +14,50 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-public class GameControllerTest {
-    private AISimple p1;
-    private AISimple p2;
-    private ArrayList<AI> listPlayable;
+public class GameControllerTest
+{
+    private AISimple       p1;
+    private AISimple       p2;
+    private ArrayList<AI>  listPlayable;
     private GameController gameController;
 
     @Before
-    public void init(){
+    public void init ()
+    {
         gameController = new GameController();
 
         p1 = new AISimple();
-        p1.getInventory().addGoal(new Goal(3,true));
-        p1.getInventory().addGoal(new Goal(3,false));
-        p1.getInventory().addGoal(new Goal(3,true));
+        p1.getInventory().addGoal(new Goal(3, true));
+        p1.getInventory().addGoal(new Goal(3, false));
+        p1.getInventory().addGoal(new Goal(3, true));
 
         p2 = new AISimple();
-        p2.getInventory().addGoal(new Goal(3,true));
-        p2.getInventory().addGoal(new Goal(3,false));
-        p2.getInventory().addGoal(new Goal(2,true));
+        p2.getInventory().addGoal(new Goal(3, true));
+        p2.getInventory().addGoal(new Goal(3, false));
+        p2.getInventory().addGoal(new Goal(2, true));
 
         listPlayable = new ArrayList<>();
         listPlayable.add(p1);
         listPlayable.add(p2);
     }
+
     @After
-    public void after(){
+    public void after ()
+    {
         gameController = new GameController();
     }
+
     @Test
-    public void maxValuesObjectives() throws Exception {
+    public void maxValuesObjectives () throws Exception
+    {
         assertEquals(p1, gameController.getAIWins(listPlayable).get(0));
-        p2.getInventory().addGoal(new Goal(1,true));
+        p2.getInventory().addGoal(new Goal(1, true));
         assertEquals(2, gameController.getAIWins(listPlayable).size());
     }
 
     @Test
-    public void winnerEmperorGoal() {
+    public void winnerEmperorGoal ()
+    {
         GameController gc = GameController.getInstance();
 
         AISimple AM = new AISimple("AISimple1");
