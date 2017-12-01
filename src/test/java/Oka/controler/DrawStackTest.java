@@ -3,6 +3,7 @@ package Oka.controler;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
+import Oka.model.goal.PlotGoal;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
@@ -127,17 +128,17 @@ public class DrawStackTest {
     }
 
     @Test
-    public void goalsQuantity() {
+    public void plotGoalsQuantity() {
 
-
-
-        ArrayList<BambooGoal> pGoals = new ArrayList<BambooGoal>();
+        ArrayList<PlotGoal> pGoals = new ArrayList<PlotGoal>();
         while (ourInstance.emptyGoalType(Enums.GoalType.PlotGoal)) {
-            pGoals.add((BambooGoal) ourInstance.drawGoal(Enums.GoalType.PlotGoal).get());
+            pGoals.add((PlotGoal) ourInstance.drawGoal(Enums.GoalType.PlotGoal).get());
         }
 
         assertEquals(15, pGoals.size());
-
+        assertEquals(6, pGoals.stream().filter(plotGoal -> plotGoal.getColors().containsKey(Enums.Color.GREEN)).count());
+        assertEquals(6, pGoals.stream().filter(plotGoal -> plotGoal.getColors().containsKey(Enums.Color.YELLOW)).count());
+        assertEquals(6, pGoals.stream().filter(plotGoal -> plotGoal.getColors().containsKey(Enums.Color.PINK)).count());
 
     }
 
