@@ -14,7 +14,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -104,22 +106,41 @@ public class DrawStackTest {
         assertEquals(3, bGoals.stream().filter(bambooGoal -> bambooGoal.getAmountByColor(Enums.Color.PINK) > 0 && bambooGoal.getAmountByColor(Enums.Color.YELLOW) > 0 && bambooGoal.getAmountByColor(Enums.Color.GREEN) > 0).count());
     }
 
+    // test on total quantity and lightly on color repartition
+    @Test
+    public void gardenerGoalQuantity() {
+        ArrayList<GardenerGoal> gGoals = new ArrayList<GardenerGoal>();
+        while (ourInstance.emptyGoalType(Enums.GoalType.GardenGoal))
+            gGoals.add((GardenerGoal) ourInstance.drawGoal(Enums.GoalType.GardenGoal).get());
+        assertEquals(15, gGoals.size());
+
+        List<GardenerGoal> yellow = gGoals.stream().filter(gardenerGoal -> gardenerGoal.getColor().equals(Enums.Color.YELLOW)).collect(Collectors.toList());
+        assertEquals(5, yellow.size());
+
+        List<GardenerGoal> pink = gGoals.stream()
+                .filter(gardenerGoal -> gardenerGoal.getColor().equals(Enums.Color.PINK)).collect(Collectors.toList());
+        assertEquals(5, pink.size());
+        List<GardenerGoal> green = gGoals.stream()
+                .filter(gardenerGoal -> gardenerGoal.getColor().equals(Enums.Color.GREEN)).collect(Collectors.toList());
+        assertEquals(5, green.size());
+
+    }
+
     @Test
     public void goalsQuantity() {
 
-        ArrayList<BambooGoal> gGoals = new ArrayList<BambooGoal>();
-        while (ourInstance.emptyGoalType(Enums.GoalType.GardenGoal))
-            gGoals.add((BambooGoal) ourInstance.drawGoal(Enums.GoalType.GardenGoal).get());
+
 
         ArrayList<BambooGoal> pGoals = new ArrayList<BambooGoal>();
-        while (ourInstance.emptyGoalType(Enums.GoalType.PlotGoal))
+        while (ourInstance.emptyGoalType(Enums.GoalType.PlotGoal)) {
             pGoals.add((BambooGoal) ourInstance.drawGoal(Enums.GoalType.PlotGoal).get());
+        }
 
-        assertEquals(15, gGoals.size());
         assertEquals(15, pGoals.size());
 
 
     }
+
     @Test
     public void enclosureStateQuantity() {
         int stateCount = 0;
