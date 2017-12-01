@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -48,6 +49,7 @@ public class DrawStackTest {
         assertEquals(listBambooGoal.get(2),new BambooGoal(5,2, Enums.Color.PINK));
 
     }
+
     @Test
     public void giveTreePlot() throws Exception {
         ArrayList<Plot> listP = ourInstance.giveTreePlot();
@@ -56,6 +58,20 @@ public class DrawStackTest {
             listP = ourInstance.giveTreePlot();
         }
         assertEquals(null,ourInstance.giveTreePlot());
+    }
+
+    @Test
+    public void plotQuantity() {
+        HashSet<Plot> plots = new HashSet<>();
+        ArrayList<Plot> threeBundle;
+        while ((threeBundle = ourInstance.giveTreePlot()) != null) {
+            plots.addAll(threeBundle);
+        }
+        assertEquals(27, plots.size());
+        assertEquals(11, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.GREEN)).count());
+        assertEquals(9, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.YELLOW)).count());
+        assertEquals(7, plots.stream().filter(plot -> plot.getColor().equals(Enums.Color.PINK)).count());
+
     }
 
     @Test

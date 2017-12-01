@@ -223,6 +223,7 @@ public class DrawStack
      */
     private void initListPlot ()
     {
+        //fixme : Adjuste plot quantity
         for (int i = 0; i < 6; i++)
         {
             listPlot.add(new Plot(Color.GREEN, new NeutralState()));
