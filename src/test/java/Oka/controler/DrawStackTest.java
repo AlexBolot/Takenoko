@@ -75,6 +75,31 @@ public class DrawStackTest {
     }
 
     @Test
+    public void fertilizerStateQuantity() {
+        int stateCount = 0;
+        Optional<FertilizerState> state;
+        while (ourInstance.drawFertilizerState().isPresent()) stateCount++;
+        assertEquals(3, stateCount);
+
+    }
+
+    @Test
+    public void pondStateQuantity() {
+        int stateCount = 0;
+        Optional<PondState> state;
+        while (ourInstance.drawPondState().isPresent()) stateCount++;
+        assertEquals(3, stateCount);
+
+    }
+
+    @Test
+    public void enclosureStateQuantity() {
+        int stateCount = 0;
+        Optional<EnclosureState> state;
+        while (ourInstance.drawEnclosureState().isPresent()) stateCount++;
+        assertEquals(3, stateCount);
+    }
+    @Test
     public void drawFertilizerState() throws Exception {
         Cleaner.clearAll();
         Optional<FertilizerState> optFertState = DrawStack.getInstance().drawFertilizerState();
