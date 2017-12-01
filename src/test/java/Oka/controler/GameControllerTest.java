@@ -1,15 +1,18 @@
 package Oka.controler;
 
 import Oka.ai.AI;
+import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
+import Oka.ai.inventory.GoalHolder;
 import Oka.model.goal.Goal;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class GameControllerTest {
     private AISimple p1;
@@ -44,6 +47,27 @@ public class GameControllerTest {
         assertEquals(p1, gameController.getAIWins(listPlayable).get(0));
         p2.getInventory().addGoal(new Goal(1,true));
         assertEquals(2, gameController.getAIWins(listPlayable).size());
+    }
+
+    @Test
+    public void winnerEmperorGoal() {
+        GameController gc = GameController.getInstance();
+
+        AISimple AM = new AISimple("AISimple1");
+        // AISimple IL = new AISimple("AISimple2");
+        AIRandom IL = new AIRandom("AIRandom");
+
+        ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+        gc.play(Playable);
+
+        GoalHolder AMGoalHolder = AM.getInventory().goalHolder();
+
+        int emmperorC = (int) AMGoalHolder.stream().filter(goal -> goal.getClass().equals(Goal.class)).count();
+        GoalHolder ILGoalHolder = IL.getInventory().goalHolder();
+
+        emmperorC += ILGoalHolder.stream().filter(goal -> goal.getClass().equals(Goal.class)).count();
+        assertEquals(1, emmperorC);
     }
 
 }
