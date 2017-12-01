@@ -51,7 +51,7 @@ public class BambooGoal extends Goal
 
     public int getAmountByColor (Color color)
     {
-        return values.get(color);
+        return values.keySet().contains(color) ? values.get(color) : 0;
     }
 
     /**

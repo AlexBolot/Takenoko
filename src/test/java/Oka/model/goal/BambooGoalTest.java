@@ -7,10 +7,8 @@ import org.junit.Test;
 
 import java.util.Random;
 
-import static Oka.model.Enums.Color.GREEN;
-import static Oka.model.Enums.Color.PINK;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static Oka.model.Enums.Color.*;
+import static org.junit.Assert.*;
 
 public class BambooGoalTest
 {
@@ -103,5 +101,16 @@ public class BambooGoalTest
     {
         bg1 = new BambooGoal(1, 1, GREEN);
         bg1.validate(null);
+    }
+
+    @Test
+    public void getAmoutByColor() {
+        assertEquals(1, bg1.getAmountByColor(GREEN));
+        assertEquals(0, bg1.getAmountByColor(PINK));
+        assertEquals(0, bg1.getAmountByColor(YELLOW));
+
+        assertEquals(2, bg2.getAmountByColor(PINK));
+
+
     }
 }
