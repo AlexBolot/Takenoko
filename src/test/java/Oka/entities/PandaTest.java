@@ -1,5 +1,6 @@
 package Oka.entities;
 
+import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
 import Oka.controler.GameBoard;
 import Oka.controler.GameController;
@@ -85,14 +86,16 @@ public class PandaTest
 
     @Test
     public void contiguousMove() {
+        Cleaner.clearAll();
+        GameController.getInstance().setCurrentPlayer(new AIRandom("ai"));
         GameBoard board = GameBoard.getInstance();
 
-        board.addCell(new Plot(new Point(1, 1), GREEN));
+        board.addCell(new Plot(new Point(1, 0), GREEN));
         board.getAvailableSlots().add(new Point(3, 0));
         board.addCell(new Plot(new Point(3, 0), GREEN));
 
         panda.move(new Point(1, 0));
-        assertFalse(panda.move(new Point(3, 0)));
+        assertFalse(board.canMoveEntity(panda,new Point(3,0)));
     }
 
 }

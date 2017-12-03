@@ -1,5 +1,7 @@
 package Oka.model;
 
+import Oka.controler.GameBoard;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,10 +69,9 @@ public class Vector
      @param dest   Destination point
      @return True if the 2 points are aligned, false otherwise
      */
-    public static boolean areAligned (Point origin, Point dest)
-    {
-        return findStraightVector(origin, dest) != null;
-    }
+    public static boolean areAligned (Point origin, Point dest) {
+
+            return findStraightVector(origin, dest) != null;}
 
     /**
      <hr>
@@ -82,8 +83,7 @@ public class Vector
      @param dest   Destination point
      @return A new Vector(axis, length) if found, null otherwise
      */
-    public static Vector findStraightVector (Point origin, Point dest)
-    {
+    public static Vector findStraightVector (Point origin, Point dest) {
         if (origin == null || dest == null) throw new IllegalArgumentException("Parameter is null !");
 
         if (origin.getX() != dest.getX() && origin.getY() == dest.getY())

@@ -11,6 +11,10 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static Oka.model.Enums.Axis.x;
+import static Oka.model.Enums.Axis.y;
+import static Oka.model.Enums.Axis.z;
+
 public class GameBoard
 {
     //region==========ATTRIBUTES===========
@@ -376,14 +380,71 @@ public class GameBoard
         return canMoveEntity(entity, point) && entity.move(point);
     }
 
-    public boolean canMoveEntity (Entity entity, Point point)
+    public boolean canMoveEntity (Entity entity, Point dest)
     {
         if (entity == null) throw new IllegalArgumentException("Entity is null");
-        if (point == null) throw new IllegalArgumentException("Point is null");
-        if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
+        if (dest == null) throw new IllegalArgumentException("Point is null");
+        if (!grid.containsKey(dest)) throw new IllegalArgumentException("The cell is not on the grid");
+        Point origin = entity.getCoords();
+        if (origin.getX() != dest.getX() && origin.getY() == dest.getY()) {
+            if (dest.getX() - origin.getX() > 0) {
+                for (int i = 0; i <= dest.getX() - origin.getX(); i++) {
+                    Point originesave = new Point(origin.x + i,origin.y);
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                        return false;
+                    }
+                }
+            } else {
+                for (int i = 0; i >= dest.getX() - origin.getX(); i++) {
+                    Point originesave = new Point(origin.x - i, origin.y);
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
-        return Vector.areAligned(entity.getCoords(), point);
+
+        if (origin.getX() == dest.getX() && origin.getY() != dest.getY()) {
+            if (dest.getY() - origin.getY() > 0) {
+                for (int i = 0; i <= dest.getY() - origin.getY(); i++) {
+                    Point originesave = new Point(origin.x, origin.y + i);
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                        return false;
+                    }
+                }
+            } else {
+                for (int i = 0; i >= dest.getY() - origin.getY(); i++) {
+                    Point originesave = new Point(origin.x, origin.y - i);
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        if (origin.getX() - dest.getX() == -(origin.getY() - dest.getY())) {
+            if (origin.getX() - dest.getX() > 0) {
+                for (int i = 0; i <= dest.getX() - origin.getX(); i++) {
+                    Point originesave = new Point(origin.x - i, origin.y + i);
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                        return false;
+                    }
+                }
+            } else {
+                for (int i = 0; i >= dest.getX() - origin.getX(); i++) {
+                    Point originesave = new Point(origin.x + i, origin.y - i);
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
     }
+
 
     /**
      Computes the available irigation slots

@@ -1,6 +1,8 @@
 package Oka.entities;
 
+import Oka.ai.AIRandom;
 import Oka.controler.GameBoard;
+import Oka.controler.GameController;
 import Oka.model.plot.Plot;
 import Oka.utils.Cleaner;
 import org.junit.After;
@@ -79,6 +81,9 @@ public class GardenerTest
 
     @Test
     public void contiguousMove() {
+        Cleaner.clearAll();
+
+        GameController.getInstance().setCurrentPlayer(new AIRandom("ai"));
         GameBoard board = GameBoard.getInstance();
 
         board.addCell(new Plot(new Point(0, 1), GREEN));
@@ -86,7 +91,7 @@ public class GardenerTest
         board.addCell(new Plot(new Point(-2, 1), GREEN));
 
         gardener.move(new Point(0, 1));
-        assertFalse(gardener.move(new Point(-2, 1)));
+        assertFalse(board.canMoveEntity(gardener,new Point(-2, 1)));
 
 
     }

@@ -1,6 +1,7 @@
 package Oka;
 
 import Oka.ai.AI;
+import Oka.ai.AIGoal;
 import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
 import Oka.controler.GameController;
@@ -46,7 +47,7 @@ public class App
 
             AISimple AM = new AISimple("AISimple");
             AIRandom IL = new AIRandom("AIRandom");
-            AIRandom AB = new AIRandom("AIGoal");
+            AIRandom AB = new AIRandom("AIRandom2");
 
             ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, AB));
 
