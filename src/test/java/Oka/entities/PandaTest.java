@@ -11,8 +11,7 @@ import org.junit.Test;
 import java.awt.*;
 
 import static Oka.model.Enums.Color.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class PandaTest
 {
@@ -29,8 +28,7 @@ public class PandaTest
     }
 
     @Test
-    public void move () throws Exception
-    {
+    public void move() {
         GameBoard board = GameBoard.getInstance();
         GameController gameController = GameController.getInstance();
 
@@ -75,8 +73,7 @@ public class PandaTest
     }
 
     @Test
-    public void testGetAndSetCoords () throws Exception
-    {
+    public void testGetAndSetCoords() {
         Point p1 = new Point(5, 1);
         Point p2 = new Point(3, 4);
 
@@ -85,4 +82,17 @@ public class PandaTest
         assertEquals(p2, panda.getCoords());
         assertNotEquals(p1, panda.getCoords());
     }
+
+    @Test
+    public void contiguousMove() {
+        GameBoard board = GameBoard.getInstance();
+
+        board.addCell(new Plot(new Point(1, 1), GREEN));
+        board.getAvailableSlots().add(new Point(3, 0));
+        board.addCell(new Plot(new Point(3, 0), GREEN));
+
+        panda.move(new Point(1, 0));
+        assertFalse(panda.move(new Point(3, 0)));
+    }
+
 }
