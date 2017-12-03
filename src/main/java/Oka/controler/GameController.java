@@ -15,7 +15,6 @@ package Oka.controler;
  .................................................................................................*/
 
 import Oka.ai.AI;
-import Oka.ai.AISimple;
 import Oka.model.goal.Goal;
 import Oka.utils.Logger;
 import Oka.utils.Stats;
@@ -115,6 +114,7 @@ public class GameController
     {
         for (AI ai : playable)
         {
+
             if (ai != ai1)
             {
                 ai.play();

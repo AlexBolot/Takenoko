@@ -4,7 +4,11 @@ import Oka.ai.AI;
 import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
 import Oka.ai.inventory.GoalHolder;
+import Oka.model.Enums;
+import Oka.model.goal.BambooGoal;
+import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
+import Oka.model.plot.state.NeutralState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class GameControllerTest
 {
@@ -75,9 +80,9 @@ public class GameControllerTest
         emmperorC += ILGoalHolder.stream().filter(goal -> goal.getClass().equals(Goal.class)).count();
         assertEquals(1, emmperorC);
     }
-
     @Test
     public void lastTurn() {
+        //need fix see OKA-134
         GameController gc = GameController.getInstance();
 
         AISimple AM = new AISimple("AISimple1");
@@ -100,4 +105,34 @@ public class GameControllerTest
         assertEquals(0, AM.getInventory().getActionHolder().getActionLeft());
     }
 
+    @Test
+    public void getAiWin() {
+
+        GameController gc = GameController.getInstance();
+
+        AISimple am = new AISimple("AISimple1");
+        // AISimple IL = new AISimple("AISimple2");
+        AIRandom IL = new AIRandom("AIRandom");
+        AIRandom sm = new AIRandom("Mosseb");
+
+        ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(am, IL, sm));
+        BambooGoal bg1 = new BambooGoal(1, 3, Enums.Color.GREEN);
+        bg1.setValidated(true);
+        am.getInventory().goalHolder().addGoal(bg1);
+        GardenerGoal gg2 = new GardenerGoal(2, 3, Enums.Color.GREEN, new NeutralState());
+        gg2.setValidated(true);
+        am.getInventory().goalHolder().addGoal(gg2);
+
+
+        BambooGoal bg3 = new BambooGoal(3, 3, Enums.Color.GREEN);
+        bg3.setValidated(true);
+        sm.getInventory().goalHolder().addGoal(bg1);
+        assertEquals(1, gc.getAIWins(Playable).size());
+        assertEquals(sm, gc.getAIWins(Playable).get(0));
+
+        IL.getInventory().goalHolder().addGoal(bg3);
+        assertEquals(2, gc.getAIWins(Playable).size());
+        assertTrue(gc.getAIWins(Playable).containsAll(Arrays.asList(sm, IL)));
+
+    }
 }
