@@ -48,8 +48,7 @@ public class GameControllerTest
     }
 
     @Test
-    public void maxValuesObjectives () throws Exception
-    {
+    public void maxValuesObjectives() {
         assertEquals(p1, gameController.getAIWins(listPlayable).get(0));
         p2.getInventory().addGoal(new Goal(1, true));
         assertEquals(2, gameController.getAIWins(listPlayable).size());
@@ -75,6 +74,30 @@ public class GameControllerTest
 
         emmperorC += ILGoalHolder.stream().filter(goal -> goal.getClass().equals(Goal.class)).count();
         assertEquals(1, emmperorC);
+    }
+
+    @Test
+    public void lastTurn() {
+        GameController gc = GameController.getInstance();
+
+        AISimple AM = new AISimple("AISimple1");
+        // AISimple IL = new AISimple("AISimple2");
+        AIRandom IL = new AIRandom("AIRandom");
+        AIRandom sm = new AIRandom("Mosseb");
+
+        ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, sm));
+
+        gc.lastTurn(Playable, AM);
+        assertEquals(0, IL.getInventory().getActionHolder().getActionLeft());
+        assertEquals(0, sm.getInventory().getActionHolder().getActionLeft());
+        assertEquals(2, AM.getInventory().getActionHolder().getActionLeft());
+
+        IL.getInventory().resetActionHolder();
+        sm.getInventory().resetActionHolder();
+        gc.lastTurn(Playable, sm);
+        assertEquals(0, IL.getInventory().getActionHolder().getActionLeft());
+        assertEquals(2, sm.getInventory().getActionHolder().getActionLeft());
+        assertEquals(0, AM.getInventory().getActionHolder().getActionLeft());
     }
 
 }
