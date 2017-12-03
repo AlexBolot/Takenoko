@@ -9,18 +9,15 @@ import org.junit.Test;
 
 import java.awt.*;
 
-import static Oka.model.Enums.Color.PINK;
-import static Oka.model.Enums.Color.YELLOW;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static Oka.model.Enums.Color.*;
+import static org.junit.Assert.*;
 
 public class GardenerTest
 {
     private Gardener gardener = Gardener.getInstance();
 
     @Before
-    public void setUp () throws Exception
-    {
+    public void setUp() {
         //Placing gardener back on the pond.
         Cleaner.cleanGardener();
 
@@ -29,8 +26,7 @@ public class GardenerTest
     }
 
     @After
-    public void tearDown () throws Exception
-    {
+    public void tearDown() {
         //Placing gardener back on the pond.
         Cleaner.cleanGardener();
 
@@ -39,8 +35,7 @@ public class GardenerTest
     }
 
     @Test
-    public void move () throws Exception
-    {
+    public void move() {
         GameBoard board = GameBoard.getInstance();
 
         Point point1 = new Point(0, 1);
@@ -82,5 +77,18 @@ public class GardenerTest
         assertNotEquals(p1, gardener.getCoords());
     }
 
+    @Test
+    public void contiguousMove() {
+        GameBoard board = GameBoard.getInstance();
+
+        board.addCell(new Plot(new Point(0, 1), GREEN));
+        board.getAvailableSlots().add(new Point(-2, 1));
+        board.addCell(new Plot(new Point(-2, 1), GREEN));
+
+        gardener.move(new Point(0, 1));
+        assertFalse(gardener.move(new Point(-2, 1)));
+
+
+    }
 
 }
