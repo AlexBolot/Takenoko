@@ -6,7 +6,6 @@ import Oka.model.Enums;
 import Oka.model.Vector;
 import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
-import Oka.model.goal.Goal;
 import Oka.model.goal.PlotGoal;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.NeutralState;
@@ -17,7 +16,8 @@ import org.junit.Test;
 import java.awt.*;
 import java.util.HashMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class GoalHolderTest {
     private GoalHolder goalHolder;
@@ -48,7 +48,7 @@ public class GoalHolderTest {
     }
 
     @Test
-    public void checkGoal() throws Exception {
+    public void checkGoal() {
 
         goalHolder.checkGoal(bambooholder);
         assertEquals(2,goalHolder.getGoalValidated(true).size());
@@ -64,11 +64,28 @@ public class GoalHolderTest {
     }
 
     @Test
-    public void addGoal() throws Exception {
+    public void addGoal() {
         assertEquals(goalHolder.get(0),new BambooGoal(5,1,Enums.Color.GREEN));
         assertEquals(goalHolder.get(1),new BambooGoal(5,2,Enums.Color.PINK));
         assertEquals(goalHolder.get(2),new BambooGoal(5,3,Enums.Color.YELLOW));
 
+
+    }
+
+    @Test
+    public void maxGoal() {
+        Cleaner.clearAll();
+        GoalHolder gh = new GoalHolder();
+        BambooGoal firstGoal = new BambooGoal(3, 1, Enums.Color.GREEN);
+        gh.addGoal(firstGoal);
+        gh.addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
+        gh.addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
+        gh.addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
+        gh.addGoal(new BambooGoal(3, 1, Enums.Color.GREEN));
+        BambooGoal lastGoal = new BambooGoal(3, 2, Enums.Color.GREEN);
+        gh.addGoal(lastGoal);
+        assertEquals(5, gh.size());
+        assertFalse(gh.contains(lastGoal));
 
     }
 
