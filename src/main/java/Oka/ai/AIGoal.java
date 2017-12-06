@@ -5,6 +5,7 @@ import Oka.controler.GameBoard;
 import Oka.entities.Entity;
 import Oka.entities.Gardener;
 import Oka.entities.Panda;
+import Oka.model.Enums;
 import Oka.model.Enums.Action;
 import Oka.model.Enums.Color;
 import Oka.model.Enums.GoalType;
@@ -46,8 +47,7 @@ import static Oka.model.Enums.State.*;
 public class AIGoal extends AI
 {
     private int turn = 0;
-    private Goal  currentGoal;
-    private Color currentColor;
+    private Goal currentGoal;
 
     //region ============ Constructors ==========
     public AIGoal (String name)
@@ -63,17 +63,26 @@ public class AIGoal extends AI
     @Override
     public void play ()
     {
+        Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
+
         // 1 - Picks a goal if has to
-        if (hasToPickGoal()) pickGoal();
+        if (hasToPickGoal())
+        {
+            pickGoal();
+        }
 
         // 2 - Copy goals and sort by ratio
         ArrayList<Goal> goals = new ArrayList<>(getInventory().goalHolder());
         goals.sort(Comparator.comparing(Goal::getRatio));
 
+        Collections.reverse(goals);
+
         // 3 - Show not-validated goals
         // 4 - RollDice if not first turn
-        printObjectives();
-        if (turn++ != 0) Dice.rollDice(this);
+        if (turn++ != 0)
+        {
+            Dice.rollDice(this);
+        }
 
         // 5 - For each goal (ordered by ratio) and while we didn't go over 30 attempts to play
         // 6 - Pick a new goal if has no more unvalidated goals or only has PlotGoals
@@ -179,7 +188,11 @@ public class AIGoal extends AI
                 plots.removeIf(plot -> !GameBoard.getInstance().canMoveEntity(panda, plot.getCoords()));
 
                 // 3 - If couldn't place bamboo on plot accessible by panda, try another one
-                plots.get(0).addBamboo();
+                if (!plots.isEmpty())
+                {
+                    plots.get(0).addBamboo();
+                    Logger.printLine(getName() + " a placé un bamboo sur : " + plots.get(0));
+                }
             }
             //endregion
 
@@ -217,8 +230,11 @@ public class AIGoal extends AI
                 });
 
                 // 5 - add bamboos to the plot first plot
-                plots.get(0).addBamboo();
-
+                if (!plots.isEmpty())
+                {
+                    plots.get(0).addBamboo();
+                    Logger.printLine(getName() + " a placé un bamboo sur : " + plots.get(0));
+                }
             }
             //endregion
         }
@@ -325,6 +341,7 @@ public class AIGoal extends AI
         // They are useless if no previous
         // action could be made with them
         plots.removeIf(Plot::isIrrigated);
+        if (plots.isEmpty()) return false;
 
         // 6 - We then try to irrigate the closest
         // interesting point to the Pond (easier to irrigate)
@@ -408,6 +425,7 @@ public class AIGoal extends AI
         // They are useless if no previous
         // action could be made with them
         plots.removeIf(Plot::isIrrigated);
+        if (plots.isEmpty()) return false;
 
         // 6 - We then try to irrigate the closest
         // interesting point to the Pond (easier to irrigate)
@@ -491,6 +509,7 @@ public class AIGoal extends AI
         ArrayList<BambooGoal> bambooGoals = new ArrayList<>();
         ArrayList<GardenerGoal> gardenerGoals = new ArrayList<>();
         goals.sort(Comparator.comparing(Goal::getRatio));
+        Collections.reverse(goals);
 
         // 0 - Filtering goals
         goals.forEach(goal -> {
@@ -539,7 +558,7 @@ public class AIGoal extends AI
 
                 boolean foundState = allPlots.stream().anyMatch(plot -> plot.getState().equals(neededState));
                 boolean foundColor = allPlots.stream().anyMatch(plot -> plot.getColor().equals(neededColor));
-                if (foundState || foundColor) continue;
+                if (foundState && foundColor) continue;
 
                 List<Map.Entry<Color, Point>> localNeededSpots = new ArrayList<>();
                 for (Map.Entry<Color, Point> neededSlot : neededSlots)
@@ -594,10 +613,26 @@ public class AIGoal extends AI
 
         // 5 - Check if possible to please PlotGoal
         //region {...code...}
+        if (plotGoals.stream().anyMatch(this::plotGoalStrategy)) return true;
+        //endregion
 
-        return plotGoals.stream().anyMatch(this::plotGoalStrategy);
+        // 6 - Go for random placement
+        //region {...code...}
+        ArrayList<Point> slots = GameBoard.getInstance().getAvailableSlots();
+
+        Collections.shuffle(slots);
+        Collections.shuffle(drawnPlots);
+
+        for (Plot plot : drawnPlots)
+        {
+            for (Point point : slots)
+            {
+                if (placePlot(plot, point)) return true;
+            }
+        }
 
         //endregion
+        return false;
     }
 
     private boolean placePlot (Plot plot)
@@ -698,12 +733,13 @@ public class AIGoal extends AI
 
         Action action = null;
         if (entity instanceof Panda) action = movePanda;
-        if (entity instanceof Panda) action = moveGardener;
+        if (entity instanceof Gardener) action = moveGardener;
 
         if (!getInventory().getActionHolder().hasActionsLeft(action)) return false;
 
         if (GameBoard.getInstance().moveEntity(entity, coords))
         {
+            Logger.printLine(getName() + " a déplacé le " + entity.getClass().getSimpleName() + " en : " + entity.getCoords());
             getInventory().getActionHolder().consumeAction(action);
             return true;
         }
@@ -718,7 +754,7 @@ public class AIGoal extends AI
 
         Action action = null;
         if (entity instanceof Panda) action = movePanda;
-        if (entity instanceof Panda) action = moveGardener;
+        if (entity instanceof Gardener) action = moveGardener;
 
         boolean hasActionLeft = getInventory().getActionHolder().hasActionsLeft(action);
         boolean canMove = GameBoard.getInstance().canMoveEntity(entity, coords);
@@ -729,17 +765,15 @@ public class AIGoal extends AI
     /**
      Picks a random goal from the DrawStackPlot
 
-     @return true if a goal was found
+     @return true if everything went right (should always return true)
      */
-    private boolean pickGoal ()
+    protected boolean pickGoal ()
     {
-        if (!getInventory().getActionHolder().hasActionsLeft(drawGoal)) return false;
+        if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawGoal)) return false;
 
-        GoalType[] values = GoalType.values();
+        GoalType goalType = this.getInventory().getLessGoalType();
 
-        GoalType goalType = values[new Random().nextInt(values.length - 1)];
-
-        getInventory().getActionHolder().consumeAction(drawGoal);
+        getInventory().getActionHolder().consumeAction(Enums.Action.drawGoal);
 
         return pickGoal(goalType);
     }

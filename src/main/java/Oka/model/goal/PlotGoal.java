@@ -215,10 +215,10 @@ public class PlotGoal extends Goal
 
     public double getRatio ()
     {
-        return sigmoid(getValue() / getSize());
+        return sigmoid(getValue() / (getSize() * 2));
     }
 
-    public HashSet<Map.Entry<Enums.Color, Point>> neededSpots (Point point)
+    private HashSet<Map.Entry<Enums.Color, Point>> neededSpots (Point point)
     {
         if (point.equals(new Pond().getCoords())) throw new IllegalArgumentException("On Pond Exception");
 
@@ -243,28 +243,35 @@ public class PlotGoal extends Goal
     {
         ArrayList<PlotGoal> goals = this.symmetrics();
         GameBoard board = GameBoard.getInstance();
-        ArrayList<Point> slots = board.getAvailableSlots();
+        ArrayList<Point> slots = new ArrayList<>(board.getAvailableSlots());
 
         slots.addAll(board.getGrid().keySet());
         goals.add(this);
 
-        return slots.stream().map(point -> goals.stream().map(plotGoal -> {
+        try
+        {
+            return slots.stream().map(point -> goals.stream().map(plotGoal -> {
 
-            boolean isPond = point.equals(new Pond().getCoords());
-            HashSet<Map.Entry<Enums.Color, Point>> emptyList = new HashSet<>();
-            HashSet<Map.Entry<Enums.Color, Point>> recurList = emptyList;
+                boolean isPond = point.equals(new Pond().getCoords());
+                HashSet<Map.Entry<Enums.Color, Point>> emptyList = new HashSet<>();
+                HashSet<Map.Entry<Enums.Color, Point>> recurList = emptyList;
 
-            if (!isPond) recurList = plotGoal.neededSpots(point);
+                if (!isPond) recurList = plotGoal.neededSpots(point);
 
-            return isPond ? emptyList : recurList;
+                return isPond ? emptyList : recurList;
 
-        }).reduce((c1, c2) -> {
-            c1.addAll(c2);
-            return c1;
-        })).reduce((c1, c2) -> {
-            c1.orElse(new HashSet<>()).addAll(c2.orElse(new HashSet<>()));
-            return c1;
-        }).orElse(Optional.of(new HashSet<>())).orElse(new HashSet<>());
+            }).reduce((c1, c2) -> {
+                c1.addAll(c2);
+                return c1;
+            })).reduce((c1, c2) -> {
+                c1.orElse(new HashSet<>()).addAll(c2.orElse(new HashSet<>()));
+                return c1;
+            }).orElse(Optional.of(new HashSet<>())).orElse(new HashSet<>());
+        }
+        catch (IllegalArgumentException iae)
+        {
+            return new HashSet<>();
+        }
     }
 
     @Override

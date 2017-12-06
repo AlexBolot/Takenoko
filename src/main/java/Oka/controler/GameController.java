@@ -26,7 +26,7 @@ public class GameController
     //region==========ATTRIBUTES===========
     private static GameController gameController = new GameController();
 
-    private AI currentPlayer;
+    private AI  currentPlayer;
     private int turn;
     //endregion//
 
@@ -47,29 +47,35 @@ public class GameController
     }
     //endregion
 
-    /**
-     * @param playable Take all the players.
-     *  And make them play and having fun #BestMethod
-     */
     //region==========METHODS==============
+
+    /**
+     @param playable Take all the players.
+     And make them play and having fun #BestMethod
+     */
     public void play (ArrayList<AI> playable)
     {
         int nbGoal;
         turn = 0;
 
-        if(playable.size()==2){
-            nbGoal=9;
-        }else if(playable.size()==3){
-            nbGoal=8;
-        }else{
-            nbGoal=7;
+        if (playable.size() == 2)
+        {
+            nbGoal = 9;
+        }
+        else if (playable.size() == 3)
+        {
+            nbGoal = 8;
+        }
+        else
+        {
+            nbGoal = 7;
         }
 
         while (true)
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
-          //  Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
-          // Logger.printLine("Grid :"+ GameBoard.getInstance().getGrid().keySet().toString());
+            //  Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
+            // Logger.printLine("Grid :"+ GameBoard.getInstance().getGrid().keySet().toString());
             for (int i = 0; i < playable.size(); i++)
             {
                 AI ai = playable.get(i);
@@ -91,10 +97,13 @@ public class GameController
                     Stats.saveStatTurn(turn);
                     Stats.saveStatGoal(ListAIWin.get(0).getInventory().getNbGoalByType(true));
 
-                    if(ListAIWin.size() == 1){
+                    if (ListAIWin.size() == 1)
+                    {
                         Stats.saveStatWinner(ListAIWin.get(0).getName());
                         Logger.printWin(ListAIWin.get(0).getName());
-                    }else{
+                    }
+                    else
+                    {
                         Stats.saveStatWinner("Draw");
                         Logger.printDraw();
                     }
@@ -103,65 +112,72 @@ public class GameController
             }
         }
     }
-    //endregion
 
     /**
-     * @param playable Take all the players. ( or AI in our case )
-     * @param ai1 Take an AI ( the AI who completed the nine goal )
-     *  And make all the others AI play their last TURN !!!
+     @param playable Take all the players. ( or AI in our case )
+     @param ai1      Take an AI ( the AI who completed the nine goal )
+     And make all the others AI play their last TURN !!!
      */
     public void lastTurn (ArrayList<AI> playable, AI ai1)
     {
         for (AI ai : playable)
         {
-
             if (ai != ai1)
             {
+                currentPlayer = ai;
                 ai.play();
                 ai.getInventory().checkGoals();
             }
         }
     }
 
-
     /**
      <hr>
      <h3> this method save all the stats of the players and return the player(s) that has more points than the others.</h3>
      <hr>
-
      */
-    public ArrayList<AI> getAIWins(ArrayList<AI> playable) {
-        int max = 0,
-                pointPLayer;
+    public ArrayList<AI> getAIWins (ArrayList<AI> playable)
+    {
+        int max = 0, pointPLayer;
         ArrayList<AI> listAIWinnger = new ArrayList<>();
 
-        for (AI ai : playable) {
+        for (AI ai : playable)
+        {
             ai.printObjectives();
             pointPLayer = ai.getInventory().getValueOfGoalHolder();
 
-            Stats.saveStatPoint(ai.getName(),pointPLayer);
-            if (pointPLayer > max) {
+            Stats.saveStatPoint(ai.getName(), pointPLayer);
+            if (pointPLayer > max)
+            {
                 max = pointPLayer;
                 listAIWinnger.clear();
                 listAIWinnger.add(ai);
-            }else if(pointPLayer == max){
+            }
+            else if (pointPLayer == max)
+            {
                 listAIWinnger.add(ai);
             }
         }
-        if(listAIWinnger.size()>1){
+        if (listAIWinnger.size() > 1)
+        {
             max = 0;
-            for (AI ai : playable) {
+            for (AI ai : playable)
+            {
                 pointPLayer = ai.getInventory().getValueOfBambooGoalHolder();
-                if (pointPLayer > max) {
+                if (pointPLayer > max)
+                {
                     max = pointPLayer;
                     listAIWinnger.clear();
                     listAIWinnger.add(ai);
-                }else if(pointPLayer == max){
+                }
+                else if (pointPLayer == max)
+                {
                     listAIWinnger.add(ai);
                 }
             }
         }
         return listAIWinnger;
     }
+    //endregion
 
 }

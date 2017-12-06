@@ -11,10 +11,6 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static Oka.model.Enums.Axis.x;
-import static Oka.model.Enums.Axis.y;
-import static Oka.model.Enums.Axis.z;
-
 public class GameBoard
 {
     //region==========ATTRIBUTES===========
@@ -109,6 +105,7 @@ public class GameBoard
         {
             ((Plot) cell).setIsIrrigated(true);
         }
+
         refreshAvailableSlots(cell);
     }
 
@@ -341,13 +338,19 @@ public class GameBoard
     private void assertNotOnGrid (Point point)
     {
         if (point == null) throw new IllegalArgumentException("Point is null");
-        if (grid.containsKey(point)) throw new IllegalArgumentException("The cell is already on the grid");
+        if (grid.containsKey(point))
+        {
+            throw new IllegalArgumentException("The cell is already on the grid");
+        }
     }
 
     private void assertIsOnGrid (Point point)
     {
         if (point == null) throw new IllegalArgumentException("Point is null");
-        if (!grid.containsKey(point)) throw new IllegalArgumentException("The cell is not on the grid");
+        if (!grid.containsKey(point))
+        {
+            throw new IllegalArgumentException("The cell is not on the grid");
+        }
     }
 
     private void assertIsAvailable (Point point) throws IllegalArgumentException
@@ -370,7 +373,10 @@ public class GameBoard
         {
             if (!grid.containsKey(point) && !availableSlots.contains(point) && getCommonNeighboors(point, cell.getCoords()).size() > 0)
             {
-                if (!point.equals(new Pond().getCoords())) availableSlots.add(point);
+                if (!point.equals(new Pond().getCoords()))
+                {
+                    availableSlots.add(point);
+                }
             }
         }
     }
@@ -444,7 +450,6 @@ public class GameBoard
         }
         return false;
     }
-
 
     /**
      Computes the available irigation slots

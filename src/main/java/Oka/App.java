@@ -47,7 +47,7 @@ public class App
 
             AISimple AM = new AISimple("AISimple");
             AIRandom IL = new AIRandom("AIRandom");
-            AIRandom AB = new AIRandom("AIRandom2");
+            AIGoal AB = new AIGoal("AIGoal");
 
             ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, AB));
 
@@ -63,7 +63,7 @@ public class App
 
                 AISimple AM = new AISimple("AISimple");
                 AIRandom IL = new AIRandom("AIRandom");
-                AIRandom AB = new AIRandom("AIGoal");
+                AIGoal AB = new AIGoal("AIGoal");
 
                 Logger.printPorgress(i, answer);
 

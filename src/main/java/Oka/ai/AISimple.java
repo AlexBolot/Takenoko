@@ -471,6 +471,8 @@ public class AISimple extends AI
         {
             getInventory().addGoal(optionalGoal.get());
             getInventory().resetTurnWithoutPickGoal();
+
+            Logger.printLine(getName() + " a pioché un objectuf : " + optionalGoal.get());
             return true;
         }
 
@@ -611,7 +613,6 @@ public class AISimple extends AI
         Logger.printTitle(this.getName() + " Objectifs validés :" + this.getInventory().validatedGoals(true));
     }
 
-
     /**
      * @return True if the AI succeeds to draw one of those plotstates ( pond/enclosure/fertilizer )
      * <br> False if there is no more in the draw.
@@ -646,9 +647,5 @@ public class AISimple extends AI
 
 
     }
-
-
     //endregion
-
-
 }
