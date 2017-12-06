@@ -43,7 +43,7 @@ import static Oka.model.Enums.State.*;
  . Last Modified : 23/11/17 09:47
  .................................................................................................*/
 
-@SuppressWarnings ({"unused", "Duplicates", "ConstantConditions", "UnusedReturnValue", "SameParameterValue"})
+@SuppressWarnings ({"unused", "UnusedReturnValue", "Duplicates", "ConstantConditions"})
 public class AIGoal extends AI
 {
     private int turn = 0;
@@ -347,7 +347,7 @@ public class AIGoal extends AI
         // interesting point to the Pond (easier to irrigate)
         if (getInventory().hasIrrigation() || drawIrrigation())
         {
-            plots.sort(Comparator.comparing(plot -> Vector.findStraightVector(plot.getCoords(), new Pond().getCoords()).length()));
+            plots.sort(Comparator.comparing(plot -> Vector.findVector(plot.getCoords(), new Pond().getCoords()).length()));
 
             for (Plot plot : plots)
             {
@@ -431,7 +431,7 @@ public class AIGoal extends AI
         // interesting point to the Pond (easier to irrigate)
         if (getInventory().hasIrrigation() || drawIrrigation())
         {
-            plots.sort(Comparator.comparing(plot -> Vector.findStraightVector(plot.getCoords(), new Pond().getCoords()).length()));
+            plots.sort(Comparator.comparing(plot -> Vector.findVector(plot.getCoords(), new Pond().getCoords()).length()));
 
             for (Plot plot : plots)
             {
@@ -444,12 +444,17 @@ public class AIGoal extends AI
 
     private boolean plotGoalStrategy (PlotGoal plotGoal)
     {
-        ArrayList<Map.Entry<Color, Point>> neededSpots = new ArrayList<>(plotGoal.neededSpots());
-
         ArrayList<Plot> drawnPlots = DrawStack.getInstance().giveTreePlot();
-        if (drawnPlots == null) return false;
 
-        Set<Color> drawnColors = drawnPlots.stream().map(Plot::getColor).collect(Collectors.toSet());
+        return drawnPlots != null && plotGoalStrategy(plotGoal, drawnPlots);
+    }
+
+    private boolean plotGoalStrategy (PlotGoal plotGoal, ArrayList<Plot> plots)
+    {
+        ArrayList<Map.Entry<Color, Point>> neededSpots = new ArrayList<>(plotGoal.neededSpots());
+        if (plots == null) return false;
+
+        Set<Color> drawnColors = plots.stream().map(Plot::getColor).collect(Collectors.toSet());
 
         for (Color color : Color.values())
         {
@@ -464,20 +469,21 @@ public class AIGoal extends AI
 
         for (Map.Entry<Color, Point> entry : neededSpots)
         {
-            List<Plot> tmpPlots = drawnPlots.stream().filter(plot -> plot.getColor().equals(entry.getKey())).collect(Collectors.toList());
+            List<Plot> tmpPlots = plots.stream().filter(plot -> plot.getColor().equals(entry.getKey())).collect(Collectors.toList());
             sortByState(tmpPlots);
 
             for (Plot plot : tmpPlots)
             {
                 if (placePlot(plot, entry.getValue()))
                 {
-                    drawnPlots.remove(plot);
-                    DrawStack.getInstance().giveBackPlot(drawnPlots);
+                    plots.remove(plot);
+                    DrawStack.getInstance().giveBackPlot(plots);
                     return true;
                 }
             }
         }
 
+        DrawStack.getInstance().giveBackPlot(plots);
         return false;
     }
 
@@ -613,7 +619,14 @@ public class AIGoal extends AI
 
         // 5 - Check if possible to please PlotGoal
         //region {...code...}
-        if (plotGoals.stream().anyMatch(this::plotGoalStrategy)) return true;
+        for (PlotGoal plotGoal : plotGoals)
+        {
+            if (plotGoalStrategy(plotGoal, drawnPlots))
+            {
+                DrawStack.getInstance().giveBackPlot(drawnPlots);
+                return true;
+            }
+        }
         //endregion
 
         // 6 - Go for random placement
@@ -627,7 +640,11 @@ public class AIGoal extends AI
         {
             for (Point point : slots)
             {
-                if (placePlot(plot, point)) return true;
+                if (placePlot(plot, point))
+                {
+                    DrawStack.getInstance().giveBackPlot(drawnPlots);
+                    return true;
+                }
             }
         }
 
@@ -684,6 +701,8 @@ public class AIGoal extends AI
 
         // 2 - Find the closest irrigation slot available
         Irrigation irrig = GameBoard.getInstance().getClosestAvailableIrrigationSlot(plot);
+
+        if (irrig == null) return false;
 
         // 3 - Try to place the irrigation
         if (GameBoard.getInstance().addIrrigation(irrig.getPlot1().getCoords(), irrig.getPlot2().getCoords()))
@@ -767,7 +786,7 @@ public class AIGoal extends AI
 
      @return true if everything went right (should always return true)
      */
-    protected boolean pickGoal ()
+    private boolean pickGoal ()
     {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawGoal)) return false;
 

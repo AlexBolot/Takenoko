@@ -9,7 +9,7 @@ import Oka.model.Cell;
 import Oka.model.Enums;
 import Oka.model.Irrigation;
 import Oka.model.Vector;
-import Oka.model.goal.*;
+import Oka.model.goal.Goal;
 import Oka.model.plot.Plot;
 import Oka.model.plot.state.EnclosureState;
 import Oka.model.plot.state.FertilizerState;
@@ -19,17 +19,19 @@ import Oka.utils.Logger;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class AIRandom extends AI {
+public class AIRandom extends AI
+{
     private int compteur = 0;
-    
-    public AIRandom(String name){
+
+    public AIRandom (String name)
+    {
         super(name);
     }
 
     @Override
-    public void play() {
+    public void play ()
+    {
 
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
 
@@ -53,7 +55,7 @@ public class AIRandom extends AI {
             if (getInventory().plotStates().size() > 0)
             {
                 //Action is consumed only if plotState could be placed
-                if(placePlotState()) continue;
+                if (placePlotState()) continue;
             }
             //We Randomly chose to either move the gardener, the panda, or place an irrigation or placePlot1
             switch (new Random().nextInt(4))
@@ -77,31 +79,37 @@ public class AIRandom extends AI {
         }
 
         Logger.printLine(String.format("%s - bamboos : {GREEN :%d} {YELLOW :%d} {PINK :%d}",
-                getName(),
-                getInventory().bambooHolder().countBamboo(Enums.Color.GREEN),
-                getInventory().bambooHolder().countBamboo(Enums.Color.YELLOW),
-                getInventory().bambooHolder().countBamboo(Enums.Color.PINK)));
+                                       getName(),
+                                       getInventory().bambooHolder().countBamboo(Enums.Color.GREEN),
+                                       getInventory().bambooHolder().countBamboo(Enums.Color.YELLOW),
+                                       getInventory().bambooHolder().countBamboo(Enums.Color.PINK)));
+
+        getInventory().addTurnWithoutPickGoal();
+
     }
+
     /**
-     * @return True : if the AI doesn't succeed to validate some goal or if it doesn't have any goal in his inventory.
-     * <br> False : if the AI has goal and isn't stuck.
+     @return True : if the AI doesn't succeed to validate some goal or if it doesn't have any goal in his inventory.
+     <br> False : if the AI has goal and isn't stuck.
      */
     protected boolean hasToPickGoal ()
     {
         ArrayList<Goal> invalidGoals = getInventory().validatedGoals(false);
 
-        boolean hasNoGoalLeft = invalidGoals.size() == 0 ;
+        boolean hasNoGoalLeft = invalidGoals.size() == 0;
         boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 10;
 
-        return (hasNoGoalLeft || isKindaStuck) && invalidGoals.size()<5;
+        return (hasNoGoalLeft || isKindaStuck) && invalidGoals.size() < 5;
     }
 
-    private boolean placePlotState() {
+    private boolean placePlotState ()
+    {
         List<Plot> plots = GameBoard.getInstance().getPlots();
 
         getInventory().plotStates().get(0).getState();
 
-        if(plots.size()>0){
+        if (plots.size() > 0)
+        {
             int randInt = new Random().nextInt(plots.size());
             plots.get(randInt).setState(getInventory().plotStates().get(0));
 
@@ -114,10 +122,17 @@ public class AIRandom extends AI {
         return false;
     }
 
-    private boolean pickGoal() {
+
+    /**
+     Picks a random goal from the DrawStackPlot
+
+     @return true if everything went right (should always return true)
+     */
+    protected boolean pickGoal ()
+    {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawGoal)) return false;
 
-        Enums.GoalType goalType = Enums.GoalType.values()[new Random().nextInt(3)];
+        Enums.GoalType goalType = this.getInventory().getLessGoalType();
 
         getInventory().getActionHolder().consumeAction(Enums.Action.drawGoal);
 
@@ -143,7 +158,8 @@ public class AIRandom extends AI {
         return false;
     }
 
-    protected boolean moveGardener() {
+    protected boolean moveGardener ()
+    {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.moveGardener)) return false;
 
@@ -163,7 +179,8 @@ public class AIRandom extends AI {
         return false;
     }
 
-    protected boolean movePanda() {
+    protected boolean movePanda ()
+    {
         // TODO: optimise based on proximity to completion
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.movePanda)) return false;
 
@@ -184,7 +201,8 @@ public class AIRandom extends AI {
         return false;
     }
 
-    protected boolean placePlot() {
+    protected boolean placePlot ()
+    {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.placePlot)) return false;
         GameBoard board = GameBoard.getInstance();
         Random rand = new Random();
@@ -211,7 +229,8 @@ public class AIRandom extends AI {
         return true;
     }
 
-    protected boolean drawIrrigation () {
+    protected boolean drawIrrigation ()
+    {
         if (!getInventory().getActionHolder().hasActionsLeft(Enums.Action.drawIrrigation)) return false;
 
         Optional<Irrigation> irrigation = DrawStack.getInstance().drawIrrigation();
@@ -223,7 +242,8 @@ public class AIRandom extends AI {
         return true;
     }
 
-    protected boolean placeIrrigation () {
+    protected boolean placeIrrigation ()
+    {
         if (!getInventory().hasIrrigation()) return false;
 
         GameBoard board = GameBoard.getInstance();
@@ -234,26 +254,28 @@ public class AIRandom extends AI {
         if (board.addIrrigation(irg.getPlot1().getCoords(), irg.getPlot2().getCoords()))
         {
             Logger.printLine(getName() + " à placé une irrigation entre les deux plots suivants : " + irg.getPlot1()
-                    .getCoords()
-                    .toString() + ' ' + irg.getPlot2()
-                    .getCoords()
-                    .toString());
+                                                                                                         .getCoords()
+                                                                                                         .toString() + ' ' + irg.getPlot2()
+                                                                                                                                .getCoords()
+                                                                                                                                .toString());
             getInventory().removeIrrigation();
             return true;
         }
         return false;
     }
 
-    protected boolean moveEntity(Entity entity, int bambooSize, Enums.Color color) {
+    protected boolean moveEntity (Entity entity, int bambooSize, Enums.Color color)
+    {
 
         GameBoard gameBoard = GameBoard.getInstance();
         HashMap<Point, Cell> grid = gameBoard.getGrid();
         Point currentPoint = entity.getCoords();
-        grid.keySet().stream().filter(point -> !(point.equals(currentPoint) || !(grid.get(point) instanceof Plot))
-                                            && Vector.areAligned(entity.getCoords(), point)
-                                            &&  ((Plot)grid.get(point)).getBamboo().size() == bambooSize);
+        grid.keySet().stream().filter(point -> !(point.equals(currentPoint) || !(grid.get(point) instanceof Plot)) && Vector.areAligned(
+                entity.getCoords(),
+                point) && ((Plot) grid.get(point)).getBamboo().size() == bambooSize);
 
-        if(grid.size()>0){
+        if (grid.size() > 0)
+        {
             int randInt = new Random().nextInt(grid.size());
             Cell cell = grid.get(grid.keySet().toArray()[randInt]);
             return entity.move(cell.getCoords());
@@ -262,7 +284,7 @@ public class AIRandom extends AI {
     }
 
     /**
-     *  Print all the objectives completed by this AI.
+     Print all the objectives completed by this AI.
      */
     public void printObjectives ()
     {
@@ -270,22 +292,29 @@ public class AIRandom extends AI {
     }
 
     @Override
-    protected void placeBambooOnPlot() {
+    protected void placeBambooOnPlot ()
+    {
         List<Plot> plots = GameBoard.getInstance().getPlots();
+
+        if (plots.size() == 0) return;
+
         Plot plot = plots.get(new Random().nextInt(plots.size()));
         plot.addBamboo();
         Logger.printLine(getName() + " a placé un bamboo sur : " + plot);
     }
 
     @Override
-    public boolean choosePlotState() {
+    public boolean choosePlotState ()
+    {
 
         Enums.State[] values = Enums.State.values().clone();
         ArrayList<Enums.State> valuesarray = new ArrayList<>(Arrays.asList(values));
         valuesarray.remove(Enums.State.Neutral);
         Collections.shuffle(valuesarray);
-        for(Enums.State state : valuesarray) {
-            switch (state) {
+        for (Enums.State state : valuesarray)
+        {
+            switch (state)
+            {
                 case Pond:
                     Optional<PondState> optPond = DrawStack.getInstance().drawPondState();
                     optPond.ifPresent(pondState -> getInventory().addPlotState(pondState));

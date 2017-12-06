@@ -392,18 +392,26 @@ public class GameBoard
         if (dest == null) throw new IllegalArgumentException("Point is null");
         if (!grid.containsKey(dest)) throw new IllegalArgumentException("The cell is not on the grid");
         Point origin = entity.getCoords();
-        if (origin.getX() != dest.getX() && origin.getY() == dest.getY()) {
-            if (dest.getX() - origin.getX() > 0) {
-                for (int i = 0; i <= dest.getX() - origin.getX(); i++) {
-                    Point originesave = new Point(origin.x + i,origin.y);
-                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+        if (origin.getX() != dest.getX() && origin.getY() == dest.getY())
+        {
+            if (dest.getX() - origin.getX() > 0)
+            {
+                for (int i = 0; i <= dest.getX() - origin.getX(); i++)
+                {
+                    Point originesave = new Point(origin.x + i, origin.y);
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave))
+                    {
                         return false;
                     }
                 }
-            } else {
-                for (int i = 0; i >= dest.getX() - origin.getX(); i++) {
+            }
+            else
+            {
+                for (int i = 0; i >= dest.getX() - origin.getX(); i++)
+                {
                     Point originesave = new Point(origin.x - i, origin.y);
-                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave))
+                    {
                         return false;
                     }
                 }
@@ -412,36 +420,52 @@ public class GameBoard
         }
 
 
-        if (origin.getX() == dest.getX() && origin.getY() != dest.getY()) {
-            if (dest.getY() - origin.getY() > 0) {
-                for (int i = 0; i <= dest.getY() - origin.getY(); i++) {
+        if (origin.getX() == dest.getX() && origin.getY() != dest.getY())
+        {
+            if (dest.getY() - origin.getY() > 0)
+            {
+                for (int i = 0; i <= dest.getY() - origin.getY(); i++)
+                {
                     Point originesave = new Point(origin.x, origin.y + i);
-                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave))
+                    {
                         return false;
                     }
                 }
-            } else {
-                for (int i = 0; i >= dest.getY() - origin.getY(); i++) {
+            }
+            else
+            {
+                for (int i = 0; i >= dest.getY() - origin.getY(); i++)
+                {
                     Point originesave = new Point(origin.x, origin.y - i);
-                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave))
+                    {
                         return false;
                     }
                 }
             }
             return true;
         }
-        if (origin.getX() - dest.getX() == -(origin.getY() - dest.getY())) {
-            if (origin.getX() - dest.getX() > 0) {
-                for (int i = 0; i <= dest.getX() - origin.getX(); i++) {
+        if (origin.getX() - dest.getX() == -(origin.getY() - dest.getY()))
+        {
+            if (origin.getX() - dest.getX() > 0)
+            {
+                for (int i = 0; i <= dest.getX() - origin.getX(); i++)
+                {
                     Point originesave = new Point(origin.x - i, origin.y + i);
-                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave))
+                    {
                         return false;
                     }
                 }
-            } else {
-                for (int i = 0; i >= dest.getX() - origin.getX(); i++) {
+            }
+            else
+            {
+                for (int i = 0; i >= dest.getX() - origin.getX(); i++)
+                {
                     Point originesave = new Point(origin.x + i, origin.y - i);
-                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave)) {
+                    if (!GameBoard.getInstance().getGrid().keySet().contains(originesave))
+                    {
                         return false;
                     }
                 }
@@ -502,6 +526,7 @@ public class GameBoard
             return Math.min(distance1, distance2);
         }));
 
+        if (availableIrrigations.isEmpty()) return null;
         return availableIrrigations.get(0);
     }
 }

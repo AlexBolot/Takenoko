@@ -45,10 +45,10 @@ public class App
         {
             GameController gc = GameController.getInstance();
 
+
             AISimple AM = new AISimple("AISimple");
             AIRandom IL = new AIRandom("AIRandom");
             AIGoal AB = new AIGoal("AIGoal");
-
             ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, AB));
 
             gc.play(Playable);
