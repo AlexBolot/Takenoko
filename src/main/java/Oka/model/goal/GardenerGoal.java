@@ -75,7 +75,7 @@ public class GardenerGoal extends Goal
     //region==========EQUALS/TOSTRING======
     public String toString ()
     {
-        return getClass().getSimpleName() + /*" bambooAmount = " + bambooAmount + " plotColor = " + color*/ " ->value : " + this.getValue();
+        return getClass().getSimpleName() + /*" bambooAmount = " + bambooAmount + */" color = " + color +" ->value : " + this.getValue();
     }
     //endregion
 }

@@ -1,5 +1,9 @@
 package Oka.utils;
 
+import Oka.ai.AI;
+import Oka.ai.Playable;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Stats {
@@ -12,7 +16,7 @@ public class Stats {
     private static int nbTour = 0;
     private static int maxTour = 0;
     private static int minTour = 500;
-    private static int[] statsGoal = new int[3];
+    private static HashMap<String, int[]> statsGoal = new HashMap<>();
 
 
     public static HashMap<String, int[]> getStatAverage()
@@ -22,7 +26,7 @@ public class Stats {
     public static int getNbTour(){return nbTour;}
     public static int getMaxTour(){return maxTour;}
     public static int getMinTour(){return minTour;}
-    public static int[] getStatsGoal() {return statsGoal;}
+    public static HashMap<String, int[]> getStatsGoal() {return statsGoal;}
 
     public static void saveStatPoint(String player, int point){
         int[] tab = {0,point};
@@ -51,9 +55,21 @@ public class Stats {
         else if(minTour>turn)
             minTour = turn;
     }
-    public static void saveStatGoal(int[] tab){
-        statsGoal[0] += tab[0];
-        statsGoal[1] += tab[1];
-        statsGoal[2] += tab[2];
+    public static void saveStatGoal(ArrayList<Playable> listAI){
+        int [] PointWin, PointWinInCurrentGame;
+
+        for(Playable ai : listAI) {
+            PointWinInCurrentGame = ai.getInventory().getNbGoalByType(true);
+
+            if (statsGoal.containsKey(ai.getName())) {
+                PointWin = statsGoal.get(ai.getName());
+                PointWin[0] += PointWinInCurrentGame[0];
+                PointWin[1] += PointWinInCurrentGame[1];
+                PointWin[2] += PointWinInCurrentGame[2];
+                statsGoal.replace(ai.getName(), PointWin);
+            }else{
+                statsGoal.put(ai.getName(), PointWinInCurrentGame);
+            }
+        }
     }
 }

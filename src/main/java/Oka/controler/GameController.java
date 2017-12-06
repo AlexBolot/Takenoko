@@ -15,6 +15,7 @@ package Oka.controler;
  .................................................................................................*/
 
 import Oka.ai.AI;
+import Oka.ai.Playable;
 import Oka.model.goal.Goal;
 import Oka.utils.Logger;
 import Oka.utils.Stats;
@@ -26,7 +27,7 @@ public class GameController
     //region==========ATTRIBUTES===========
     private static GameController gameController = new GameController();
 
-    private AI  currentPlayer;
+    private Playable  currentPlayer;
     private int turn;
     //endregion//
 
@@ -36,7 +37,7 @@ public class GameController
         return gameController;
     }
 
-    public AI getCurrentPlayer ()
+    public Playable getCurrentPlayer ()
     {
         return currentPlayer;
     }
@@ -53,7 +54,7 @@ public class GameController
      @param playable Take all the players.
      And make them play and having fun #BestMethod
      */
-    public void play (ArrayList<AI> playable)
+    public void play (ArrayList<Playable> playable)
     {
         int nbGoal;
         turn = 0;
@@ -75,10 +76,10 @@ public class GameController
         {
             Logger.printTitle("\n========== Turn " + ++turn + " ==========\n");
             //  Logger.printLine("GameBoard :"+ GameBoard.getInstance().getGrid().size());
-            // Logger.printLine("Grid :"+ GameBoard.getInstance().getGrid().keySet().toString());
+            Logger.printLine("Grid :"+ GameBoard.getInstance().toString());
             for (int i = 0; i < playable.size(); i++)
             {
-                AI ai = playable.get(i);
+                Playable ai = playable.get(i);
                 currentPlayer = ai;
 
                 Logger.printSeparator(ai.getName());
@@ -92,10 +93,10 @@ public class GameController
                     // on rajoute l'objectif empereur
                     ai.getInventory().addGoal(new Goal(2, true));
                     lastTurn(playable, playable.get(i));
-                    ArrayList<AI> ListAIWin = getAIWins(playable);
+                    ArrayList<Playable> ListAIWin = getAIWins(playable);
 
                     Stats.saveStatTurn(turn);
-                    Stats.saveStatGoal(ListAIWin.get(0).getInventory().getNbGoalByType(true));
+                    Stats.saveStatGoal(playable);
 
                     if (ListAIWin.size() == 1)
                     {
@@ -118,9 +119,9 @@ public class GameController
      @param ai1      Take an AI ( the AI who completed the nine goal )
      And make all the others AI play their last TURN !!!
      */
-    public void lastTurn (ArrayList<AI> playable, AI ai1)
+    public void lastTurn (ArrayList<Playable> playable, Playable ai1)
     {
-        for (AI ai : playable)
+        for (Playable ai : playable)
         {
             if (ai != ai1)
             {
@@ -136,12 +137,12 @@ public class GameController
      <h3> this method save all the stats of the players and return the player(s) that has more points than the others.</h3>
      <hr>
      */
-    public ArrayList<AI> getAIWins (ArrayList<AI> playable)
+    public ArrayList<Playable> getAIWins (ArrayList<Playable> playable)
     {
         int max = 0, pointPLayer;
-        ArrayList<AI> listAIWinnger = new ArrayList<>();
+        ArrayList<Playable> listAIWinnger = new ArrayList<>();
 
-        for (AI ai : playable)
+        for (Playable ai : playable)
         {
             ai.printObjectives();
             pointPLayer = ai.getInventory().getValueOfGoalHolder();
@@ -161,7 +162,7 @@ public class GameController
         if (listAIWinnger.size() > 1)
         {
             max = 0;
-            for (AI ai : playable)
+            for (Playable ai : playable)
             {
                 pointPLayer = ai.getInventory().getValueOfBambooGoalHolder();
                 if (pointPLayer > max)

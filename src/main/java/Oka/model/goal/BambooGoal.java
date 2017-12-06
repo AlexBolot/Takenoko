@@ -119,7 +119,7 @@ public class BambooGoal extends Goal
             //noinspection StringConcatenationInsideStringBufferAppend -> blablablabla :D
             str.append(" {color:" + entry.getKey() + ", amount:" + entry.getValue() + "} +");
         }*/
-        str.append(" ->value : " + this.getValue());
+        str.append(" ->color : " + this.getColor());
         //str.deleteCharAt(str.length() - 1);
 
         return str.toString();

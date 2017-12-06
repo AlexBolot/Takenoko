@@ -1,6 +1,9 @@
 package Oka.utils;
 
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 public class Logger
@@ -219,9 +222,23 @@ public class Logger
         System.out.println("Tour moyen par game : " + Stats.getNbTour() / nbParti);
         System.out.println("Tour max : " + Stats.getMaxTour());
         System.out.println("Tour min : " + Stats.getMinTour());
-        int[] StatGoal = Stats.getStatsGoal();
-        System.out.println("BambooGoal : " + (float) StatGoal[0] / (float) nbParti + " GardenerGoal : " + (float) StatGoal[1] / (float) nbParti + " PlotGoal : " + (float) StatGoal[2] / (float) nbParti);
 
+        HashMap<String, int[]> StatGoal = Stats.getStatsGoal();
+        HashMap<String, int[]> WinRate = Stats.getStatAverage();
+
+        int[] statsPlayer;
+        for(String player :StatGoal.keySet()){
+
+            statsPlayer = StatGoal.get(player);
+            System.out.printf("\n%s : %.2f %% de victoire - " + (WinRate.get(player)[1]) / nbParti + " point moyen/partie "
+                            + "-> BambooGoal : " + (float) statsPlayer[0] / (float) nbParti
+                            + " GardenerGoal : " + (float) statsPlayer[1] / (float) nbParti
+                            + " PlotGoal : " + (float) statsPlayer[2] / (float) nbParti
+                            , player, (float) (WinRate.get(player)[0] * 100) / (float) nbParti);
+        }
+        if(WinRate.get("Draw") != null)
+            System.out.printf("\n%.2f %% d'égalité", (float) (WinRate.get("Draw")[0] * 100) / (float) nbParti);
+        System.out.println("");
     }
     //endregion
 }

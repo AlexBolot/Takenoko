@@ -1,5 +1,6 @@
 package Oka.ai;
 
+import Oka.ai.inventory.BambooHolder;
 import Oka.controler.DrawStack;
 import Oka.controler.GameBoard;
 import Oka.entities.Entity;
@@ -22,6 +23,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("Duplicates")
 public class AISimple extends AI
 {
     private int compteur = 0;
@@ -39,6 +41,7 @@ public class AISimple extends AI
     public void play ()
     {
         Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
+        Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(true).toString());
 
         getInventory().resetActionHolder();
         if (compteur++ != 0) Dice.rollDice(this);
@@ -76,7 +79,7 @@ public class AISimple extends AI
                     {
                         this.placeIrrigation();
                     }
-                    break;
+                    continue;
                 case 3:
                     placePlot();
                     break;
@@ -193,27 +196,21 @@ public class AISimple extends AI
                                          .filter(goal -> goal instanceof BambooGoal || goal instanceof GardenerGoal)
                                          .collect(Collectors.toList());
 
-        Optional<Color> lookedForColor = findInterestingColor(goals);
+        Optional<Color> lookedForColor = findInterestingColor(goals,this.getInventory().bambooHolder());
 
-        /* If we didn't find a color to look for,
-        no point in moving the gardener */
-        if (!lookedForColor.isPresent()) return false;
-
-        //Else, we go and find an interesting cell of the good color
         int maxBamboo = 4;
         Gardener gardener = Gardener.getInstance();
 
-        for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
-        {
-            if (moveEntity(gardener, bambooSize, lookedForColor.get()))
-            {
-                //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
-                Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
-                getInventory().getActionHolder().consumeAction(Enums.Action.moveGardener);
-                return true;
+        if (lookedForColor.isPresent()) {
+            for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++) {
+                if (moveEntity(gardener, bambooSize, lookedForColor.get())) {
+                    //Logger.printLine(getName() + " moved gardener : " + gardener.getCoords());
+                    Logger.printLine(getName() + " a déplacé le jardinier en : " + gardener.getCoords());
+                    getInventory().getActionHolder().consumeAction(Enums.Action.moveGardener);
+                    return true;
+                }
             }
         }
-
         for (int bambooSize = 0; bambooSize < maxBamboo; bambooSize++)
         {
             if (moveEntity(gardener, bambooSize, Color.NONE))
@@ -242,7 +239,7 @@ public class AISimple extends AI
                 .filter(goal -> goal instanceof BambooGoal)
                 .collect(Collectors.toList());
 
-        Optional<Color> lookedForColor = findInterestingColor(goals);
+        Optional<Color> lookedForColor = findInterestingColor(goals,this.getInventory().bambooHolder());
 
 
         //Else, we go and find an interesting cell of the good color
@@ -250,7 +247,7 @@ public class AISimple extends AI
         Panda panda = Panda.getInstance();
         if (lookedForColor.isPresent())
         {
-            for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
+            for (int bambooSize = maxBamboo; bambooSize > 0; bambooSize--)
             {
                 if (moveEntity(panda, bambooSize, lookedForColor.get()))
                 {
@@ -261,7 +258,7 @@ public class AISimple extends AI
                 }
             }
         }
-        for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
+        for (int bambooSize = maxBamboo; bambooSize > 0; bambooSize--)
         {
             if (moveEntity(panda, bambooSize, Color.NONE))
             {
@@ -356,13 +353,15 @@ public class AISimple extends AI
             Plot plot = (Plot) grid.get(point);
 
             boolean checkColor = (color.equals(plot.getColor()) || color.equals(Color.NONE));
-            boolean checkStateForPanda = true;
-            if( entity instanceof Panda)
-                checkStateForPanda = !(plot.getState().equals(new EnclosureState()));
+            if( entity instanceof Panda){
+                if((plot.getState().equals(new EnclosureState()))) continue;
+                if(this.getInventory().bambooHolder().countBamboo(plot.getColor())>10) continue;
+            }
 
-            if (plot.getBamboo().size() == bambooSize && checkColor && gameBoard.moveEntity(entity, point) && checkStateForPanda)
+
+            if (plot.getBamboo().size() == bambooSize && checkColor)
             {
-                return true;
+                if(gameBoard.moveEntity(entity, point)) return true;
             }
         }
 
@@ -472,7 +471,7 @@ public class AISimple extends AI
             getInventory().addGoal(optionalGoal.get());
             getInventory().resetTurnWithoutPickGoal();
 
-            Logger.printLine(getName() + " a pioché un objectuf : " + optionalGoal.get());
+            Logger.printLine(getName() + " a pioché un objectif : " + optionalGoal.get());
             return true;
         }
 
@@ -497,15 +496,42 @@ public class AISimple extends AI
             /* If goal is Bamboo or Gadener type (= has a color)
             it becomes the color we look for, else keep searching */
 
-            if (goal instanceof BambooGoal) return Optional.of(((BambooGoal) goal).getColor());
+            if (goal instanceof BambooGoal){
+                return Optional.of(((BambooGoal) goal).getColor());
+            }
 
-            if (goal instanceof GardenerGoal) return Optional.of(((GardenerGoal) goal).getColor());
+            if (goal instanceof GardenerGoal){
+                return Optional.of(((GardenerGoal) goal).getColor());
+            }
 
         }
 
         return Optional.empty();
     }
+    private Optional<Color> findInterestingColor (List<Goal> goals, BambooHolder bambooHolder)
+    {
+        //We sort goals by completion to get the closest to completion first
+        List<Goal> goalList = goals.stream().sorted(Comparator.comparingDouble(this::getCompletion)).collect(Collectors.toList());
 
+        for (Goal goal : goalList)
+        {
+            /* If goal is Bamboo or Gadener type (= has a color)
+            it becomes the color we look for, else keep searching */
+
+            if (goal instanceof BambooGoal){
+                Color c = ((BambooGoal) goal).getColor(bambooHolder);
+                if( c == null) return Optional.empty();
+                else return Optional.of(c);
+            }
+
+            if (goal instanceof GardenerGoal){
+                return Optional.of(((GardenerGoal) goal).getColor());
+            }
+
+        }
+
+        return Optional.empty();
+    }
     /**
      * @param goal take goal of the AI
      * @return the proportion of completion of this goal.

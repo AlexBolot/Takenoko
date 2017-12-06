@@ -35,7 +35,6 @@ public class Gardener extends Entity
         if (arrivalCell instanceof Plot)
         {
             Plot arrivalPlot = (Plot) arrivalCell;
-
             arrivalPlot.addBamboo();
 
             for (Cell c : board.getExistingNeighboors(this.getCoords()))

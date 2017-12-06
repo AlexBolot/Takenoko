@@ -1,9 +1,6 @@
 package Oka;
 
-import Oka.ai.AI;
-import Oka.ai.AIGoal;
-import Oka.ai.AIRandom;
-import Oka.ai.AISimple;
+import Oka.ai.*;
 import Oka.controler.GameController;
 import Oka.utils.Cleaner;
 import Oka.utils.Logger;
@@ -47,9 +44,8 @@ public class App
 
 
             AISimple AM = new AISimple("AISimple");
-            AIRandom IL = new AIRandom("AIRandom");
-            AIGoal AB = new AIGoal("AIGoal");
-            ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, AB));
+            AISimple IL = new AISimple("AIRandom");
+            ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
             gc.play(Playable);
         }
@@ -62,24 +58,16 @@ public class App
                 GameController gc = GameController.getInstance();
 
                 AISimple AM = new AISimple("AISimple");
-                AIRandom IL = new AIRandom("AIRandom");
-                AIGoal AB = new AIGoal("AIGoal");
+                AISimple IL = new AISimple("AIRandom");
+                //AIGoal AB = new AIGoal("AIGoal");
 
                 Logger.printPorgress(i, answer);
 
-                ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, AB));
+                ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
                 gc.play(Playable);
             }
 
-            for (Map.Entry<String, int[]> entry : Stats.getStatAverage().entrySet())
-            {
-                if (!entry.getKey().equals("Draw"))
-                    System.out.printf("\n%s : %.2f %% de victoire avec une moyenne de point égale à " + (entry.getValue()[1]) / answer,
-                                      entry.getKey(),
-                                      (float) (entry.getValue()[0] * 100) / (float) answer);
-                else System.out.printf("\n%.2f %% d'égalité", (float) (entry.getValue()[0] * 100) / (float) answer);
-            }
             printStat(answer);
         }
     }

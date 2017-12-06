@@ -65,6 +65,8 @@ public abstract class Playable
 
     public abstract void play ();
 
+    public abstract void printObjectives();
+
     //endregion
 
     //region==========EQUALS/TOSTRING======

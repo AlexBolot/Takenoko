@@ -529,4 +529,14 @@ public class GameBoard
         if (availableIrrigations.isEmpty()) return null;
         return availableIrrigations.get(0);
     }
+    public String toString(){
+        String listeP="";
+        for(Point point : grid.keySet()){
+            if(grid.get(point) instanceof Plot){
+                Plot plot = (Plot) grid.get(point);
+                listeP += plot.toString();
+            }
+        }
+        return listeP;
+    }
 }

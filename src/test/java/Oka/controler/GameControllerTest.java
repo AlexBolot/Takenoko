@@ -3,6 +3,7 @@ package Oka.controler;
 import Oka.ai.AI;
 import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
+import Oka.ai.Playable;
 import Oka.ai.inventory.GoalHolder;
 import Oka.model.Enums;
 import Oka.model.goal.BambooGoal;
@@ -23,7 +24,7 @@ public class GameControllerTest
 {
     private AISimple       p1;
     private AISimple       p2;
-    private ArrayList<AI>  listPlayable;
+    private ArrayList<Playable>  listPlayable;
     private GameController gameController;
 
     @Before
@@ -68,7 +69,7 @@ public class GameControllerTest
         // AISimple IL = new AISimple("AISimple2");
         AIRandom IL = new AIRandom("AIRandom");
 
-        ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+        ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
         gc.play(Playable);
 
@@ -90,7 +91,7 @@ public class GameControllerTest
         AIRandom IL = new AIRandom("AIRandom");
         AIRandom sm = new AIRandom("Mosseb");
 
-        ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(AM, IL, sm));
+        ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL, sm));
 
         gc.lastTurn(Playable, AM);
         assertEquals(0, IL.getInventory().getActionHolder().getActionLeft());
@@ -115,7 +116,7 @@ public class GameControllerTest
         AIRandom IL = new AIRandom("AIRandom");
         AIRandom sm = new AIRandom("Mosseb");
 
-        ArrayList<AI> Playable = new ArrayList<>(Arrays.asList(am, IL, sm));
+        ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(am, IL, sm));
         BambooGoal bg1 = new BambooGoal(1, 3, Enums.Color.GREEN);
         bg1.setValidated(true);
         am.getInventory().goalHolder().addGoal(bg1);
