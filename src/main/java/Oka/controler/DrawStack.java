@@ -104,23 +104,15 @@ public class DrawStack
     {
         Random rand = new Random();
         ArrayList<Plot> listP = new ArrayList<>();
-        if (listPlot.size() > 2)
+
+        if (listPlot.size() == 0) return null;
+
+        for (int i = 0; i < Math.min(3, listPlot.size()); i++)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                listP.add(listPlot.remove(rand.nextInt(listPlot.size())));
-            }
-            return listP;
+            listP.add(listPlot.remove(rand.nextInt(listPlot.size())));
         }
-        else if (listPlot.size() > 0)
-        {
-            for (int i = 0; i < listPlot.size(); i++)
-            {
-                listP.add(listPlot.remove(0));
-            }
-            return listP;
-        }
-        else return null;
+
+        return listP;
     }
 
     /**

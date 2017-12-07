@@ -1,7 +1,5 @@
 package Oka.model;
 
-import Oka.controler.GameBoard;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +22,15 @@ public class Vector
         this.length = length;
     }
     //endregion
+
+    //region==========GETTER/SETTER========
+    public int length ()
+    {
+        return length;
+    }
+    //endregion
+
+    //region==========METHODS==============
 
     /**
      <hr>
@@ -49,15 +56,6 @@ public class Vector
 
         return new Vector(axis, maxAbs);
     }
-
-    //region==========GETTER/SETTER========
-    public int length ()
-    {
-        return length;
-    }
-    //endregion
-
-    //region==========METHODS==============
 
     /**
      <hr>

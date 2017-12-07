@@ -83,7 +83,7 @@ public class Plot extends Cell
     //region==========METHODS==============
 
     /**
-     * Addbamboo on a plot.
+     Addbamboo on a plot.
      */
     public void addBamboo ()
     {
@@ -120,7 +120,7 @@ public class Plot extends Cell
     @Override
     public String toString ()
     {
-        return super.toString() + "->" + bamboo.size();
+        return super.toString() + "{" + color + "}" + ":" + bamboo.size();
     }
     //endregion
 }

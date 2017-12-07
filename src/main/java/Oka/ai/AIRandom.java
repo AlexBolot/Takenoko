@@ -97,7 +97,7 @@ public class AIRandom extends AI
         ArrayList<Goal> invalidGoals = getInventory().validatedGoals(false);
 
         boolean hasNoGoalLeft = invalidGoals.size() == 0;
-        boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 10;
+        boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 5;
 
         return (hasNoGoalLeft || isKindaStuck) && invalidGoals.size() < 5;
     }

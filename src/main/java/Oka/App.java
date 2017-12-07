@@ -1,14 +1,13 @@
 package Oka;
 
-import Oka.ai.*;
+import Oka.ai.AIGoal;
+import Oka.ai.Playable;
 import Oka.controler.GameController;
 import Oka.utils.Cleaner;
 import Oka.utils.Logger;
-import Oka.utils.Stats;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Scanner;
 
 import static Oka.utils.Logger.printStat;
@@ -42,9 +41,9 @@ public class App
         {
             GameController gc = GameController.getInstance();
 
+            Playable AM = new AIGoal("AIGoal");
+            Playable IL = new AIGoal("AIGoal2");
 
-            AISimple AM = new AISimple("AISimple");
-            AISimple IL = new AISimple("AIRandom");
             ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
             gc.play(Playable);
@@ -57,9 +56,8 @@ public class App
 
                 GameController gc = GameController.getInstance();
 
-                AISimple AM = new AISimple("AISimple");
-                AISimple IL = new AISimple("AIRandom");
-                //AIGoal AB = new AIGoal("AIGoal");
+                Playable AM = new AIGoal("AIGoal");
+                Playable IL = new AIGoal("AIGoal2");
 
                 Logger.printPorgress(i, answer);
 

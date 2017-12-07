@@ -391,7 +391,20 @@ public class GameBoard
         if (entity == null) throw new IllegalArgumentException("Entity is null");
         if (dest == null) throw new IllegalArgumentException("Point is null");
         if (!grid.containsKey(dest)) throw new IllegalArgumentException("The cell is not on the grid");
+
         Point origin = entity.getCoords();
+
+        Vector vector = Vector.findStraightVector(origin, dest);
+
+        if (vector == null) return false;
+
+        for (int i = 1; i < vector.length(); i++)
+        {
+            if (!grid.containsKey(new Vector(vector.axis(), i).applyVector(origin))) return false;
+        }
+
+        return true;
+        /*
         if (origin.getX() != dest.getX() && origin.getY() == dest.getY())
         {
             if (dest.getX() - origin.getX() > 0)
@@ -472,7 +485,7 @@ public class GameBoard
             }
             return true;
         }
-        return false;
+        return false;*/
     }
 
     /**
@@ -529,14 +542,22 @@ public class GameBoard
         if (availableIrrigations.isEmpty()) return null;
         return availableIrrigations.get(0);
     }
-    public String toString(){
-        String listeP="";
-        for(Point point : grid.keySet()){
-            if(grid.get(point) instanceof Plot){
+
+    public String toString ()
+    {
+        StringBuilder listeP = new StringBuilder();
+
+        listeP.append(grid.size()).append(" - ");
+
+        for (Point point : grid.keySet())
+        {
+            if (grid.get(point) instanceof Plot)
+            {
                 Plot plot = (Plot) grid.get(point);
-                listeP += plot.toString();
+                listeP.append(plot.toString()).append(" ~ ");
             }
         }
-        return listeP;
+
+        return listeP.toString();
     }
 }

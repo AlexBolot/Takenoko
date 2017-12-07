@@ -43,7 +43,7 @@ import static Oka.model.Enums.State.*;
  . Last Modified : 23/11/17 09:47
  .................................................................................................*/
 
-@SuppressWarnings ({"unused", "UnusedReturnValue", "Duplicates", "ConstantConditions"})
+@SuppressWarnings ({"UnusedReturnValue", "Duplicates", "ConstantConditions", "unused"})
 public class AIGoal extends AI
 {
     private int turn = 0;
@@ -449,12 +449,12 @@ public class AIGoal extends AI
         return drawnPlots != null && plotGoalStrategy(plotGoal, drawnPlots);
     }
 
-    private boolean plotGoalStrategy (PlotGoal plotGoal, ArrayList<Plot> plots)
+    private boolean plotGoalStrategy (PlotGoal plotGoal, ArrayList<Plot> drawnPlots)
     {
         ArrayList<Map.Entry<Color, Point>> neededSpots = new ArrayList<>(plotGoal.neededSpots());
-        if (plots == null) return false;
+        if (drawnPlots == null) return false;
 
-        Set<Color> drawnColors = plots.stream().map(Plot::getColor).collect(Collectors.toSet());
+        Set<Color> drawnColors = drawnPlots.stream().map(Plot::getColor).collect(Collectors.toSet());
 
         for (Color color : Color.values())
         {
@@ -469,22 +469,25 @@ public class AIGoal extends AI
 
         for (Map.Entry<Color, Point> entry : neededSpots)
         {
-            List<Plot> tmpPlots = plots.stream().filter(plot -> plot.getColor().equals(entry.getKey())).collect(Collectors.toList());
+            List<Plot> tmpPlots = drawnPlots.stream().filter(plot -> plot.getColor().equals(entry.getKey())).collect(Collectors.toList());
             sortByState(tmpPlots);
 
             for (Plot plot : tmpPlots)
             {
                 if (placePlot(plot, entry.getValue()))
                 {
-                    plots.remove(plot);
-                    DrawStack.getInstance().giveBackPlot(plots);
+                    drawnPlots.remove(plot);
+                    DrawStack.getInstance().giveBackPlot(drawnPlots);
                     return true;
                 }
             }
         }
 
-        DrawStack.getInstance().giveBackPlot(plots);
-        return false;
+        Plot plot = drawnPlots.get(0);
+        placePlot(plot, GameBoard.getInstance().getAvailableSlots().get(0));
+        drawnPlots.remove(plot);
+        DrawStack.getInstance().giveBackPlot(drawnPlots);
+        return true;
     }
 
     //endregion
@@ -621,11 +624,7 @@ public class AIGoal extends AI
         //region {...code...}
         for (PlotGoal plotGoal : plotGoals)
         {
-            if (plotGoalStrategy(plotGoal, drawnPlots))
-            {
-                DrawStack.getInstance().giveBackPlot(drawnPlots);
-                return true;
-            }
+            if (plotGoalStrategy(plotGoal, drawnPlots)) return true;
         }
         //endregion
 
@@ -642,6 +641,7 @@ public class AIGoal extends AI
             {
                 if (placePlot(plot, point))
                 {
+                    drawnPlots.remove(plot);
                     DrawStack.getInstance().giveBackPlot(drawnPlots);
                     return true;
                 }
@@ -677,7 +677,7 @@ public class AIGoal extends AI
 
         boolean hasNoGoalLeft = invalidGoals.size() == 0;
         boolean onlyHasPlotGoals = invalidGoals.stream().allMatch(PlotGoal.class::isInstance);
-        boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 10;
+        boolean isKindaStuck = getInventory().getTurnsWithoutPickGoal() > 5;
 
         return (hasNoGoalLeft || onlyHasPlotGoals || isKindaStuck) && invalidGoals.size() <= 5;
     }
@@ -756,7 +756,7 @@ public class AIGoal extends AI
 
         if (!getInventory().getActionHolder().hasActionsLeft(action)) return false;
 
-        if (GameBoard.getInstance().moveEntity(entity, coords))
+        if (canMoveEntity(entity, coords) && GameBoard.getInstance().moveEntity(entity, coords))
         {
             Logger.printLine(getName() + " a déplacé le " + entity.getClass().getSimpleName() + " en : " + entity.getCoords());
             getInventory().getActionHolder().consumeAction(action);
