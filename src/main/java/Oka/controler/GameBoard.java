@@ -386,8 +386,14 @@ public class GameBoard
         return canMoveEntity(entity, point) && entity.move(point);
     }
 
-    public boolean canMoveEntity (Entity entity, Point dest)
-    {
+    /**
+     * Returns true if an entity can be moved to a supplied destination point
+     *
+     * @param entity Entity
+     * @param dest   Point
+     * @return True if can be moved false otherwise
+     */
+    public boolean canMoveEntity (Entity entity, Point dest) {
         if (entity == null) throw new IllegalArgumentException("Entity is null");
         if (dest == null) throw new IllegalArgumentException("Point is null");
         if (!grid.containsKey(dest)) throw new IllegalArgumentException("The cell is not on the grid");
@@ -400,8 +406,7 @@ public class GameBoard
 
         if (vector == null) return false;
 
-        for (int i = 1; i < vector.length(); i++)
-        {
+        for (int i = 1; i < vector.length(); i++) {
             if (!grid.containsKey(new Vector(vector.axis(), i).applyVector(origin))) return false;
         }
 

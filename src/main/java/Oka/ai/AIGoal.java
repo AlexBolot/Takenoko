@@ -401,6 +401,7 @@ public class AIGoal extends AI
         // 3 - Remove if plots already have enough or too many bamboos
         // 4 - Sort plots by interest level
         plots.removeIf(plot -> !plot.getColor().equals(lookedForColor));
+        plots.removeIf(plot -> !plot.getState().equals(gardenerGoal.getState()));
         plots.removeIf(plot -> !GameBoard.getInstance().canMoveEntity(gardener, plot.getCoords()));
         plots.removeIf(plot -> {
             int goalAmount = gardenerGoal.getBambooAmount();
