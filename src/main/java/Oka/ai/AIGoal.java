@@ -63,9 +63,6 @@ public class AIGoal extends AI
     @Override
     public void play ()
     {
-        Logger.printLine(getName() + " - goal false = " + getInventory().validatedGoals(false).toString());
-        Logger.printLine(getName() + " - goal true  = " + getInventory().validatedGoals(true).toString());
-
         // 1 - Picks a goal if has to
         if (hasToPickGoal())
         {
@@ -73,17 +70,17 @@ public class AIGoal extends AI
         }
 
         // 2 - Copy goals and sort by ratio
-        ArrayList<Goal> goals = new ArrayList<>(getInventory().goalHolder());
-        goals.sort(Comparator.comparing(Goal::getRatio));
+        ArrayList<Goal> goals = new ArrayList<>(getInventory().goalHolder().getGoalValidated(false));
+        //goals.sort(Comparator.comparing(Goal::getRatio));
 
-        Collections.reverse(goals);
+        Collections.shuffle(goals);
+
+        Logger.printLine(getName() + " - goal false = " + getInventory().validatedGoals(false).toString());
+        Logger.printLine(getName() + " - goal true  = " + getInventory().validatedGoals(true).toString());
 
         // 3 - Show not-validated goals
         // 4 - RollDice if not first turn
-        if (turn++ != 0)
-        {
-            Dice.rollDice(this);
-        }
+        if (turn++ != 0) Dice.rollDice(this);
 
         // 5 - For each goal (ordered by ratio) and while we didn't go over 30 attempts to play
         // 6 - Pick a new goal if has no more unvalidated goals or only has PlotGoals
@@ -98,6 +95,12 @@ public class AIGoal extends AI
         }
 
         placePlot();
+
+        for (Plot plot : new ArrayList<>(GameBoard.getInstance().getPlots()))
+        {
+            if (moveEntity(Panda.getInstance(), plot.getCoords())) break;
+            if (moveEntity(Gardener.getInstance(), plot.getCoords())) break;
+        }
 
         Logger.printLine(String.format("%s - bamboos : {G:%d} {Y:%d} {P:%d}",
                                        getName(),
@@ -138,6 +141,7 @@ public class AIGoal extends AI
                 // 4 - Remove if Panda can't access
                 plots.removeIf(plot -> !plot.getColor().equals(lookedForColor));
                 plots.removeIf(plot -> !GameBoard.getInstance().canMoveEntity(panda, plot.getCoords()));
+                plots.removeIf(plot -> plot.getState().equals(new EnclosureState()));
 
                 // 5 - Try to send panda on the plots if they have more than 0 bamboos
                 for (Plot plot : plots)
@@ -321,6 +325,7 @@ public class AIGoal extends AI
         // 2 - Remove if Panda can't access
         plots.removeIf(plot -> !plot.getColor().equals(lookedForColor));
         plots.removeIf(plot -> !GameBoard.getInstance().canMoveEntity(panda, plot.getCoords()));
+        plots.removeIf(plot -> plot.getState().equals(new EnclosureState()));
 
         // 3 - Try to send panda on the plots if they have more than 0 bamboos
         for (Plot plot : plots)
@@ -447,9 +452,11 @@ public class AIGoal extends AI
     {
         ArrayList<Plot> drawnPlots = DrawStack.getInstance().giveTreePlot();
 
+        if (drawnPlots == null) return false;
+
         Logger.printLine(getName() + " a pioché : " + drawnPlots);
 
-        return drawnPlots != null && plotGoalStrategy(plotGoal, drawnPlots);
+        return plotGoalStrategy(plotGoal, drawnPlots);
     }
 
     private boolean plotGoalStrategy (PlotGoal plotGoal, ArrayList<Plot> drawnPlots)
@@ -816,6 +823,9 @@ public class AIGoal extends AI
         {
             getInventory().addGoal(optionalGoal.get());
             getInventory().resetTurnWithoutPickGoal();
+
+            Logger.printLine(getName() + " a pioché : " + optionalGoal.get());
+
             return true;
         }
 
@@ -856,6 +866,21 @@ public class AIGoal extends AI
 
             return Integer.compare(p1Value, p2Value);
         });
+    }
+
+    private boolean placePlotState (Plot plot, NeutralState state)
+    {
+        Objects.requireNonNull(plot, "plot est null");
+        Objects.requireNonNull(state, "plotState est null");
+
+        List<Plot> plots = GameBoard.getInstance().getPlots();
+
+        if (!plots.contains(plot)) return false;
+        if (plot.getBamboo().size() > 0) return false;
+        if (!plot.getState().equals(new NeutralState())) return false;
+
+        plot.setState(state);
+        return true;
     }
 
     //endregion

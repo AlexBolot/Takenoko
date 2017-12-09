@@ -36,7 +36,6 @@ public class App
 
         Logger.setLoggerMode(answer);
 
-
         if (answer == 1)
         {
             GameController gc = GameController.getInstance();
