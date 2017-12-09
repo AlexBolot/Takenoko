@@ -120,7 +120,11 @@ public class Plot extends Cell
     @Override
     public String toString ()
     {
-        return super.toString() + "{" + color + "}" + ":" + bamboo.size();
+        return String.format("%s{%s}{%s}:%d",
+                             super.toString(),
+                             color.toString().substring(0, 2),
+                             state.toString().substring(0, 2),
+                             bamboo.size());
     }
     //endregion
 }

@@ -394,6 +394,8 @@ public class GameBoard
 
         Point origin = entity.getCoords();
 
+        if (origin.equals(dest)) return false;
+
         Vector vector = Vector.findStraightVector(origin, dest);
 
         if (vector == null) return false;

@@ -46,6 +46,11 @@ public abstract class Entity
     {
         if (point == null) throw new IllegalArgumentException("Point is null");
 
+        if (this.getCoords().equals(point))
+        {
+            return false;
+        }
+
         this.setCoords(point);
 
         return true;

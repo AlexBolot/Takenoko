@@ -287,15 +287,13 @@ public class PlotGoal extends Goal
     @Override
     public String toString ()
     {
-        StringBuilder b = new StringBuilder(getClass().getSimpleName() + " ->value : " + this.getValue());
+        StringBuilder b = new StringBuilder();
 
-        /*if (this.linkedGoals.getSize() == 0) b.append(color);
-        else
-        {
-            b.append(color);
-            b.append(" ");
-            linkedGoals.forEach((key, value) -> b.append(" ").append(key).append(" ").append(value));
-        }*/
+        b.append(getClass().getSimpleName());
+        b.append("{").append(color.toString().substring(0, 2)).append("}");
+
+        if (this.linkedGoals.size() > 0) linkedGoals.forEach((key, value) -> b.append(" ").append(key).append(" ").append(value));
+
         return b.toString();
     }
 }

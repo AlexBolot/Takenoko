@@ -18,6 +18,7 @@ import Oka.ai.inventory.BambooHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -88,9 +89,10 @@ public class BambooGoal extends Goal
     //endregion
 
     //region==========METHODS==============
+
     /**
-     * @param bambooHolder the BambooHolder of the AI who's playing.
-     * A method which tries to validate the goal
+     @param bambooHolder the BambooHolder of the AI who's playing.
+     A method which tries to validate the goal
      */
     public void validate (BambooHolder bambooHolder)
     {
@@ -114,13 +116,10 @@ public class BambooGoal extends Goal
         StringBuilder str = new StringBuilder();
         str.append(getClass().getSimpleName());
 
-       /* for (Map.Entry<Color, Integer> entry : values.entrySet())
+        for (Map.Entry<Color, Integer> entry : values.entrySet())
         {
-            //noinspection StringConcatenationInsideStringBufferAppend -> blablablabla :D
-            str.append(" {color:" + entry.getKey() + ", amount:" + entry.getValue() + "} +");
-        }*/
-        str.append(" ->color : " + this.getColor());
-        //str.deleteCharAt(str.length() - 1);
+            str.append(" {").append(entry.getKey().toString().substring(0, 2)).append(":").append(entry.getValue()).append("}");
+        }
 
         return str.toString();
     }

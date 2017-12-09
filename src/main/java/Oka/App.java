@@ -16,7 +16,7 @@ public class App
 {
     public static void main (String[] args)
     {
-        System.out.println("Saisir le nombre de parties jouées (1 partie = logs précis, supérieur à 1 = logs statistiques");
+        Logger.printTitle("Saisir le nombre de parties jouées (1 partie = logs précis, supérieur à 1 = logs statistiques");
 
         int answer = 0;
         Scanner sc = new Scanner(System.in);

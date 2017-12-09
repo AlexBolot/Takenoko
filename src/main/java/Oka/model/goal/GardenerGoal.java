@@ -61,12 +61,14 @@ public class GardenerGoal extends Goal
     //region==========METHODS==============
 
     /**
-     * A method which tries to validate the goal
+     A method which tries to validate the goal
      */
     public boolean validate ()
     {
         List<Plot> plots = GameBoard.getInstance().getPlots();
-        boolean valid = plots.stream().anyMatch(plot -> plot.getColor().equals(getColor()) && plot.getBamboo().size() == getBambooAmount() && plot.getState().equals(state));
+        boolean valid = plots.stream().anyMatch(plot -> plot.getColor().equals(getColor()) && plot.getBamboo()
+                                                                                                  .size() == getBambooAmount() && plot.getState()
+                                                                                                                                      .equals(state));
         setValidated(valid);
         return valid;
     }
@@ -75,7 +77,11 @@ public class GardenerGoal extends Goal
     //region==========EQUALS/TOSTRING======
     public String toString ()
     {
-        return getClass().getSimpleName() + /*" bambooAmount = " + bambooAmount + */" color = " + color +" ->value : " + this.getValue();
+        return String.format("%s {%s}{%s}{%d}",
+                             getClass().getSimpleName(),
+                             color.toString().substring(0, 2),
+                             state.toString().substring(0, 2),
+                             bambooAmount);
     }
     //endregion
 }

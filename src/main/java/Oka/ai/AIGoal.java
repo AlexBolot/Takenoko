@@ -63,7 +63,8 @@ public class AIGoal extends AI
     @Override
     public void play ()
     {
-        Logger.printLine(getName() + " - goal = " + getInventory().validatedGoals(false).toString());
+        Logger.printLine(getName() + " - goal false = " + getInventory().validatedGoals(false).toString());
+        Logger.printLine(getName() + " - goal true  = " + getInventory().validatedGoals(true).toString());
 
         // 1 - Picks a goal if has to
         if (hasToPickGoal())
@@ -98,7 +99,7 @@ public class AIGoal extends AI
 
         placePlot();
 
-        Logger.printLine(String.format("%s - bamboos : {GREEN :%d} {YELLOW :%d} {PINK :%d}",
+        Logger.printLine(String.format("%s - bamboos : {G:%d} {Y:%d} {P:%d}",
                                        getName(),
                                        getInventory().bambooHolder().countBamboo(Color.GREEN),
                                        getInventory().bambooHolder().countBamboo(Color.YELLOW),
@@ -446,6 +447,8 @@ public class AIGoal extends AI
     {
         ArrayList<Plot> drawnPlots = DrawStack.getInstance().giveTreePlot();
 
+        Logger.printLine(getName() + " a pioché : " + drawnPlots);
+
         return drawnPlots != null && plotGoalStrategy(plotGoal, drawnPlots);
     }
 
@@ -533,6 +536,8 @@ public class AIGoal extends AI
         drawnPlots = DrawStack.getInstance().giveTreePlot();
         if (drawnPlots == null) return false;
         sortByState(drawnPlots);
+
+        Logger.printLine(getName() + " a pioché : " + drawnPlots);
 
         //endregion
 

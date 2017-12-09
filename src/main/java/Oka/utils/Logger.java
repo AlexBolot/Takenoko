@@ -2,8 +2,6 @@ package Oka.utils;
 
 import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.stream.IntStream;
 
 public class Logger
@@ -29,7 +27,7 @@ public class Logger
      <h3>1 = detailed loggs.<br>
      more than 1 = simple statAverage at the end.<br></h3>
      */
-    private static int loggerMode = 0;
+    private static int loggerMode = 1;
 
     //endregion
 
