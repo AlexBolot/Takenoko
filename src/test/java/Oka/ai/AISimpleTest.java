@@ -107,7 +107,7 @@ public class AISimpleTest {
     }
 
     @Test
-    public void drawChannelTest() {
+    public void drawIrrigationTest() {
         Cleaner.clearAll();
 
         AISimple ai = new AISimple("Momo");
@@ -121,7 +121,7 @@ public class AISimpleTest {
     }
 
     @Test
-    public void placeChannelSmallGrid() {
+    public void placeIrrigationSmallGrid() {
         Cleaner.clearAll();
         Plot plot10G = new Plot(new Point(1, 0), Enums.Color.GREEN);
         Plot plot01P = new Plot(new Point(0, 1), Enums.Color.PINK);
@@ -144,7 +144,7 @@ public class AISimpleTest {
 
 
     @Test
-    public void placeChannelMediumGrid() throws Exception {
+    public void placeIrrigationMediumGrid() throws Exception {
         Cleaner.clearAll();
         Plot plot10G = new Plot(new Point(1, 0), Enums.Color.GREEN);
         Plot plot01P = new Plot(new Point(0, 1), Enums.Color.PINK);
