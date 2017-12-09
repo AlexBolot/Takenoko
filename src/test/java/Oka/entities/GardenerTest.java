@@ -81,6 +81,7 @@ public class GardenerTest
 
     @Test
     public void contiguousMove() {
+        //test y1=y2
         Cleaner.clearAll();
 
         GameController.getInstance().setCurrentPlayer(new AIRandom("ai"));
@@ -92,6 +93,15 @@ public class GardenerTest
 
         gardener.move(new Point(0, 1));
         assertFalse(board.canMoveEntity(gardener,new Point(-2, 1)));
+        //test x1=x2
+        Cleaner.clearAll();
+        GameController.getInstance().setCurrentPlayer(new AIRandom("ai"));
+        board= GameBoard.getInstance();
+        board.addCell(new Plot(new Point(0,1), GREEN));
+        board.getAvailableSlots().add(new Point(0,5));
+        board.addCell(new Plot(new Point(0,5),GREEN));
+        gardener.move(new Point(0,1));
+        assertFalse((board.canMoveEntity(gardener, new Point(0,5))));
 
 
     }

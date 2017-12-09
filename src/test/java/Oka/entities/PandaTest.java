@@ -96,6 +96,16 @@ public class PandaTest
 
         panda.move(new Point(1, 0));
         assertFalse(board.canMoveEntity(panda,new Point(3,0)));
+        //test x1=x2
+        Cleaner.clearAll();
+        GameController.getInstance().setCurrentPlayer(new AIRandom("ai"));
+        board= GameBoard.getInstance();
+        board.addCell(new Plot(new Point(0,1), GREEN));
+        board.getAvailableSlots().add(new Point(0,5));
+        board.addCell(new Plot(new Point(0,5),GREEN));
+        panda.move(new Point(0,1));
+        assertFalse((board.canMoveEntity(panda, new Point(0,5))));
+
     }
 
 }
