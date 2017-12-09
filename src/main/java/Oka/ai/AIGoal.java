@@ -69,6 +69,7 @@ public class AIGoal extends AI
             pickGoal();
         }
 
+
         // 2 - Copy goals and sort by ratio
         ArrayList<Goal> goals = new ArrayList<>(getInventory().goalHolder().getGoalValidated(false));
         //goals.sort(Comparator.comparing(Goal::getRatio));
@@ -96,10 +97,17 @@ public class AIGoal extends AI
 
         placePlot();
 
-        for (Plot plot : new ArrayList<>(GameBoard.getInstance().getPlots()))
+        ArrayList<Plot> tmpPlots = new ArrayList<>(GameBoard.getInstance().getPlots());
+        Collections.shuffle(tmpPlots);
+
+        for (Plot plot : tmpPlots)
         {
-            if (moveEntity(Panda.getInstance(), plot.getCoords())) break;
-            if (moveEntity(Gardener.getInstance(), plot.getCoords())) break;
+            if (!getInventory().plotStates().isEmpty())
+            {
+                placePlotState(plot, getInventory().plotStates().get(0));
+            }
+            moveEntity(Panda.getInstance(), plot.getCoords());
+            moveEntity(Gardener.getInstance(), plot.getCoords());
         }
 
         Logger.printLine(String.format("%s - bamboos : {G:%d} {Y:%d} {P:%d}",
