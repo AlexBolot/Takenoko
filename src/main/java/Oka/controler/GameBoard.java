@@ -405,10 +405,13 @@ public class GameBoard
         Vector vector = Vector.findStraightVector(origin, dest);
 
         if (vector == null) return false;
-
-        for (int i = 1; i < vector.length(); i++) {
-            if (!grid.containsKey(new Vector(vector.axis(), i).applyVector(origin))) return false;
+        Vector step = new Vector(vector.axis(), (int) (1 * Math.signum(vector.length())));
+        Point probe = (Point) origin.clone();
+        while (!probe.equals(dest)) {
+            probe = step.applyVector(probe);
+            if (!grid.containsKey(probe)) return false;
         }
+
 
         return true;
         /*

@@ -86,15 +86,15 @@ public class Vector
 
         if (origin.getX() != dest.getX() && origin.getY() == dest.getY())
         {
-            return new Vector(x, (int) Math.abs(dest.getX() - origin.getX()));
+            return new Vector(x, (int) (dest.getX() - origin.getX()));
         }
         if (origin.getX() == dest.getX() && origin.getY() != dest.getY())
         {
-            return new Vector(y, (int) Math.abs(dest.getY() - origin.getY()));
+            return new Vector(y, (int) (dest.getY() - origin.getY()));
         }
         if (origin.getX() - dest.getX() == -(origin.getY() - dest.getY()))
         {
-            return new Vector(z, (int) Math.abs(dest.getX() - origin.getX()));
+            return new Vector(z, (int) (dest.getX() - origin.getX()));
         }
         return null;
     }

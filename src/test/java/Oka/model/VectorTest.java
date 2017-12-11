@@ -183,6 +183,19 @@ public class VectorTest
     }
 
     @Test
+    public void testFindStraightVector_Neg() {
+        Vector xV = new Vector(Axis.x, -1);
+        Vector yV = new Vector(Axis.y, -1);
+        Vector zV = new Vector(Axis.z, -1);
+
+        assertEquals(xV, Vector.findStraightVector(o, nx));
+        assertEquals(yV, Vector.findStraightVector(o, ny));
+        assertEquals(zV, Vector.findStraightVector(o, nz));
+
+        assertNull(Vector.findStraightVector(z, y));
+    }
+
+    @Test
     public void testFindStraightVector_Null ()
     {
         int[] crashCount = {0, 0, 0};

@@ -8,7 +8,6 @@ import Oka.model.Irrigation;
 import Oka.model.Pond;
 import Oka.model.plot.Plot;
 import Oka.utils.Cleaner;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import static Oka.model.Enums.Color.GREEN;
+import static Oka.model.Enums.Color.YELLOW;
 import static org.junit.Assert.*;
 
 public class GameBoardTest
@@ -62,8 +62,7 @@ public class GameBoardTest
     }
 
     @Test
-    public void testGetCell () throws Exception
-    {
+    public void testGetCell() {
         GameBoard board = GameBoard.getInstance();
 
         board.setGrid(emptyGrid);
@@ -77,8 +76,7 @@ public class GameBoardTest
     }
 
     @Test
-    public void testAddCell () throws Exception
-    {
+    public void testAddCell() {
         GameBoard board = GameBoard.getInstance();
 
         board.setGrid(emptyGrid);
@@ -105,8 +103,7 @@ public class GameBoardTest
     }
 
     @Test
-    public void addIrrigation () throws Exception
-    {
+    public void addIrrigation() {
         Cleaner.clearAll();
         Point point = new Point(1, 0);
         Point point1 = new Point(0, 1);
@@ -154,8 +151,7 @@ public class GameBoardTest
     }
 
     @Test
-    public void canPlaceIrigation () throws Exception
-    {
+    public void canPlaceIrigation() {
         Cleaner.clearAll();
 
         GameBoard board = GameBoard.getInstance();
@@ -227,7 +223,7 @@ public class GameBoardTest
     }
 
     @Test
-    public void bambooOnIrrigated() throws InvalidArgumentException {
+    public void bambooOnIrrigated() {
 
         GameBoard board = GameBoard.getInstance();
         Cleaner.cleanGameBoard();
@@ -279,5 +275,33 @@ public class GameBoardTest
 
     }
 
+    @Test
+    public void negativeVectorCanMoves() {
+        Cleaner.clearAll();
+
+        GameBoard board = GameBoard.getInstance();
+
+        Plot p10 = new Plot(new Point(1, 0), YELLOW);
+        board.getGrid().put(new Point(1, 0), p10);
+
+        Plot p11 = new Plot(new Point(1, 1), YELLOW);
+        board.getGrid().put(new Point(1, 1), p11);
+
+        Plot p1N1 = new Plot(new Point(1, -1), YELLOW);
+        board.getGrid().put(new Point(1, -1), p1N1);
+
+        Plot p1N2 = new Plot(new Point(1, -2), GREEN);
+        board.getGrid().put(new Point(1, -2), p1N2);
+
+        Panda panda = Panda.getInstance();
+
+        panda.setCoords(new Point(1, 1));
+        GameBoard gc = GameBoard.getInstance();
+        assertTrue(gc.canMoveEntity(Panda.getInstance(), new Point(1, -2)));
+        board.getGrid().remove(new Point(1, 0));
+        assertFalse(gc.canMoveEntity(Panda.getInstance(), new Point(1, -2)));
+
+
+    }
 
 }

@@ -30,9 +30,7 @@ import org.junit.Test;
 
 import java.awt.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AISimpleTest {
 
@@ -52,14 +50,14 @@ public class AISimpleTest {
     }
 
     @Test
-    public void movePanda() throws Exception {
+    public void movePanda() {
         Panda.getInstance().setCoords(new Point());
 
         GameBoard board = GameBoard.getInstance();
         Cell plot10 = board.getGrid().remove(p10);
 
         AISimple AI = new AISimple("Momo");
-
+        AI.getInventory().goalHolder().clear();
         GameController.getInstance().setCurrentPlayer(AI);
 
         AI.getInventory().addGoal(new BambooGoal(3, 1, Enums.Color.PINK));
@@ -81,7 +79,7 @@ public class AISimpleTest {
     }
 
     @Test
-    public void moveGardener() throws Exception {
+    public void moveGardener() {
 
         GameBoard board = GameBoard.getInstance();
 
@@ -144,7 +142,7 @@ public class AISimpleTest {
 
 
     @Test
-    public void placeIrrigationMediumGrid() throws Exception {
+    public void placeIrrigationMediumGrid() {
         Cleaner.clearAll();
         Plot plot10G = new Plot(new Point(1, 0), Enums.Color.GREEN);
         Plot plot01P = new Plot(new Point(0, 1), Enums.Color.PINK);
