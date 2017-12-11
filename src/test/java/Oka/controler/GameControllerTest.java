@@ -10,6 +10,7 @@ import Oka.model.goal.BambooGoal;
 import Oka.model.goal.GardenerGoal;
 import Oka.model.goal.Goal;
 import Oka.model.plot.state.NeutralState;
+import Oka.utils.Cleaner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class GameControllerTest
     public void maxValuesObjectives() {
         assertEquals(p1, gameController.getAIWins(listPlayable).get(0));
         p2.getInventory().addGoal(new Goal(1, true));
-        assertEquals(2, gameController.getAIWins(listPlayable).size());
+        assertEquals(4, gameController.getAIWins(listPlayable).size());
     }
 
     @Test
@@ -84,6 +85,7 @@ public class GameControllerTest
     @Test
     public void lastTurn() {
         //need fix see OKA-134
+        Cleaner.clearAll();
         GameController gc = GameController.getInstance();
 
         AISimple AM = new AISimple("AISimple1");
