@@ -110,7 +110,7 @@ public class GameControllerTest
 
     @Test
     public void getAiWin() {
-
+        Cleaner.clearAll();
         GameController gc = GameController.getInstance();
 
         AISimple am = new AISimple("AISimple1");
@@ -119,23 +119,23 @@ public class GameControllerTest
         AIRandom sm = new AIRandom("Mosseb");
 
         ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(am, IL, sm));
-        BambooGoal bg1 = new BambooGoal(1, 3, Enums.Color.GREEN);
+        BambooGoal bg1 = new BambooGoal(1, 3, Enums.Color.YELLOW);
         bg1.setValidated(true);
-        am.getInventory().goalHolder().addGoal(bg1);
         GardenerGoal gg2 = new GardenerGoal(2, 3, Enums.Color.GREEN, new NeutralState());
         gg2.setValidated(true);
+        am.getInventory().goalHolder().addGoal(bg1);
         am.getInventory().goalHolder().addGoal(gg2);
 
 
         BambooGoal bg3 = new BambooGoal(3, 3, Enums.Color.GREEN);
         bg3.setValidated(true);
-        sm.getInventory().goalHolder().addGoal(bg1);
+        sm.getInventory().goalHolder().addGoal(bg3);
         assertEquals(1, gc.getAIWins(Playable).size());
         assertEquals(sm, gc.getAIWins(Playable).get(0));
 
         IL.getInventory().goalHolder().addGoal(bg3);
         assertEquals(2, gc.getAIWins(Playable).size());
-        assertTrue(gc.getAIWins(Playable).containsAll(Arrays.asList(sm, IL)));
+        assertTrue(gc.getAIWins(Playable).containsAll(Arrays.asList(IL,sm)));
 
     }
 }

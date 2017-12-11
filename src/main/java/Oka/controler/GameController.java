@@ -139,45 +139,45 @@ public class GameController
      */
     public ArrayList<Playable> getAIWins (ArrayList<Playable> playable)
     {
-        int max = 0, pointPLayer;
-        ArrayList<Playable> listAIWinnger = new ArrayList<>();
+        int max = 0, pointPlayer;
+        ArrayList<Playable> listAIwinner = new ArrayList<>();
 
         for (Playable ai : playable)
         {
             ai.printObjectives();
-            pointPLayer = ai.getInventory().getValueOfGoalHolder();
+            pointPlayer = ai.getInventory().getValueOfGoalHolder();
 
-            Stats.saveStatPoint(ai.getName(), pointPLayer);
-            if (pointPLayer > max)
+            Stats.saveStatPoint(ai.getName(), pointPlayer);
+            if (pointPlayer > max)
             {
-                max = pointPLayer;
-                listAIWinnger.clear();
-                listAIWinnger.add(ai);
+                max = pointPlayer;
+                listAIwinner.clear();
+                listAIwinner.add(ai);
             }
-            else if (pointPLayer == max)
+            else if (pointPlayer == max)
             {
-                listAIWinnger.add(ai);
+                listAIwinner.add(ai);
             }
         }
-        if (listAIWinnger.size() > 1)
+        if (listAIwinner.size() > 1)
         {
             max = 0;
             for (Playable ai : playable)
             {
-                pointPLayer = ai.getInventory().getValueOfBambooGoalHolder();
-                if (pointPLayer > max)
+                pointPlayer = ai.getInventory().getValueOfBambooGoalHolder();
+                if (pointPlayer > max)
                 {
-                    max = pointPLayer;
-                    listAIWinnger.clear();
-                    listAIWinnger.add(ai);
+                    max = pointPlayer;
+                    listAIwinner.clear();
+                    listAIwinner.add(ai);
                 }
-                else if (pointPLayer == max)
+                else if (pointPlayer == max)
                 {
-                    listAIWinnger.add(ai);
+                    listAIwinner.add(ai);
                 }
             }
         }
-        return listAIWinnger;
+        return listAIwinner;
     }
     //endregion
 
