@@ -1,6 +1,7 @@
 package Oka.ai.inventory;
 
 import Oka.model.Bamboo;
+import Oka.model.Enums;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,6 +33,22 @@ public class BambooHolder extends ArrayList<Bamboo>
     public int countBamboo (Color color)
     {
         return (int) this.stream().filter(bamboo -> bamboo.getColor().equals(color)).count();
+    }
+
+    /**
+     * @return la couleurs des bamboo qu'elle a le moins.
+     */
+    public Color getLessColorBamboo()
+    {
+        int min = 10;
+        Color c = Color.NONE;
+        for(Color color : Enums.Color.values()){
+            if(countBamboo(color)<min){
+                c = color;
+                min = countBamboo(color);
+            }
+        }
+        return c;
     }
 
     /**

@@ -1,6 +1,7 @@
 package Oka;
 
 import Oka.ai.AIGoal;
+import Oka.ai.AIRandom;
 import Oka.ai.AISimple;
 import Oka.ai.Playable;
 import Oka.controler.GameController;
@@ -14,44 +15,117 @@ import static Oka.utils.Logger.printStat;
 
 public class App {
     public static void main(String[] args) {
-        boolean compteur = true;
-        while (compteur) {
-            Logger.setLoggerMode(0);
-            for (int i = 0; i < 1000; i++) {
-                Cleaner.clearAll();
+        Logger.setLoggerMode(0);
+        runAppGoal();
+        printStat(1000);
+        Cleaner.cleanStats();
 
-                GameController gc = GameController.getInstance();
+        runAppSimplevsGoal();
 
-                Playable AM = new AIGoal("AIGoal2");
-                Playable IL = new AIGoal("AIGoal1");
+        printStat(1000);
+    }
+    public static void runAppRandom() {
+        for (int i = 0; i < 1000; i++) {
+            Cleaner.clearAll();
 
-                Logger.printPorgress(i, 1000);
+            GameController gc = GameController.getInstance();
 
-                ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+            Playable AM = new AIRandom("AIRandom1");
+            Playable IL = new AIRandom("AIRandom2");
 
-                gc.play(Playable);
-            }
-            printStat(1000);
-            Cleaner.cleanStats();
-            for (int i = 0; i < 1000; i++) {
-                Cleaner.clearAll();
+            Logger.printPorgress(i, 1000);
 
-                GameController gc = GameController.getInstance();
+            ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
-                Playable AM = new AIGoal("AIGoal3");
-                Playable IL = new AISimple("AISimple");
-
-                Logger.printPorgress(i, 1000);
-
-                ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
-
-                gc.play(Playable);
-            }
-            printStat(1000);
-            compteur = false;
+            gc.play(Playable);
         }
     }
+    public static void runAppSimple() {
+        for (int i = 0; i < 1000; i++) {
+            Cleaner.clearAll();
+
+            GameController gc = GameController.getInstance();
+
+            Playable AM = new AISimple("AISimple1");
+            Playable IL = new AISimple("AISimple2");
+
+            Logger.printPorgress(i, 1000);
+
+            ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+            gc.play(Playable);
+        }
+    }
+    public static void runAppGoal() {
+        for (int i = 0; i < 1000; i++) {
+            Cleaner.clearAll();
+
+            GameController gc = GameController.getInstance();
+
+            Playable AM = new AIGoal("AIGoal2");
+            Playable IL = new AIGoal("AIGoal1");
+
+            Logger.printPorgress(i, 1000);
+
+            ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+            gc.play(Playable);
+        }
+    }
+
+    public static void runAppRandomvsSimple() {
+        for (int i = 0; i < 1000; i++) {
+            Cleaner.clearAll();
+
+            GameController gc = GameController.getInstance();
+
+            Playable AM = new AIRandom("AIRandom");
+            Playable IL = new AISimple("AISimple");
+
+            Logger.printPorgress(i, 1000);
+
+            ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+            gc.play(Playable);
+        }
+    }
+    public static void runAppSimplevsGoal() {
+        for (int i = 0; i < 1000; i++) {
+            Cleaner.clearAll();
+
+            GameController gc = GameController.getInstance();
+
+            Playable AM = new AIGoal("AIGoal");
+            Playable IL = new AISimple("AISimple");
+
+            Logger.printPorgress(i, 1000);
+
+            ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+            gc.play(Playable);
+        }
+    }
+    public static void runAppRandomvsGoal() {
+        for (int i = 0; i < 1000; i++) {
+            Cleaner.clearAll();
+
+            GameController gc = GameController.getInstance();
+
+            Playable AM = new AIRandom("AIRandom");
+            Playable IL = new AIGoal("AIGoal");
+
+            Logger.printPorgress(i, 1000);
+
+            ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+            gc.play(Playable);
+        }
+    }
+
 }
+
+
+
 //region LOG pour la DEMO
 
         /*Logger.printTitle("Saisir le nombre de parties jouées (1 partie = logs précis, supérieur à 1 = logs statistiques");

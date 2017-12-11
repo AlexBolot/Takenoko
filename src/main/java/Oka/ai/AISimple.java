@@ -263,10 +263,10 @@ public class AISimple extends AI
                 }
             }
         }
-
+        Color color = this.getInventory().bambooHolder().getLessColorBamboo();
         for (int bambooSize = maxBamboo; bambooSize > 0; bambooSize--)
         {
-            if (moveEntity(panda, bambooSize, Color.NONE))
+            if (moveEntity(panda, bambooSize, color))
             {
                 Logger.printLine(getName() + " a déplacé le panda en : " + panda.getCoords());
                 getInventory().getActionHolder().consumeAction(Enums.Action.movePanda);

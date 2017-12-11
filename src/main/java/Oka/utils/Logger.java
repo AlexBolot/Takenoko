@@ -229,10 +229,10 @@ public class Logger
 
             statsPlayer = StatGoal.get(player);
             System.out.printf("\n%s : %.2f %% de victoire - " + (WinRate.get(player)[1]) / nbParti + " point moyen/partie "
-                            + "-> BambooGoal : " + (float) statsPlayer[0] / (float) nbParti
+                           /* + "-> BambooGoal : " + (float) statsPlayer[0] / (float) nbParti
                             + " GardenerGoal : " + (float) statsPlayer[1] / (float) nbParti
                             + " PlotGoal : " + (float) statsPlayer[2] / (float) nbParti
-                            , player, (float) (WinRate.get(player)[0] * 100) / (float) nbParti);
+                            */, player, (float) (WinRate.get(player)[0] * 100) / (float) nbParti);
         }
         if(WinRate.get("Draw") != null)
             System.out.printf("\n%.2f %% d'égalité", (float) (WinRate.get("Draw")[0] * 100) / (float) nbParti);

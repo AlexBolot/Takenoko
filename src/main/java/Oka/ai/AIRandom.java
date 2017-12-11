@@ -268,16 +268,15 @@ public class AIRandom extends AI
     {
 
         GameBoard gameBoard = GameBoard.getInstance();
-        HashMap<Point, Cell> grid = gameBoard.getGrid();
+        List<Plot> grid = gameBoard.getPlots();
         Point currentPoint = entity.getCoords();
-        grid.keySet().stream().filter(point -> !(point.equals(currentPoint) || !(grid.get(point) instanceof Plot)) && Vector.areAligned(
-                entity.getCoords(),
-                point) && ((Plot) grid.get(point)).getBamboo().size() == bambooSize);
+        grid.stream().filter(plot -> !(plot.getCoords().equals(currentPoint) && GameBoard.getInstance().canMoveEntity(entity, plot.getCoords())
+                && ((plot.getBamboo().size() == bambooSize))));
 
         if (grid.size() > 0)
         {
             int randInt = new Random().nextInt(grid.size());
-            Cell cell = grid.get(grid.keySet().toArray()[randInt]);
+            Cell cell = grid.get(randInt);
             return entity.move(cell.getCoords());
         }
         return false;
