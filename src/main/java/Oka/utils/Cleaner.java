@@ -73,6 +73,10 @@ public class Cleaner
         DrawStack.resetDrawStack();
     }
 
+    public static void cleanStats(){
+        Stats.resetStats();
+
+    }
     /**
      <hr>
      <h3>Calls all the other clean methods of the Cleaner class</h3>

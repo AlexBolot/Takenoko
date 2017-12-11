@@ -1,6 +1,7 @@
 package Oka;
 
 import Oka.ai.AIGoal;
+import Oka.ai.AISimple;
 import Oka.ai.Playable;
 import Oka.controler.GameController;
 import Oka.utils.Cleaner;
@@ -8,18 +9,57 @@ import Oka.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import static Oka.utils.Logger.printStat;
 
-public class App
-{
-    public static void main (String[] args)
-    {
-        Logger.printTitle("Saisir le nombre de parties jouées (1 partie = logs précis, supérieur à 1 = logs statistiques");
+public class App {
+    public static void main(String[] args) {
+        boolean compteur = true;
+        while (compteur) {
+            Logger.setLoggerMode(0);
+            for (int i = 0; i < 1000; i++) {
+                Cleaner.clearAll();
+
+                GameController gc = GameController.getInstance();
+
+                Playable AM = new AIGoal("AIGoal2");
+                Playable IL = new AIGoal("AIGoal1");
+
+                Logger.printPorgress(i, 1000);
+
+                ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+                gc.play(Playable);
+            }
+            printStat(1000);
+            Cleaner.cleanStats();
+            for (int i = 0; i < 1000; i++) {
+                Cleaner.clearAll();
+
+                GameController gc = GameController.getInstance();
+
+                Playable AM = new AIGoal("AIGoal3");
+                Playable IL = new AISimple("AISimple");
+
+                Logger.printPorgress(i, 1000);
+
+                ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
+
+                gc.play(Playable);
+            }
+            printStat(1000);
+            compteur = false;
+        }
+    }
+}
+//region LOG pour la DEMO
+
+        /*Logger.printTitle("Saisir le nombre de parties jouées (1 partie = logs précis, supérieur à 1 = logs statistiques");
 
         int answer = 0;
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new
+            GameController gc = GameController.getInstance();
+Scanner(System.in);
 
         do
         {
@@ -38,10 +78,8 @@ public class App
 
         if (answer == 1)
         {
-            GameController gc = GameController.getInstance();
-
             Playable AM = new AIGoal("AIGoal");
-            Playable IL = new AIGoal("AIGoal2");
+            Playable IL = new AISimple("AIGoal2");
 
             ArrayList<Playable> Playable = new ArrayList<>(Arrays.asList(AM, IL));
 
@@ -68,4 +106,5 @@ public class App
             printStat(answer);
         }
     }
-}
+}*/
+        //endregion

@@ -236,7 +236,7 @@ public class Logger
         }
         if(WinRate.get("Draw") != null)
             System.out.printf("\n%.2f %% d'égalité", (float) (WinRate.get("Draw")[0] * 100) / (float) nbParti);
-        System.out.println("");
+        System.out.println("\n \n");
     }
     //endregion
 }

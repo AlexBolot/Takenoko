@@ -28,6 +28,13 @@ public class Stats {
     public static int getMinTour(){return minTour;}
     public static HashMap<String, int[]> getStatsGoal() {return statsGoal;}
 
+    public static void resetStats(){
+        statsPlayer = new HashMap<>();
+        nbTour = 0;
+        maxTour = 0;
+        minTour = 500;
+        statsGoal = new HashMap<>();
+    }
     public static void saveStatPoint(String player, int point){
         int[] tab = {0,point};
         if (statsPlayer.containsKey(player)){
