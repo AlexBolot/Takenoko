@@ -56,11 +56,15 @@ public class DrawStackTest {
     @Test
     public void giveTreePlot() throws Exception {
         ArrayList<Plot> listP = ourInstance.giveTreePlot();
-        while(listP!=null){
+        while(listP.size()!=2){
             assertEquals(3,listP.size());
             listP = ourInstance.giveTreePlot();
         }
-        assertEquals(null,ourInstance.giveTreePlot());
+        assertEquals(2,listP.size());
+        listP =ourInstance.giveTreePlot();
+        assertEquals(1,listP.size());
+        listP = ourInstance.giveTreePlot();
+        assertEquals(null,listP);
     }
 
     @Test
