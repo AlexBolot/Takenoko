@@ -15,21 +15,21 @@ public class AppTest
         Cleaner.cleanStats();
     }
 
-    @Test (timeout = 20000)
+    @Test (timeout = 30000)
     public void goal_goal ()
     {
         Logger.setLoggerMode(1000);
         App.runAppGoal();
     }
 
-    @Test (timeout = 20000)
+    @Test (timeout = 30000)
     public void simple_goal ()
     {
         Logger.setLoggerMode(1000);
         App.runAppSimplevsGoal();
     }
 
-    @Test (timeout = 20000)
+    @Test (timeout = 30000)
     public void random_goal ()
     {
         Logger.setLoggerMode(1000);
