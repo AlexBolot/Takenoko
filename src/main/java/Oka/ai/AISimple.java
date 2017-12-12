@@ -264,7 +264,7 @@ public class AISimple extends AI
             }
         }
         Color color = this.getInventory().bambooHolder().getLessColorBamboo();
-        for (int bambooSize = maxBamboo; bambooSize > 0; bambooSize--)
+        for (int bambooSize = maxBamboo; bambooSize >= 0; bambooSize--)
         {
             if (moveEntity(panda, bambooSize, color))
             {
@@ -356,8 +356,9 @@ public class AISimple extends AI
             if (point.equals(currentPoint) || !(grid.get(point) instanceof Plot)) continue;
 
             Plot plot = (Plot) grid.get(point);
-
-            boolean checkColor = (color.equals(plot.getColor()) || color.equals(Color.NONE));
+            if(color.equals(plot.getColor()) || color.equals(Color.NONE)) continue;
+            if(!plot.isIrrigated()) continue;
+            if (plot.getBamboo().size() != bambooSize) continue;
 
             if (entity instanceof Panda)
             {
@@ -365,12 +366,8 @@ public class AISimple extends AI
                 if (this.getInventory().bambooHolder().countBamboo(plot.getColor()) > 10) continue;
             }
 
-            if (plot.getBamboo().size() == bambooSize && checkColor)
-            {
-                if (gameBoard.moveEntity(entity, point)) return true;
-            }
+            if (gameBoard.moveEntity(entity, point)) return true;
         }
-
         return false;
     }
 
