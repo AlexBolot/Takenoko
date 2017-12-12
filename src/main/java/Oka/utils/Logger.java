@@ -216,10 +216,10 @@ public class Logger
 
     public static void printStat (int nbParti)
     {
-        System.out.println(" ");
+       /* System.out.println(" ");
         System.out.println("Tour moyen par game : " + Stats.getNbTour() / nbParti);
         System.out.println("Tour max : " + Stats.getMaxTour());
-        System.out.println("Tour min : " + Stats.getMinTour());
+        System.out.println("Tour min : " + Stats.getMinTour());*/
 
         HashMap<String, int[]> StatGoal = Stats.getStatsGoal();
         HashMap<String, int[]> WinRate = Stats.getStatAverage();
