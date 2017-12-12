@@ -356,7 +356,7 @@ public class AISimple extends AI
             if (point.equals(currentPoint) || !(grid.get(point) instanceof Plot)) continue;
 
             Plot plot = (Plot) grid.get(point);
-            if(color.equals(plot.getColor()) || color.equals(Color.NONE)) continue;
+            if( !(color.equals(plot.getColor()) || color.equals(Color.NONE))) continue;
             if(!plot.isIrrigated()) continue;
             if (plot.getBamboo().size() != bambooSize) continue;
 
