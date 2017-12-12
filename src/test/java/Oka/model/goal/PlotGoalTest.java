@@ -63,7 +63,7 @@ public class PlotGoalTest
         plots.put(new Vector(x, -1), pgGreen);
         PlotGoal pgGPG = new PlotGoal(3, PINK, plots);
 
-        assertEquals(expected, pgGPG.neededSpots());
+        assertEquals(expected.values(), pgGPG.neededSpots());
         expected = new HashMap<>();
 
         points = new HashSet<>();
