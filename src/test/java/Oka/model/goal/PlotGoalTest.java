@@ -26,8 +26,7 @@ public class PlotGoalTest
     private PlotGoal pgYellow;
 
     @Before
-    public void setUp () throws Exception
-    {
+    public void setUp() {
         Cleaner.clearAll();
 
         pgGreen = new PlotGoal(0, GREEN);
@@ -51,35 +50,32 @@ public class PlotGoalTest
         board.addCell(new Plot(new Point(1, 1), PINK));
         board.addCell(new Plot(new Point(2, 0), GREEN));
 
-        HashMap<Enums.Color, HashSet<Point>> expected = new HashMap<>();
+        ArrayList<Map.Entry<Enums.Color, Point>> expected = new ArrayList<>();
 
-        HashSet<Point> points = new HashSet<>();
-        points.add(new Point(2, 1));
-        points.add(new Point(0, 2));
+        expected.add(new AbstractMap.SimpleEntry<Enums.Color, Point>(GREEN, new Point(0, 2)));
+        expected.add(new AbstractMap.SimpleEntry<Enums.Color, Point>(GREEN, new Point(2, 1)));
 
-        expected.put(GREEN, points);
+
+
         HashMap<Vector, PlotGoal> plots = new HashMap<>();
         plots.put(new Vector(x, 1), pgGreen);
         plots.put(new Vector(x, -1), pgGreen);
         PlotGoal pgGPG = new PlotGoal(3, PINK, plots);
 
-        assertEquals(expected, pgGPG.neededSpots());
-        expected = new HashMap<>();
+        assertEquals(expected, new ArrayList<>(pgGPG.neededSpots()));
 
-        points = new HashSet<>();
-        points.add(new Point(-1, 1));
-        points.add(new Point(1, -1));
-        points.add(new Point(2, -1));
-        points.add(new Point(2, 1));
+        expected = new ArrayList<>();
+
+        expected.add(new AbstractMap.SimpleEntry<Enums.Color, Point>(PINK, new Point(-1, 1)));
+        expected.add(new AbstractMap.SimpleEntry<Enums.Color, Point>(PINK, new Point(1, -1)));
 
 
-        expected.put(PINK, points);
         plots = new HashMap<>();
         plots.put(new Vector(x, 1), pgPink);
         plots.put(new Vector(x, -1), pgPink);
         PlotGoal pgPGP = new PlotGoal(3, GREEN, plots);
 
-        assertEquals(expected, pgPGP.neededSpots());
+        assertEquals(expected, new ArrayList<>(pgPGP.neededSpots()));
 
     }
 
@@ -146,8 +142,7 @@ public class PlotGoalTest
     }
 
     @Test
-    public void completion () throws Exception
-    {
+    public void completion() {
         GameBoard board = GameBoard.getInstance();
         HashMap<Vector, PlotGoal> plots = new HashMap<>();
 
@@ -273,8 +268,7 @@ public class PlotGoalTest
 
 
     @Test
-    public void validateSimple () throws Exception
-    {
+    public void validateSimple() {
         Cleaner.clearAll();
 
         HashMap<Vector, PlotGoal> plots = new HashMap<>();

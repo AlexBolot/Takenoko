@@ -220,23 +220,28 @@ public class PlotGoal extends Goal
 
     private HashSet<Map.Entry<Enums.Color, Point>> neededSpots (Point point)
     {
-        if (point.equals(new Pond().getCoords())) throw new IllegalArgumentException("On Pond Exception");
+        if (point.equals(new Pond().getCoords())) return null;
 
         GameBoard board = GameBoard.getInstance();
 
         HashSet<Map.Entry<Enums.Color, Point>> childSpots = new HashSet<>();
-
+        if (board.getGrid().containsKey(point) && !((Plot) board.getGrid().get(point)).getColor().equals(this.color))
+            return null;
+        if (!(this.getSize() - this.completion(point) <= 1))
+            return null;
         for (Map.Entry<Vector, PlotGoal> entry : linkedGoals.entrySet())
         {
-            childSpots.addAll(entry.getValue().neededSpots(entry.getKey().applyVector(point)));
+            HashSet<Map.Entry<Enums.Color, Point>> neededChilds = entry.getValue().neededSpots(entry.getKey().applyVector(point));
+            if (neededChilds == null) return null;
+            childSpots.addAll(neededChilds);
         }
 
-        if (board.getAvailableSlots().contains(point) && this.getSize() - this.completion(point) <= 1)
+        if (board.getAvailableSlots().contains(point))
         {
             childSpots.add(new AbstractMap.SimpleEntry<>(this.color, point));
         }
-
         return childSpots;
+
     }
 
     public HashSet<Map.Entry<Enums.Color, Point>> neededSpots ()
@@ -257,6 +262,7 @@ public class PlotGoal extends Goal
                 HashSet<Map.Entry<Enums.Color, Point>> recurList = emptyList;
 
                 if (!isPond) recurList = plotGoal.neededSpots(point);
+                if (recurList == null) recurList = emptyList;
 
                 return isPond ? emptyList : recurList;
 

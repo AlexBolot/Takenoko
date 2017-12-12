@@ -85,7 +85,6 @@ public class AISimple extends AI
                     break;
             }
         }
-
         Logger.printLine(String.format("%s - bamboos : {GREEN :%d} {YELLOW :%d} {PINK :%d}",
                                        getName(),
                                        getInventory().bambooHolder().countBamboo(Color.GREEN),
