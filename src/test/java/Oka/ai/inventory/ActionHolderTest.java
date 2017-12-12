@@ -2,6 +2,7 @@ package Oka.ai.inventory;
 
 import Oka.ai.AI;
 import Oka.ai.AISimple;
+import Oka.controler.GameController;
 import Oka.model.Enums;
 import Oka.utils.Cleaner;
 import org.junit.Before;
@@ -9,16 +10,19 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ActionHolderTest {
+public class ActionHolderTest
+{
     private ActionHolder actionHolder;
 
     @Before
-    public void init(){
+    public void init ()
+    {
         actionHolder = new ActionHolder();
     }
 
     @Test
-    public void consumeAction() {
+    public void consumeAction ()
+    {
 
         assertTrue(actionHolder.hasActionsLeft(Enums.Action.values()[0]));
 
@@ -34,19 +38,22 @@ public class ActionHolderTest {
         assertFalse(actionHolder.hasActionsLeft(Enums.Action.values()[2]));
 
     }
+
     @Test
-    public void limitedNumberOfActions() {
+    public void limitedNumberOfActions ()
+    {
         Cleaner.clearAll();
 
         AI hal = new AISimple("Hal");
+
+        GameController.getInstance().setCurrentPlayer(hal);
         hal.play();
         assertEquals(0, hal.getInventory().getActionHolder().getActionLeft());
-
-
     }
 
     @Test
-    public void windWeather() {
+    public void windWeather ()
+    {
         actionHolder.windWeather();
 
         // Si on tombe sur le vent (dé) on peut jouer plusieurs la même action

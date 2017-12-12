@@ -79,19 +79,18 @@ public class GameController
             Logger.printLine("Grid :"+ GameBoard.getInstance().toString());
             for (int i = 0; i < playable.size(); i++)
             {
-                Playable ai = playable.get(i);
-                currentPlayer = ai;
+                currentPlayer = playable.get(i);
 
-                Logger.printSeparator(ai.getName());
+                Logger.printSeparator(currentPlayer.getName());
 
-                ai.play();
+                currentPlayer.play();
 
-                int checkGoal = ai.getInventory().checkGoals().size();
+                int checkGoal = currentPlayer.getInventory().checkGoals().size();
 
                 if (checkGoal >= nbGoal)
                 {
                     // on rajoute l'objectif empereur
-                    ai.getInventory().addGoal(new Goal(2, true));
+                    currentPlayer.getInventory().addGoal(new Goal(2, true));
                     lastTurn(playable, playable.get(i));
                     ArrayList<Playable> ListAIWin = getAIWins(playable);
 
@@ -126,8 +125,8 @@ public class GameController
             if (ai != ai1)
             {
                 currentPlayer = ai;
-                ai.play();
-                ai.getInventory().checkGoals();
+                currentPlayer.play();
+                currentPlayer.getInventory().checkGoals();
             }
         }
     }

@@ -23,21 +23,28 @@ public class Panda extends Entity
     @Override
     public void setCoords (Point point)
     {
-        if (point == null) throw new IllegalArgumentException("Parameter is null");
-
-        super.setCoords(point);
-
-        Cell arrivalCell = GameBoard.getInstance().getGrid().get(point);
-
-        if (arrivalCell instanceof Plot)
+        try
         {
-            Plot arrivalPlot = (Plot) arrivalCell;
+            if (point == null) throw new IllegalArgumentException("Parameter is null");
 
-            Bamboo bamboo = arrivalPlot.giveBamboo();
+            super.setCoords(point);
 
-            if (bamboo == null) return;
+            Cell arrivalCell = GameBoard.getInstance().getGrid().get(point);
 
-            GameController.getInstance().getCurrentPlayer().getInventory().addBamboo(bamboo.getColor());
+            if (arrivalCell instanceof Plot)
+            {
+                Plot arrivalPlot = (Plot) arrivalCell;
+
+                Bamboo bamboo = arrivalPlot.giveBamboo();
+
+                if (bamboo == null) return;
+
+                GameController.getInstance().getCurrentPlayer().getInventory().addBamboo(bamboo.getColor());
+            }
+        }
+        catch (NullPointerException npe)
+        {
+            int i = 0;
         }
     }
     //endregion
